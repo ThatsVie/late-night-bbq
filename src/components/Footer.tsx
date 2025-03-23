@@ -22,11 +22,14 @@ export default function Footer() {
   return (
     <footer className="bg-zinc-950 text-white border-t border-white/10 px-6 py-10 text-sm">
       <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
-        {/* Text */}
+        {/* Footer text */}
         <p className="text-white/60">{t('footer.madeWithLove')}</p>
 
-        {/* Nav Links */}
-        <nav className="flex gap-4" aria-label="Footer navigation">
+        {/* Navigation */}
+        <nav
+          className="flex flex-wrap gap-4 justify-center sm:justify-start"
+          aria-label="Footer navigation"
+        >
           <Link href="/" className="hover:text-pink-400 transition">
             {t('nav.home')}
           </Link>
@@ -35,6 +38,12 @@ export default function Footer() {
           </Link>
           <Link href="/booking" className="hover:text-pink-400 transition">
             {t('nav.booking')}
+          </Link>
+          <Link href="/register" className="hover:text-pink-400 transition">
+            {t('nav.register')}
+          </Link>
+          <Link href="/login" className="hover:text-pink-400 transition">
+            {t('nav.login')}
           </Link>
         </nav>
 

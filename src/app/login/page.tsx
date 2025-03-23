@@ -2,10 +2,12 @@
 
 import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
+import { Eye, EyeOff } from 'lucide-react'
 
 export default function LoginPage() {
   const { t } = useTranslation()
   const [mounted, setMounted] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
 
   useEffect(() => {
     setMounted(true)
@@ -40,22 +42,32 @@ export default function LoginPage() {
             />
           </div>
 
-          {/* Password */}
+          {/* Password with toggle */}
           <div>
             <label htmlFor="password" className="block mb-2 text-sm">
               {t('login.fields.password')}
             </label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              autoComplete="current-password"
-              placeholder="••••••••"
-              className="w-full p-3 rounded bg-black text-white border border-white/10"
-            />
+            <div className="relative">
+              <input
+                id="password"
+                name="password"
+                type={showPassword ? 'text' : 'password'}
+                autoComplete="current-password"
+                placeholder="••••••••"
+                className="w-full p-3 pr-10 rounded bg-black text-white border border-white/10"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-white hover:text-pink-400 focus:outline-none focus:ring-2 focus:ring-pink-400 rounded"
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
           </div>
 
-          {/* Submit Button */}
+          {/* Submit */}
           <button
             type="submit"
             disabled

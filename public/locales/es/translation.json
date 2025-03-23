@@ -48,5 +48,21 @@
     "title": "¿Listo para ordenar?",
     "body": "Contáctanos para reservar tu noche de BBQ, evento o pedido de catering. Nos encantaría servirte.",
     "button": "Reservar Ahora"
+  },
+
+  "booking": {
+    "title": "Reserva una Experiencia BBQ",
+    "intro": "Ponemos amor en cada plato. Cuéntanos sobre tu evento, entrega o pedido especial. Te contactaremos pronto.",
+    "fields": {
+      "name": "Tu Nombre",
+      "email": "Tu Correo",
+      "phone": "Número de Teléfono",
+      "details": "Cuéntanos sobre tu evento"
+    },
+    "placeholders": {
+      "details": "Ej. Fecha, hora, lugar, cantidad de personas, y cualquier detalle importante."
+    },
+    "button": "Reservas Próximamente",
+    "disclaimer": "Este es un servicio personalizado. Por favor contáctanos con tiempo para coordinar tu pedido."
   }
 }

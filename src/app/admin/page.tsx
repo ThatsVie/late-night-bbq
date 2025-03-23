@@ -7,11 +7,21 @@ export default function AdminDashboard() {
       <aside className="w-64 bg-black border-r border-white/10 px-6 py-10 hidden sm:block">
         <h2 className="text-xl font-bold text-pink-500 mb-10">Admin</h2>
         <nav className="space-y-4 text-sm">
-          <a href="#" className="block hover:text-pink-400">Dashboard Overview</a>
-          <a href="#" className="block hover:text-pink-400">Users</a>
-          <a href="#" className="block hover:text-pink-400">Orders</a>
-          <a href="#" className="block hover:text-pink-400">Reviews</a>
-          <a href="#" className="block hover:text-pink-400">Metrics</a>
+          <a href="#" className="block hover:text-pink-400">
+            Dashboard Overview
+          </a>
+          <a href="#" className="block hover:text-pink-400">
+            Users
+          </a>
+          <a href="#" className="block hover:text-pink-400">
+            Orders
+          </a>
+          <a href="#" className="block hover:text-pink-400">
+            Reviews
+          </a>
+          <a href="#" className="block hover:text-pink-400">
+            Metrics
+          </a>
         </nav>
       </aside>
 

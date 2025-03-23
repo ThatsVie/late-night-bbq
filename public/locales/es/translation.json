@@ -76,6 +76,27 @@
     },
     "quote": "La comida es nuestra manera de dar amor."
   },
+
+  "register": {
+    "title": "Crear una Cuenta",
+    "fields": {
+      "name": "Nombre Completo",
+      "email": "Correo Electrónico",
+      "phone": "Número de Teléfono",
+      "password": "Contraseña"
+    },
+    "button": "Registrarse (Próximamente)"
+  },
+
+  "login": {
+    "title": "Inicia Sesión en Tu Cuenta",
+    "fields": {
+      "email": "Correo Electrónico",
+      "password": "Contraseña"
+    },
+    "button": "Iniciar Sesión (Próximamente)"
+  },
+
   "footer": {
     "madeWithLove": "Hecho con amor"
   }

@@ -24,21 +24,25 @@ export default function Navbar() {
   return (
     <header className="bg-black text-white border-b border-white/10">
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+        {/* Site title */}
         <Link href="/" className="text-xl font-bold text-pink-500">
           {t('title')}
         </Link>
 
-        {/* Hamburger (Mobile Only) */}
+        {/* Hamburger toggle for mobile */}
         <button
           className="md:hidden p-2 rounded focus:outline-none focus:ring-2 focus:ring-pink-400 animate-pulse"
           onClick={() => setIsOpen(!isOpen)}
-          aria-label="Toggle navigation"
+          aria-label="Toggle navigation menu"
         >
           {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
 
-        {/* Full Nav (Desktop) */}
-        <nav className="hidden md:flex gap-6 items-center text-sm sm:text-base">
+        {/* Desktop nav */}
+        <nav
+          className="hidden md:flex gap-6 items-center text-sm sm:text-base"
+          aria-label="Main navigation"
+        >
           <Link href="/" className="hover:text-pink-400">
             {t('nav.home')}
           </Link>
@@ -59,6 +63,7 @@ export default function Navbar() {
           </Link>
           <button
             onClick={toggleLanguage}
+            aria-label="Toggle language"
             className="ml-2 px-3 py-1 border rounded text-xs hover:bg-white hover:text-black transition"
           >
             {i18n.language === 'en' ? 'ES' : 'EN'}
@@ -66,9 +71,12 @@ export default function Navbar() {
         </nav>
       </div>
 
-      {/* Mobile Menu (Dropdown) */}
+      {/* Mobile dropdown menu */}
       {isOpen && (
-        <div className="md:hidden px-6 pb-4 space-y-2 bg-black border-t border-white/10">
+        <nav
+          className="md:hidden px-6 pb-4 space-y-2 bg-black border-t border-white/10"
+          aria-label="Mobile navigation"
+        >
           <Link href="/" className="block hover:text-pink-400" onClick={() => setIsOpen(false)}>
             {t('nav.home')}
           </Link>
@@ -112,11 +120,12 @@ export default function Navbar() {
               toggleLanguage()
               setIsOpen(false)
             }}
+            aria-label="Toggle language"
             className="block w-full text-left px-2 py-1 border rounded text-xs hover:bg-white hover:text-black transition"
           >
             {i18n.language === 'en' ? 'ES' : 'EN'}
           </button>
-        </div>
+        </nav>
       )}
     </header>
   )

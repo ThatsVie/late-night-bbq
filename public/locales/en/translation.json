@@ -76,6 +76,27 @@
     },
     "quote": "Food is how we love on people."
   },
+
+  "register": {
+    "title": "Create an Account",
+    "fields": {
+      "name": "Full Name",
+      "email": "Email Address",
+      "phone": "Phone Number",
+      "password": "Password"
+    },
+    "button": "Register (Coming Soon)"
+  },
+
+  "login": {
+    "title": "Log In to Your Account",
+    "fields": {
+      "email": "Email Address",
+      "password": "Password"
+    },
+    "button": "Log In (Coming Soon)"
+  },
+
   "footer": {
     "madeWithLove": "Made with love"
   }

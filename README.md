@@ -98,7 +98,7 @@ Logs in with admin account → accesses dashboard → sees orders, reviews, user
 - All sensitive actions (place order, leave review, view dashboard) require authentication
 - Firebase ensures email is verified and 2FA is used
 - Backend serverless functions verify Firebase tokens before interacting with the database
-- Stripe handles all payment data  no card data touches your server
+- Stripe handles all payment data no card data touches your server
 - Role-based routing and API protection ensures only admins can access dashboard content
 
 ---

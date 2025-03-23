@@ -75,5 +75,8 @@
       "p3": "Hoy estamos felices de compartir nuestra barbacoa con más gente en Houston,  hecha como siempre: lenta, suave y con el corazón."
     },
     "quote": "La comida es nuestra manera de dar amor."
+  },
+  "footer": {
+    "madeWithLove": "Hecho con amor"
   }
 }

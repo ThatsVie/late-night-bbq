@@ -1,9 +1,10 @@
 'use client'
 
-import '../i18n' // ✅ Ensures i18n is initialized
+import '../i18n'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import Navbar from './Navbar'
+import Footer from './Footer'
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const { i18n } = useTranslation()
@@ -15,7 +16,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   return (
     <>
       <Navbar />
-      {children}
+      <main>{children}</main>
+      <Footer />
     </>
   )
 }

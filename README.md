@@ -127,9 +127,9 @@ Logs in with admin account → accesses dashboard → sees orders, reviews, user
 
 ---
 
-## What You're Building & Why
+## What We're Building & Why
 
-You're creating:
+We're creating:
 
 A community-first, modern, bilingual web app that allows:
 

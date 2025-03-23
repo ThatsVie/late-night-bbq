@@ -1,0 +1,12 @@
+{
+  "title": "Late Night BBQ",
+  "tagline": "Slow-smoked BBQ. Scheduled deliveries and catering in Houston.",
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "store": "Menu",
+    "booking": "Booking",
+    "register": "Register",
+    "login": "Login"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "title": "Late Night BBQ",
+  "tagline": "Barbacoa ahumada a fuego lento. Servicio por encargo y catering en Houston.",
+  "nav": {
+    "home": "Inicio",
+    "about": "Acerca de",
+    "store": "Menú",
+    "booking": "Reservar",
+    "register": "Registrarse",
+    "login": "Iniciar sesión"
+  }
+}

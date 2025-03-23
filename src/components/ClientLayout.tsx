@@ -5,11 +5,7 @@ import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import Navbar from './Navbar'
 
-export default function ClientLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const { i18n } = useTranslation()
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-# 🔥 Late Night BBQ — Website & Admin Dashboard
+# 🔥 Late Night BBQ: Website & Admin Dashboard
 
 ## Purpose
 
@@ -21,7 +21,7 @@ To build a beautiful, accessible, bilingual website for a small BBQ delivery bus
 - Booking calendar (embed or custom)
 
 **How:** Built with React + TypeScript, deployed on Vercel  
-**Why:** Fast, responsive, accessible, bilingual — all publicly visible and mobile-friendly
+**Why:** Fast, responsive, accessible, bilingual. All publicly visible and mobile-friendly
 
 ---
 
@@ -98,7 +98,7 @@ Logs in with admin account → accesses dashboard → sees orders, reviews, user
 - All sensitive actions (place order, leave review, view dashboard) require authentication
 - Firebase ensures email is verified and 2FA is used
 - Backend serverless functions verify Firebase tokens before interacting with the database
-- Stripe handles all payment data — no card data touches your server
+- Stripe handles all payment data  no card data touches your server
 - Role-based routing and API protection ensures only admins can access dashboard content
 
 ---

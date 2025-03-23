@@ -49,9 +49,13 @@ export default function Navbar() {
           <Link href="/about" className="hover:text-pink-400">
             {t('nav.about')}
           </Link>
-          <Link href="/store" className="hover:text-pink-400">
+          <Link href="/menu" className="hover:text-pink-400">
             {t('nav.store')}
           </Link>
+          <Link href="/merch" className="hover:text-pink-400">
+            {t('nav.merch')}
+          </Link>
+
           <Link href="/booking" className="hover:text-pink-400">
             {t('nav.booking')}
           </Link>
@@ -87,12 +91,15 @@ export default function Navbar() {
           >
             {t('nav.about')}
           </Link>
+          <Link href="/menu" className="block hover:text-pink-400" onClick={() => setIsOpen(false)}>
+            {t('nav.store')}
+          </Link>
           <Link
-            href="/store"
+            href="/merch"
             className="block hover:text-pink-400"
             onClick={() => setIsOpen(false)}
           >
-            {t('nav.store')}
+            Merch
           </Link>
           <Link
             href="/booking"

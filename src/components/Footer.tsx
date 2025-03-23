@@ -36,6 +36,12 @@ export default function Footer() {
           <Link href="/about" className="hover:text-pink-400 transition">
             {t('nav.about')}
           </Link>
+          <Link href="/menu" className="hover:text-pink-400 transition">
+            {t('nav.store')}
+          </Link>
+          <Link href="/merch" className="hover:text-pink-400 transition">
+            {t('nav.merch')}
+          </Link>
           <Link href="/booking" className="hover:text-pink-400 transition">
             {t('nav.booking')}
           </Link>
@@ -47,7 +53,7 @@ export default function Footer() {
           </Link>
         </nav>
 
-        {/* Language + Copyright */}
+        {/* Language toggle + copyright */}
         <div className="flex items-center gap-3">
           <button
             onClick={toggleLanguage}

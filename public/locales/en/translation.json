@@ -6,6 +6,7 @@
     "home": "Home",
     "about": "About",
     "store": "Menu",
+    "merch": "Merch",
     "booking": "Booking",
     "register": "Register",
     "login": "Login"
@@ -95,6 +96,49 @@
       "password": "Password"
     },
     "button": "Log In (Coming Soon)"
+  },
+
+  "menuPage": {
+    "title": "Menu",
+    "description": "Our small but mighty rotating menu. Subject to availability!",
+    "items": {
+      "brisket": {
+        "name": "Smoked Brisket",
+        "desc": "12-hour smoked brisket with house-made rub",
+        "price": "$18/lb"
+      },
+      "ribs": {
+        "name": "BBQ Ribs",
+        "desc": "Sticky, tender ribs with a sweet heat glaze",
+        "price": "$16/half rack"
+      },
+      "mac": {
+        "name": "Mac & Cheese",
+        "desc": "Creamy side dish with crispy smoked cheese topping",
+        "price": "$6/serving"
+      }
+    }
+  },
+  "merchPage": {
+    "title": "Merch",
+    "description": "Coming soon. Limited-edition gear and gifts!",
+    "items": {
+      "shirt": {
+        "name": "Late Night BBQ Tee",
+        "desc": "Soft cotton tee with neon pink logo",
+        "status": "Coming Soon"
+      },
+      "sauce": {
+        "name": "House BBQ Sauce",
+        "desc": "Small batch smoky-sweet sauce",
+        "status": "Sold Out"
+      },
+      "gift": {
+        "name": "Gift Card",
+        "desc": "Give the gift of smoky goodness",
+        "status": "Available Soon"
+      }
+    }
   },
 
   "footer": {

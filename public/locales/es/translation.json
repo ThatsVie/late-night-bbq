@@ -6,6 +6,7 @@
     "home": "Inicio",
     "about": "Acerca de",
     "store": "Menú",
+    "merch": "Tienda",
     "booking": "Reservar",
     "register": "Registrarse",
     "login": "Iniciar sesión"
@@ -95,6 +96,50 @@
       "password": "Contraseña"
     },
     "button": "Iniciar Sesión (Próximamente)"
+  },
+
+  "menuPage": {
+    "title": "Menú",
+    "description": "Nuestro menú rotativo es pequeño pero poderoso. ¡Sujeto a disponibilidad!",
+    "items": {
+      "brisket": {
+        "name": "Brisket Ahumado",
+        "desc": "Brisket ahumado por 12 horas con nuestro sazonado especial",
+        "price": "$18/libra"
+      },
+      "ribs": {
+        "name": "Costillas BBQ",
+        "desc": "Costillas pegajosas y tiernas con glaseado dulce y picante",
+        "price": "$16/media parrilla"
+      },
+      "mac": {
+        "name": "Macarrones con Queso",
+        "desc": "Acompañamiento cremoso con cobertura crujiente de queso ahumado",
+        "price": "$6/porción"
+      }
+    }
+  },
+
+  "merchPage": {
+    "title": "Tienda",
+    "description": "Próximamente. Artículos y regalos de edición limitada.",
+    "items": {
+      "shirt": {
+        "name": "Camiseta de Late Night BBQ",
+        "desc": "Camiseta de algodón suave con el logo en rosa neón",
+        "status": "Próximamente"
+      },
+      "sauce": {
+        "name": "Salsa BBQ de la Casa",
+        "desc": "Salsa artesanal dulce y ahumada",
+        "status": "Agotado"
+      },
+      "gift": {
+        "name": "Tarjeta de Regalo",
+        "desc": "Regala el sabor de la barbacoa",
+        "status": "Disponible Pronto"
+      }
+    }
   },
 
   "footer": {

@@ -1,0 +1,148 @@
+{
+  "title": "Late Night BBQ",
+  "tagline": "Barbacoa ahumada a fuego lento. Servicio por encargo y catering en Houston.",
+
+  "nav": {
+    "home": "Inicio",
+    "about": "Acerca de",
+    "store": "Menú",
+    "merch": "Tienda",
+    "booking": "Reservar",
+    "register": "Registrarse",
+    "login": "Iniciar sesión"
+  },
+
+  "hero": {
+    "title": "Late Night BBQ",
+    "tagline": "Barbacoa ahumada a fuego lento. Servicio por encargo y catering en Houston."
+  },
+
+  "howItWorks": {
+    "title": "Cómo Funciona",
+    "body": "Nuestra barbacoa es artesanal, hecha por encargo y entregada con cariño. Operamos en lotes pequeños y personalizados — cuéntanos tu plan y llevamos el sabor."
+  },
+
+  "story": {
+    "title": "Nuestra Historia",
+    "body": "Somos una pareja con base en Houston que cocina barbacoa para unir a las personas. Comenzamos con asados de fin de semana, y hoy entregamos por recomendación. Cada plato lleva amor — y llega directo a tu puerta."
+  },
+
+  "menu": {
+    "title": "Destacados del Menú",
+    "items": {
+      "item1": {
+        "name": "Brisket Ahumado",
+        "desc": "Brisket ahumado por 12 horas con condimentos caseros"
+      },
+      "item2": {
+        "name": "Costillas BBQ",
+        "desc": "Costillas tiernas y pegajosas con glaseado dulce y picante"
+      },
+      "item3": {
+        "name": "Macarrones con Queso",
+        "desc": "Acompañamiento cremoso con cobertura crujiente de queso ahumado"
+      }
+    }
+  },
+
+  "cta": {
+    "title": "¿Listo para ordenar?",
+    "body": "Contáctanos para reservar tu noche de BBQ, evento o pedido de catering. Nos encantaría servirte.",
+    "button": "Reservar Ahora"
+  },
+
+  "booking": {
+    "title": "Reserva una Experiencia BBQ",
+    "intro": "Ponemos amor en cada plato. Cuéntanos sobre tu evento, entrega o pedido especial. Te contactaremos pronto.",
+    "fields": {
+      "name": "Tu Nombre",
+      "email": "Tu Correo",
+      "phone": "Número de Teléfono",
+      "details": "Cuéntanos sobre tu evento"
+    },
+    "placeholders": {
+      "details": "Ej. Fecha, hora, lugar, cantidad de personas, y cualquier detalle importante."
+    },
+    "button": "Reservas Próximamente",
+    "disclaimer": "Este es un servicio personalizado. Por favor contáctanos con tiempo para coordinar tu pedido."
+  },
+
+  "about": {
+    "title": "Nuestra Historia",
+    "intro": "Comenzamos con asados en el patio y una pasión por alimentar a los nuestros. Así nació Late Night BBQ.",
+    "story": {
+      "p1": "Late Night BBQ nació del amor entre dos personas que simplemente disfrutaban cocinar y compartir. Todo empezó con costillas y brisket para la familia y vecinos en noches tranquilas.",
+      "p2": "Sin local ni publicidad, el boca a boca hizo su magia. Nos llamaban para celebraciones, baby showers y fines de semana 'porque sí'. Cada entrega llegaba con una sonrisa y mucho cariño.",
+      "p3": "Hoy estamos felices de compartir nuestra barbacoa con más gente en Houston,  hecha como siempre: lenta, suave y con el corazón."
+    },
+    "quote": "La comida es nuestra manera de dar amor."
+  },
+
+  "register": {
+    "title": "Crear una Cuenta",
+    "fields": {
+      "name": "Nombre Completo",
+      "email": "Correo Electrónico",
+      "phone": "Número de Teléfono",
+      "password": "Contraseña"
+    },
+    "button": "Registrarse (Próximamente)"
+  },
+
+  "login": {
+    "title": "Inicia Sesión en Tu Cuenta",
+    "fields": {
+      "email": "Correo Electrónico",
+      "password": "Contraseña"
+    },
+    "button": "Iniciar Sesión (Próximamente)"
+  },
+
+  "menuPage": {
+    "title": "Menú",
+    "description": "Nuestro menú rotativo es pequeño pero poderoso. ¡Sujeto a disponibilidad!",
+    "items": {
+      "brisket": {
+        "name": "Brisket Ahumado",
+        "desc": "Brisket ahumado por 12 horas con nuestro sazonado especial",
+        "price": "$18/libra"
+      },
+      "ribs": {
+        "name": "Costillas BBQ",
+        "desc": "Costillas pegajosas y tiernas con glaseado dulce y picante",
+        "price": "$16/media parrilla"
+      },
+      "mac": {
+        "name": "Macarrones con Queso",
+        "desc": "Acompañamiento cremoso con cobertura crujiente de queso ahumado",
+        "price": "$6/porción"
+      }
+    }
+  },
+
+  "merchPage": {
+    "title": "Tienda",
+    "description": "Próximamente. Artículos y regalos de edición limitada.",
+    "items": {
+      "shirt": {
+        "name": "Camiseta de Late Night BBQ",
+        "desc": "Camiseta de algodón suave con el logo en rosa neón",
+        "status": "Próximamente"
+      },
+      "sauce": {
+        "name": "Salsa BBQ de la Casa",
+        "desc": "Salsa artesanal dulce y ahumada",
+        "status": "Agotado"
+      },
+      "gift": {
+        "name": "Tarjeta de Regalo",
+        "desc": "Regala el sabor de la barbacoa",
+        "status": "Disponible Pronto"
+      }
+    }
+  },
+
+  "footer": {
+    "madeWithLove": "Hecho con amor"
+  }
+}

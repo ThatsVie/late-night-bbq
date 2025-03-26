@@ -45,12 +45,6 @@ export default function Footer() {
           <Link href="/booking" className="hover:text-pink-400 transition">
             {t('nav.booking')}
           </Link>
-          <Link href="/register" className="hover:text-pink-400 transition">
-            {t('nav.register')}
-          </Link>
-          <Link href="/login" className="hover:text-pink-400 transition">
-            {t('nav.login')}
-          </Link>
         </nav>
 
         {/* Language toggle + copyright */}

@@ -59,12 +59,6 @@ export default function Navbar() {
           <Link href="/booking" className="hover:text-pink-400">
             {t('nav.booking')}
           </Link>
-          <Link href="/register" className="hover:text-pink-400">
-            {t('nav.register')}
-          </Link>
-          <Link href="/login" className="hover:text-pink-400">
-            {t('nav.login')}
-          </Link>
           <button
             onClick={toggleLanguage}
             aria-label="Toggle language"

@@ -7,9 +7,7 @@
     "about": "Acerca de",
     "store": "Menú",
     "merch": "Tienda",
-    "booking": "Reservar",
-    "register": "Registrarse",
-    "login": "Iniciar sesión"
+    "booking": "Reservar"
   },
 
   "hero": {
@@ -76,26 +74,6 @@
       "p3": "Hoy estamos felices de compartir nuestra barbacoa con más gente en Houston,  hecha como siempre: lenta, suave y con el corazón."
     },
     "quote": "La comida es nuestra manera de dar amor."
-  },
-
-  "register": {
-    "title": "Crear una Cuenta",
-    "fields": {
-      "name": "Nombre Completo",
-      "email": "Correo Electrónico",
-      "phone": "Número de Teléfono",
-      "password": "Contraseña"
-    },
-    "button": "Registrarse (Próximamente)"
-  },
-
-  "login": {
-    "title": "Inicia Sesión en Tu Cuenta",
-    "fields": {
-      "email": "Correo Electrónico",
-      "password": "Contraseña"
-    },
-    "button": "Iniciar Sesión (Próximamente)"
   },
 
   "menuPage": {

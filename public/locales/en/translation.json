@@ -7,9 +7,7 @@
     "about": "About",
     "store": "Menu",
     "merch": "Merch",
-    "booking": "Booking",
-    "register": "Register",
-    "login": "Login"
+    "booking": "Booking"
   },
 
   "hero": {
@@ -76,26 +74,6 @@
       "p3": "Now, we’re excited to share our BBQ with more of Houston, still made the same way: slow, tender, and from the heart."
     },
     "quote": "Food is how we love on people."
-  },
-
-  "register": {
-    "title": "Create an Account",
-    "fields": {
-      "name": "Full Name",
-      "email": "Email Address",
-      "phone": "Phone Number",
-      "password": "Password"
-    },
-    "button": "Register (Coming Soon)"
-  },
-
-  "login": {
-    "title": "Log In to Your Account",
-    "fields": {
-      "email": "Email Address",
-      "password": "Password"
-    },
-    "button": "Log In (Coming Soon)"
   },
 
   "menuPage": {

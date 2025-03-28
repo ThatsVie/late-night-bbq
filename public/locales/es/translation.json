@@ -7,6 +7,7 @@
     "about": "Acerca de",
     "store": "Menú",
     "merch": "Tienda",
+    "testimonials": "Testimonios",
     "contact": "Contáctanos"
   },
 
@@ -50,21 +51,20 @@
   },
 
   "contact": {
-  "title": "Ponte en Contacto",
-  "intro": "Cuéntanos sobre tu evento o solicitud de catering y te responderemos lo antes posible.",
-  "fields": {
-    "name": "Tu Nombre",
-    "email": "Tu Correo",
-    "phone": "Número de Teléfono",
-    "details": "¿Cómo podemos ayudarte?"
+    "title": "Ponte en Contacto",
+    "intro": "Cuéntanos sobre tu evento o solicitud de catering y te responderemos lo antes posible.",
+    "fields": {
+      "name": "Tu Nombre",
+      "email": "Tu Correo",
+      "phone": "Número de Teléfono",
+      "details": "¿Cómo podemos ayudarte?"
+    },
+    "placeholders": {
+      "details": "Ej. Fecha, lugar, cantidad de personas, y cualquier solicitud especial"
+    },
+    "button": "Enviar",
+    "disclaimer": "Responderemos lo antes posible. Para solicitudes urgentes, llámanos o mándanos un mensaje directamente."
   },
-  "placeholders": {
-    "details": "Ej. Fecha, lugar, cantidad de personas, y cualquier solicitud especial"
-  },
-  "button": "Enviar",
-  "disclaimer": "Responderemos lo antes posible. Para solicitudes urgentes, llámanos o mándanos un mensaje directamente."
-},
-
 
   "about": {
     "title": "Nuestra Historia",
@@ -118,6 +118,19 @@
         "desc": "Regala el sabor de la barbacoa",
         "status": "Disponible Pronto"
       }
+    }
+  },
+
+  "testimonials": {
+    "title": "Lo Que Dice la Gente",
+    "intro": "Esto es lo que algunos de nuestros clientes felices dicen sobre Late Night BBQ.",
+    "placeholder": {
+      "quote1": "El mejor brisket que he probado. ¡Recomendado al 100%!",
+      "name1": "Marcus L.",
+      "quote2": "Las costillas estaban tan suaves que se deshacían. Definitivamente volveremos a pedir.",
+      "name2": "Sofia R.",
+      "quote3": "Comida increíble y personas muy amables. ¡Apoyen este negocio!",
+      "name3": "Alicia M."
     }
   },
 

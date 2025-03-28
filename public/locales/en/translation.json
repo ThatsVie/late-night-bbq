@@ -7,7 +7,7 @@
     "about": "About",
     "store": "Menu",
     "merch": "Merch",
-    "booking": "Booking"
+    "contact": "Contact Us"
   },
 
   "hero": {
@@ -46,24 +46,25 @@
   "cta": {
     "title": "Ready to Get Started?",
     "body": "Reach out to book your BBQ night, event, or catering order. We’d love to serve you.",
-    "button": "Book Now"
+    "button": "Contact Us"
   },
 
-  "booking": {
-    "title": "Book a BBQ Experience",
-    "intro": "We take pride in every plate. Let us know about your event, delivery, or special request. We’ll get back to you soon.",
-    "fields": {
-      "name": "Your Name",
-      "email": "Your Email",
-      "phone": "Phone Number",
-      "details": "Tell us about your event"
-    },
-    "placeholders": {
-      "details": "e.g. Date, time, location, number of guests, and anything else you'd like us to know."
-    },
-    "button": "Booking Coming Soon",
-    "disclaimer": "This is a custom service. Please reach out early so we can accommodate your request!"
+  "contact": {
+  "title": "Get in Touch",
+  "intro": "Tell us about your event or catering needs and we'll get back to you ASAP!",
+  "fields": {
+    "name": "Your Name",
+    "email": "Your Email",
+    "phone": "Phone Number",
+    "details": "How can we help?"
   },
+  "placeholders": {
+    "details": "e.g. Date, location, number of guests, and any special requests"
+  },
+  "button": "Submit",
+  "disclaimer": "We’ll respond as soon as possible. For urgent requests, please call or message us directly."
+},
+
 
   "about": {
     "title": "Our Story",

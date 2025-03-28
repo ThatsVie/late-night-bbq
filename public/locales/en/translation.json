@@ -132,6 +132,14 @@
       "name3": "Alicia M."
     }
   },
+  "login": {
+  "title": "Admin Login",
+  "fields": {
+    "email": "Email",
+    "password": "Password"
+  },
+  "button": "Sign In"
+},
 
   "footer": {
     "madeWithLove": "Made with love"

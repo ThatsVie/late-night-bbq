@@ -47,7 +47,7 @@ export default function Home() {
       >
         <motion.h1
           id="hero-heading"
-          className="text-5xl font-bold text-pink-500 mb-4 flex items-center gap-2 justify-center"
+          className="text-5xl font-bold neon-text mb-4 flex items-center gap-2 justify-center tilt-neon-font"
           initial={{ scale: 0.95 }}
           animate={{ scale: 1 }}
           transition={{ duration: 0.6 }}
@@ -67,7 +67,7 @@ export default function Home() {
 
       {/* How It Works */}
       <AnimatedSection id="how">
-        <h2 id="how-heading" className="text-3xl font-bold text-pink-400 mb-6">
+        <h2 id="how-heading" className="text-3xl font-bold text-pink-400 mb-6 font-family-bungee">
           {t('howItWorks.title')}
         </h2>
         <p className="text-white/80 max-w-2xl mx-auto">{t('howItWorks.body')}</p>

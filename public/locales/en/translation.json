@@ -133,13 +133,13 @@
     }
   },
   "login": {
-  "title": "Admin Login",
-  "fields": {
-    "email": "Email",
-    "password": "Password"
+    "title": "Admin Login",
+    "fields": {
+      "email": "Email",
+      "password": "Password"
+    },
+    "button": "Sign In"
   },
-  "button": "Sign In"
-},
 
   "footer": {
     "madeWithLove": "Made with love"

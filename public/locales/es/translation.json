@@ -135,13 +135,13 @@
   },
 
   "login": {
-  "title": "Iniciar Sesión",
-  "fields": {
-    "email": "Correo Electrónico",
-    "password": "Contraseña"
+    "title": "Iniciar Sesión",
+    "fields": {
+      "email": "Correo Electrónico",
+      "password": "Contraseña"
+    },
+    "button": "Ingresar"
   },
-  "button": "Ingresar"
-},
 
   "footer": {
     "madeWithLove": "Hecho con amor"

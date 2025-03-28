@@ -67,7 +67,7 @@ export default function Home() {
 
       {/* How It Works */}
       <AnimatedSection id="how">
-        <h2 id="how-heading" className="text-3xl font-bold text-pink-400 mb-6 font-family-bungee">
+        <h2 id="how-heading" className="text-3xl font-bold text-pink-400 mb-6">
           {t('howItWorks.title')}
         </h2>
         <p className="text-white/80 max-w-2xl mx-auto">{t('howItWorks.body')}</p>

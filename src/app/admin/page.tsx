@@ -39,13 +39,27 @@ export default function AdminDashboard() {
       <aside className="w-full sm:w-64 bg-black border-r border-white/10 px-6 py-10">
         <h2 className="text-xl font-bold text-pink-500 mb-10">Admin Panel</h2>
         <nav className="space-y-4 text-sm">
-          <a href="#" className="block hover:text-pink-400">Edit Homepage Banner</a>
-          <a href="#" className="block hover:text-pink-400">Manage Menu (Food)</a>
-          <a href="#" className="block hover:text-pink-400">Manage Merch</a>
-          <a href="#" className="block hover:text-pink-400">Edit About Page</a>
-          <a href="#" className="block hover:text-pink-400">Manage Reviews</a>
-          <a href="#" className="block hover:text-pink-400">Photo Uploads</a>
-          <a href="#" className="block hover:text-pink-400">View Site Metrics</a>
+          <a href="#" className="block hover:text-pink-400">
+            Edit Homepage Banner
+          </a>
+          <a href="#" className="block hover:text-pink-400">
+            Manage Menu (Food)
+          </a>
+          <a href="#" className="block hover:text-pink-400">
+            Manage Merch
+          </a>
+          <a href="#" className="block hover:text-pink-400">
+            Edit About Page
+          </a>
+          <a href="#" className="block hover:text-pink-400">
+            Manage Reviews
+          </a>
+          <a href="#" className="block hover:text-pink-400">
+            Photo Uploads
+          </a>
+          <a href="#" className="block hover:text-pink-400">
+            View Site Metrics
+          </a>
         </nav>
         <button
           onClick={handleLogout}

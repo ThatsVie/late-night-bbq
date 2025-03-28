@@ -7,6 +7,7 @@
     "about": "About",
     "store": "Menu",
     "merch": "Merch",
+    "testimonials": "Testimonials",
     "contact": "Contact Us"
   },
 
@@ -50,21 +51,20 @@
   },
 
   "contact": {
-  "title": "Get in Touch",
-  "intro": "Tell us about your event or catering needs and we'll get back to you ASAP!",
-  "fields": {
-    "name": "Your Name",
-    "email": "Your Email",
-    "phone": "Phone Number",
-    "details": "How can we help?"
+    "title": "Get in Touch",
+    "intro": "Tell us about your event or catering needs and we'll get back to you ASAP!",
+    "fields": {
+      "name": "Your Name",
+      "email": "Your Email",
+      "phone": "Phone Number",
+      "details": "How can we help?"
+    },
+    "placeholders": {
+      "details": "e.g. Date, location, number of guests, and any special requests"
+    },
+    "button": "Submit",
+    "disclaimer": "We’ll respond as soon as possible. For urgent requests, please call or message us directly."
   },
-  "placeholders": {
-    "details": "e.g. Date, location, number of guests, and any special requests"
-  },
-  "button": "Submit",
-  "disclaimer": "We’ll respond as soon as possible. For urgent requests, please call or message us directly."
-},
-
 
   "about": {
     "title": "Our Story",
@@ -117,6 +117,19 @@
         "desc": "Give the gift of smoky goodness",
         "status": "Available Soon"
       }
+    }
+  },
+
+  "testimonials": {
+    "title": "What People Are Saying",
+    "intro": "Here’s what some of our happy customers have to say about Late Night BBQ.",
+    "placeholder": {
+      "quote1": "The best brisket I’ve ever had. 10/10 recommend!",
+      "name1": "Marcus L.",
+      "quote2": "The ribs were fall-off-the-bone delicious. We’ll definitely be ordering again.",
+      "name2": "Sofia R.",
+      "quote3": "Amazing food and such kind people. Support this business!",
+      "name3": "Alicia M."
     }
   },
 

@@ -42,6 +42,9 @@ export default function Footer() {
           <Link href="/merch" className="hover:text-pink-400 transition">
             {t('nav.merch')}
           </Link>
+          <Link href="/testimonials" className="hover:text-pink-400">
+            {t('nav.testimonials')}
+          </Link>
           <Link href="/contact" className="hover:text-pink-400 transition">
             {t('nav.contact')}
           </Link>

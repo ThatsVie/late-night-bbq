@@ -55,7 +55,9 @@ export default function Navbar() {
           <Link href="/merch" className="hover:text-pink-400">
             {t('nav.merch')}
           </Link>
-
+          <Link href="/testimonials" className="hover:text-pink-400">
+            {t('nav.testimonials')}
+          </Link>
           <Link href="/contact" className="hover:text-pink-400">
             {t('nav.contact')}
           </Link>
@@ -94,6 +96,9 @@ export default function Navbar() {
             onClick={() => setIsOpen(false)}
           >
             Merch
+          </Link>
+          <Link href="/testimonials" className="hover:text-pink-400">
+            {t('nav.testimonials')}
           </Link>
           <Link
             href="/contact"

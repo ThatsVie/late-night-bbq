@@ -111,7 +111,7 @@ export default function Home() {
         </h2>
         <p className="text-white/80 mb-6">{t('cta.body')}</p>
         <a
-          href="/booking"
+          href="/contact"
           className="inline-block bg-pink-500 hover:bg-pink-600 text-black font-bold py-3 px-6 rounded-full transition focus:outline focus:ring-2 focus:ring-pink-400 shadow-[0_0_10px_#ec4899] animate-pulse"
         >
           {t('cta.button')}

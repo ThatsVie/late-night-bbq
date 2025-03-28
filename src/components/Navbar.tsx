@@ -56,8 +56,8 @@ export default function Navbar() {
             {t('nav.merch')}
           </Link>
 
-          <Link href="/booking" className="hover:text-pink-400">
-            {t('nav.booking')}
+          <Link href="/contact" className="hover:text-pink-400">
+            {t('nav.contact')}
           </Link>
           <button
             onClick={toggleLanguage}
@@ -96,25 +96,11 @@ export default function Navbar() {
             Merch
           </Link>
           <Link
-            href="/booking"
+            href="/contact"
             className="block hover:text-pink-400"
             onClick={() => setIsOpen(false)}
           >
-            {t('nav.booking')}
-          </Link>
-          <Link
-            href="/register"
-            className="block hover:text-pink-400"
-            onClick={() => setIsOpen(false)}
-          >
-            {t('nav.register')}
-          </Link>
-          <Link
-            href="/login"
-            className="block hover:text-pink-400"
-            onClick={() => setIsOpen(false)}
-          >
-            {t('nav.login')}
+            {t('nav.contact')}
           </Link>
           <button
             onClick={() => {

@@ -1,10 +1,12 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { db } from '@/firebase/config'
 import { doc, updateDoc, getDoc, collection, getDocs } from 'firebase/firestore'
 
 export default function EditBannerPage() {
+  const router = useRouter()
   const [banners, setBanners] = useState<string[]>([])
   const [activeBanner, setActiveBanner] = useState<string>('')
 
@@ -31,6 +33,14 @@ export default function EditBannerPage() {
   return (
     <main className="p-6 text-white bg-zinc-950 min-h-screen">
       <h1 className="text-2xl font-bold text-pink-500 mb-6">Select Active Homepage Banner</h1>
+
+      <button
+        onClick={() => router.push('/admin')}
+        className="mb-6 text-sm text-white hover:text-pink-400 border border-white/20 px-4 py-2 rounded"
+      >
+        ← Back to Admin Dashboard
+      </button>
+
       <ul className="space-y-4">
         {banners.map((bannerId) => (
           <li

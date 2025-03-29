@@ -4,6 +4,8 @@ import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
+import Image from 'next/image'
+import { fetchHomepageBanner } from '@/utils/firebaseService'
 
 function AnimatedSection({ id, children }: { id: string; children: React.ReactNode }) {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 })
@@ -25,12 +27,23 @@ function AnimatedSection({ id, children }: { id: string; children: React.ReactNo
 }
 
 export default function Home() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const [mounted, setMounted] = useState(false)
+  const [banner, setBanner] = useState<{
+    imageUrl: string
+    altText: string
+    subtitle: string
+    title: string
+  } | null>(null)
 
   useEffect(() => {
     setMounted(true)
-  }, [])
+
+    fetchHomepageBanner(i18n.language as 'en' | 'es').then((data) => {
+      console.log('Banner data from Firestore:', data)
+      setBanner(data)
+    })
+  }, [i18n.language])
 
   if (!mounted) return null
 
@@ -43,7 +56,7 @@ export default function Home() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
-        className="flex flex-col items-center justify-center min-h-screen text-center px-6 py-20"
+        className="flex flex-col items-center justify-start text-center px-6 py-20"
       >
         <motion.h1
           id="hero-heading"
@@ -62,10 +75,26 @@ export default function Home() {
             🔥
           </motion.span>
         </motion.h1>
-        <p className="text-xl max-w-xl text-white/80">{t('hero.tagline')}</p>
+
+        {/* Dynamic Banner Image */}
+        {banner && (
+          <>
+            <div className="w-full max-w-3xl mb-6 border border-white/10 rounded-lg shadow-lg overflow-hidden">
+              <Image
+                src={banner.imageUrl}
+                alt={banner.altText}
+                width={1024}
+                height={1024}
+                className="w-full h-auto object-contain"
+                priority
+              />
+            </div>
+            <p className="text-xl max-w-xl text-white/80">{banner.subtitle}</p>
+          </>
+        )}
       </motion.section>
 
-      {/* How It Works */}
+      {/* Sections */}
       <AnimatedSection id="how">
         <h2 id="how-heading" className="text-3xl font-bold text-pink-400 mb-6">
           {t('howItWorks.title')}
@@ -73,7 +102,6 @@ export default function Home() {
         <p className="text-white/80 max-w-2xl mx-auto">{t('howItWorks.body')}</p>
       </AnimatedSection>
 
-      {/* Our Story */}
       <AnimatedSection id="story">
         <h2 id="story-heading" className="text-3xl font-bold text-pink-400 mb-6">
           {t('story.title')}
@@ -81,7 +109,6 @@ export default function Home() {
         <p className="text-white/80 max-w-2xl mx-auto">{t('story.body')}</p>
       </AnimatedSection>
 
-      {/* Menu Highlights */}
       <AnimatedSection id="menu">
         <h2 id="menu-heading" className="text-3xl font-bold text-pink-400 mb-6">
           {t('menu.title')}
@@ -104,7 +131,6 @@ export default function Home() {
         </div>
       </AnimatedSection>
 
-      {/* CTA */}
       <AnimatedSection id="cta">
         <h2 id="cta-heading" className="text-3xl font-bold text-pink-400 mb-6">
           {t('cta.title')}

@@ -21,29 +21,6 @@
     "body": "Our BBQ is handcrafted, made-to-order, and delivered with love. We operate on a custom, small-batch basis. Just let us know what you're planning, and we’ll bring the fire."
   },
 
-  "story": {
-    "title": "Our Story",
-    "body": "We’re a couple based in Houston, cooking BBQ that brings people together. What started as weekend cookouts turned into a word-of-mouth delivery business. Every plate comes from the heart and goes straight to your door."
-  },
-
-  "menu": {
-    "title": "Menu Highlights",
-    "items": {
-      "item1": {
-        "name": "Smoked Brisket",
-        "desc": "12-hour smoked brisket with house-made rub"
-      },
-      "item2": {
-        "name": "BBQ Ribs",
-        "desc": "Sticky, tender ribs with a sweet heat glaze"
-      },
-      "item3": {
-        "name": "Mac & Cheese",
-        "desc": "Creamy side dish with crispy smoked cheese topping"
-      }
-    }
-  },
-
   "cta": {
     "title": "Ready to Get Started?",
     "body": "Reach out to book your BBQ night, event, or catering order. We’d love to serve you.",
@@ -79,25 +56,9 @@
 
   "menuPage": {
     "title": "Menu",
-    "description": "Our small but mighty rotating menu. Subject to availability!",
-    "items": {
-      "brisket": {
-        "name": "Smoked Brisket",
-        "desc": "12-hour smoked brisket with house-made rub",
-        "price": "$18/lb"
-      },
-      "ribs": {
-        "name": "BBQ Ribs",
-        "desc": "Sticky, tender ribs with a sweet heat glaze",
-        "price": "$16/half rack"
-      },
-      "mac": {
-        "name": "Mac & Cheese",
-        "desc": "Creamy side dish with crispy smoked cheese topping",
-        "price": "$6/serving"
-      }
-    }
+    "description": "Our small but mighty rotating menu. Subject to availability!"
   },
+
   "merchPage": {
     "title": "Merch",
     "description": "Coming soon. Limited-edition gear and gifts!",
@@ -122,16 +83,9 @@
 
   "testimonials": {
     "title": "What People Are Saying",
-    "intro": "Here’s what some of our happy customers have to say about Late Night BBQ.",
-    "placeholder": {
-      "quote1": "The best brisket I’ve ever had. 10/10 recommend!",
-      "name1": "Marcus L.",
-      "quote2": "The ribs were fall-off-the-bone delicious. We’ll definitely be ordering again.",
-      "name2": "Sofia R.",
-      "quote3": "Amazing food and such kind people. Support this business!",
-      "name3": "Alicia M."
-    }
+    "intro": "Here’s what some of our happy customers have to say about Late Night BBQ."
   },
+
   "login": {
     "title": "Admin Login",
     "fields": {

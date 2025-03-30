@@ -2,14 +2,27 @@
 
 import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
+import { fetchTestimonials } from '@/utils/fetchTestimonials'
+
+type Testimonial = {
+  quote: string
+  name: string
+}
 
 export default function TestimonialsPage() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([])
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
+    const loadTestimonials = async () => {
+      const data = await fetchTestimonials(i18n.language as 'en' | 'es')
+      setTestimonials(data)
+    }
+
+    loadTestimonials()
     setMounted(true)
-  }, [])
+  }, [i18n.language])
 
   if (!mounted) return null
 
@@ -23,14 +36,13 @@ export default function TestimonialsPage() {
       </section>
 
       <section className="max-w-4xl mx-auto space-y-8" aria-label="Customer testimonials">
-        {[1, 2, 3].map((id) => (
-          <blockquote key={id} className="bg-zinc-900 p-6 rounded-xl border border-white/10 shadow">
-            <p className="text-lg text-white/90 italic">
-              “{t(`testimonials.placeholder.quote${id}`)}”
-            </p>
-            <footer className="mt-4 text-sm text-white/60">
-              — {t(`testimonials.placeholder.name${id}`)}
-            </footer>
+        {testimonials.map(({ quote, name }, index) => (
+          <blockquote
+            key={index}
+            className="bg-zinc-900 p-6 rounded-xl border border-white/10 shadow"
+          >
+            <p className="text-lg text-white/90 italic">“{quote}”</p>
+            <footer className="mt-4 text-sm text-white/60">— {name}</footer>
           </blockquote>
         ))}
       </section>

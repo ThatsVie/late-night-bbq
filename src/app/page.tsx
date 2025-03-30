@@ -76,19 +76,22 @@ export default function Home() {
           </motion.span>
         </motion.h1>
 
+        <p className="text-white/70 text-lg mb-6">{t('tagline')}</p>
+
         {/* Dynamic Banner Image */}
         {banner && (
           <>
-            <div className="w-full max-w-3xl mb-6 border border-white/10 rounded-lg shadow-lg overflow-hidden">
+            <div className="w-[400px] h-[400px] mx-auto border border-white/10 rounded-lg shadow overflow-hidden">
               <Image
                 src={banner.imageUrl}
                 alt={banner.altText}
-                width={1024}
-                height={1024}
-                className="w-full h-auto object-contain"
+                width={400}
+                height={400}
+                className="w-full h-full object-contain"
                 priority
               />
             </div>
+
             <p className="text-xl max-w-xl text-white/80">{banner.subtitle}</p>
           </>
         )}
@@ -100,35 +103,6 @@ export default function Home() {
           {t('howItWorks.title')}
         </h2>
         <p className="text-white/80 max-w-2xl mx-auto">{t('howItWorks.body')}</p>
-      </AnimatedSection>
-
-      <AnimatedSection id="story">
-        <h2 id="story-heading" className="text-3xl font-bold text-pink-400 mb-6">
-          {t('story.title')}
-        </h2>
-        <p className="text-white/80 max-w-2xl mx-auto">{t('story.body')}</p>
-      </AnimatedSection>
-
-      <AnimatedSection id="menu">
-        <h2 id="menu-heading" className="text-3xl font-bold text-pink-400 mb-6">
-          {t('menu.title')}
-        </h2>
-        <div className="flex flex-col sm:flex-row justify-center gap-6 max-w-4xl mx-auto">
-          {['item1', 'item2', 'item3'].map((itemKey) => (
-            <motion.div
-              key={itemKey}
-              role="group"
-              aria-labelledby={`item-${itemKey}-heading`}
-              whileHover={{ scale: 1.05 }}
-              className="bg-black p-6 rounded-xl border border-white/10 transition-all"
-            >
-              <h3 id={`item-${itemKey}-heading`} className="text-xl font-semibold mb-2">
-                {t(`menu.items.${itemKey}.name`)}
-              </h3>
-              <p className="text-white/70">{t(`menu.items.${itemKey}.desc`)}</p>
-            </motion.div>
-          ))}
-        </div>
       </AnimatedSection>
 
       <AnimatedSection id="cta">

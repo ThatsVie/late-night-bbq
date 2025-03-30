@@ -21,29 +21,6 @@
     "body": "Nuestra barbacoa es artesanal, hecha por encargo y entregada con cariño. Operamos en lotes pequeños y personalizados — cuéntanos tu plan y llevamos el sabor."
   },
 
-  "story": {
-    "title": "Nuestra Historia",
-    "body": "Somos una pareja con base en Houston que cocina barbacoa para unir a las personas. Comenzamos con asados de fin de semana, y hoy entregamos por recomendación. Cada plato lleva amor — y llega directo a tu puerta."
-  },
-
-  "menu": {
-    "title": "Destacados del Menú",
-    "items": {
-      "item1": {
-        "name": "Brisket Ahumado",
-        "desc": "Brisket ahumado por 12 horas con condimentos caseros"
-      },
-      "item2": {
-        "name": "Costillas BBQ",
-        "desc": "Costillas tiernas y pegajosas con glaseado dulce y picante"
-      },
-      "item3": {
-        "name": "Macarrones con Queso",
-        "desc": "Acompañamiento cremoso con cobertura crujiente de queso ahumado"
-      }
-    }
-  },
-
   "cta": {
     "title": "¿Listo para ordenar?",
     "body": "Contáctanos para reservar tu noche de BBQ, evento o pedido de catering. Nos encantaría servirte.",

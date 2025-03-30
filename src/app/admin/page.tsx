@@ -42,7 +42,7 @@ export default function AdminDashboard() {
           <a href="/admin/banner" className="block hover:text-pink-400">
             Switch Homepage Banner
           </a>
-          <a href="#" className="block hover:text-pink-400">
+          <a href="/admin/menu" className="block hover:text-pink-400">
             Manage Menu (Food)
           </a>
           <a href="#" className="block hover:text-pink-400">
@@ -80,8 +80,11 @@ export default function AdminDashboard() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Menu Card */}
           <div
-            className="bg-black p-6 rounded-lg border border-white/10 hover:border-pink-500 hover:shadow-pink-500/10 cursor-pointer transition"
+            onClick={() => router.push('/admin/menu')}
+            onKeyDown={(e) => e.key === 'Enter' && router.push('/admin/menu')}
+            tabIndex={0}
             role="button"
+            className="bg-black p-6 rounded-lg border border-white/10 hover:border-pink-500 hover:shadow-pink-500/10 cursor-pointer transition outline-none focus:ring-2 focus:ring-pink-500"
           >
             <h2 className="text-lg font-semibold mb-2">Menu</h2>
             <p className="text-white/70">Update food items and their descriptions.</p>

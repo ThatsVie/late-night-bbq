@@ -79,24 +79,7 @@
 
   "menuPage": {
     "title": "Menú",
-    "description": "Nuestro menú rotativo es pequeño pero poderoso. ¡Sujeto a disponibilidad!",
-    "items": {
-      "brisket": {
-        "name": "Brisket Ahumado",
-        "desc": "Brisket ahumado por 12 horas con nuestro sazonado especial",
-        "price": "$18/libra"
-      },
-      "ribs": {
-        "name": "Costillas BBQ",
-        "desc": "Costillas pegajosas y tiernas con glaseado dulce y picante",
-        "price": "$16/media parrilla"
-      },
-      "mac": {
-        "name": "Macarrones con Queso",
-        "desc": "Acompañamiento cremoso con cobertura crujiente de queso ahumado",
-        "price": "$6/porción"
-      }
-    }
+    "description": "Nuestro menú rotativo es pequeño pero poderoso. ¡Sujeto a disponibilidad!"
   },
 
   "merchPage": {

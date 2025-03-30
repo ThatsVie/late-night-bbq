@@ -2,18 +2,34 @@
 
 import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
+import { fetchMenuItems } from '@/utils/menuService'
+import Image from 'next/image'
 
 export default function MenuPage() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const [mounted, setMounted] = useState(false)
+  const [items, setItems] = useState<
+    {
+      id: string
+      en: { title: string; description: string }
+      es: { title: string; description: string }
+      images: string[]
+      activeImage: string
+    }[]
+  >([])
 
   useEffect(() => {
     setMounted(true)
+    const loadItems = async () => {
+      const data = await fetchMenuItems()
+      setItems(data)
+    }
+    loadItems()
   }, [])
 
   if (!mounted) return null
 
-  const items = ['brisket', 'ribs', 'mac']
+  const lang = i18n.language as 'en' | 'es'
 
   return (
     <main className="bg-black text-white min-h-screen px-6 py-20">
@@ -22,16 +38,23 @@ export default function MenuPage() {
         <p className="text-white/70 mb-12">{t('menuPage.description')}</p>
 
         <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-3">
-          {items.map((key) => (
+          {items.map((item) => (
             <div
-              key={key}
+              key={item.id}
               className="bg-zinc-900 p-6 rounded-xl border border-white/10 hover:border-pink-400 transition-all hover:shadow-lg"
             >
-              <h2 className="text-xl font-bold text-pink-400 mb-2">
-                {t(`menuPage.items.${key}.name`)}
-              </h2>
-              <p className="text-white/80 text-sm mb-3">{t(`menuPage.items.${key}.desc`)}</p>
-              <p className="text-white/60 text-sm italic">{t(`menuPage.items.${key}.price`)}</p>
+              {item.activeImage && (
+                <div className="relative w-full h-48 mb-4">
+                  <Image
+                    src={item.activeImage}
+                    alt={item[lang].title}
+                    fill
+                    className="object-cover rounded"
+                  />
+                </div>
+              )}
+              <h2 className="text-xl font-bold text-pink-400 mb-2">{item[lang].title}</h2>
+              <p className="text-white/80 text-sm mb-3">{item[lang].description}</p>
             </div>
           ))}
         </div>

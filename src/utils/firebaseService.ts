@@ -1,4 +1,4 @@
-import { doc, getDoc } from 'firebase/firestore'
+import { doc, getDoc, updateDoc } from 'firebase/firestore'
 import { db } from '@/firebase/config'
 
 export async function fetchHomepageBanner(locale: 'en' | 'es') {
@@ -15,4 +15,14 @@ export async function fetchHomepageBanner(locale: 'en' | 'es') {
 
   const data = bannerSnap.data()
   return data[locale]
+}
+
+export async function updateBannerContent(
+  bannerId: string,
+  updatedFields: Partial<{ subtitle: string; altText: string }>
+) {
+  await updateDoc(doc(db, 'banners', bannerId), {
+    en: updatedFields,
+    es: updatedFields,
+  })
 }

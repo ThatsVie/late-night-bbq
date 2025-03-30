@@ -45,6 +45,13 @@ export default function UploadBannerPage() {
     <main className="p-6 text-white bg-zinc-950 min-h-screen">
       <h1 className="text-2xl font-bold text-pink-500 mb-6">Upload New Homepage Banner</h1>
 
+      <button
+        onClick={() => router.push('/admin/banner')}
+        className="mb-6 text-sm text-white hover:text-pink-400 border border-white/20 px-4 py-2 rounded"
+      >
+        ← Back to Banners
+      </button>
+
       {uploaded ? (
         <div className="text-center mt-10">
           <p className="text-green-400 font-semibold mb-4">Banner uploaded successfully!</p>
@@ -68,12 +75,12 @@ export default function UploadBannerPage() {
         <>
           <label className="block mb-2 font-semibold text-white">
             Banner ID{' '}
-            <span className="text-white/60 text-sm">(used as the name for this banner)</span>
+            <span className="text-white/60 text-sm">(used internally to identify this banner)</span>
           </label>
           <input
             type="text"
             className="w-full p-2 mb-4 bg-black border border-white/20 rounded"
-            placeholder="e.g., Holiday_Season"
+            placeholder="e.g., Summer_Special"
             value={formData.id}
             onChange={(e) => setFormData((prev) => ({ ...prev, id: e.target.value }))}
           />
@@ -96,19 +103,19 @@ export default function UploadBannerPage() {
               </h2>
               <input
                 className="w-full p-2 mb-2 bg-black border border-white/20 rounded"
-                placeholder="Title"
+                placeholder="Title (used for internal reference only)"
                 value={formData[lang as 'en' | 'es'].title}
                 onChange={(e) => handleChange(lang as 'en' | 'es', 'title', e.target.value)}
               />
               <input
                 className="w-full p-2 mb-2 bg-black border border-white/20 rounded"
-                placeholder="Subtitle"
+                placeholder="Subtitle (this appears on the homepage)"
                 value={formData[lang as 'en' | 'es'].subtitle}
                 onChange={(e) => handleChange(lang as 'en' | 'es', 'subtitle', e.target.value)}
               />
               <input
                 className="w-full p-2 mb-2 bg-black border border-white/20 rounded"
-                placeholder="Alt Text (used for accessibility)"
+                placeholder="Alt Text (for accessibility)"
                 value={formData[lang as 'en' | 'es'].altText}
                 onChange={(e) => handleChange(lang as 'en' | 'es', 'altText', e.target.value)}
               />

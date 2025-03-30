@@ -123,8 +123,6 @@ export default function ManageTestimonialsPage() {
           </li>
         ))}
       </ul>
-
-      
     </main>
   )
 }

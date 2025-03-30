@@ -123,15 +123,7 @@
 
   "testimonials": {
     "title": "Lo Que Dice la Gente",
-    "intro": "Esto es lo que algunos de nuestros clientes felices dicen sobre Late Night BBQ.",
-    "placeholder": {
-      "quote1": "El mejor brisket que he probado. ¡Recomendado al 100%!",
-      "name1": "Marcus L.",
-      "quote2": "Las costillas estaban tan suaves que se deshacían. Definitivamente volveremos a pedir.",
-      "name2": "Sofia R.",
-      "quote3": "Comida increíble y personas muy amables. ¡Apoyen este negocio!",
-      "name3": "Alicia M."
-    }
+    "intro": "Esto es lo que algunos de nuestros clientes felices dicen sobre Late Night BBQ."
   },
 
   "login": {

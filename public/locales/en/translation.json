@@ -122,16 +122,9 @@
 
   "testimonials": {
     "title": "What People Are Saying",
-    "intro": "Here’s what some of our happy customers have to say about Late Night BBQ.",
-    "placeholder": {
-      "quote1": "The best brisket I’ve ever had. 10/10 recommend!",
-      "name1": "Marcus L.",
-      "quote2": "The ribs were fall-off-the-bone delicious. We’ll definitely be ordering again.",
-      "name2": "Sofia R.",
-      "quote3": "Amazing food and such kind people. Support this business!",
-      "name3": "Alicia M."
-    }
+    "intro": "Here’s what some of our happy customers have to say about Late Night BBQ."
   },
+
   "login": {
     "title": "Admin Login",
     "fields": {

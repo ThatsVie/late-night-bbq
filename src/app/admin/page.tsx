@@ -51,7 +51,7 @@ export default function AdminDashboard() {
           <a href="#" className="block hover:text-pink-400">
             Edit About Page
           </a>
-          <a href="#" className="block hover:text-pink-400">
+          <a href="/admin/testimonials" className="block hover:text-pink-400">
             Manage Reviews
           </a>
           <a href="#" className="block hover:text-pink-400">
@@ -87,7 +87,7 @@ export default function AdminDashboard() {
             <p className="text-white/70">Update food items and their descriptions.</p>
           </div>
 
-          {/* Banner Card - Clickable */}
+          {/* Banner Card */}
           <div
             onClick={() => router.push('/admin/banner')}
             onKeyDown={(e) => e.key === 'Enter' && router.push('/admin/banner')}
@@ -97,6 +97,18 @@ export default function AdminDashboard() {
           >
             <h2 className="text-lg font-semibold mb-2">Banner</h2>
             <p className="text-white/70">Customize the homepage banner message or CTA.</p>
+          </div>
+
+          {/* Reviews Card */}
+          <div
+            onClick={() => router.push('/admin/testimonials')}
+            onKeyDown={(e) => e.key === 'Enter' && router.push('/admin/testimonials')}
+            tabIndex={0}
+            role="button"
+            className="bg-black p-6 rounded-lg border border-white/10 hover:border-pink-500 hover:shadow-pink-500/10 cursor-pointer transition outline-none focus:ring-2 focus:ring-pink-500"
+          >
+            <h2 className="text-lg font-semibold mb-2">Reviews</h2>
+            <p className="text-white/70">Add, edit, or delete customer testimonials.</p>
           </div>
 
           {/* Analytics Card */}

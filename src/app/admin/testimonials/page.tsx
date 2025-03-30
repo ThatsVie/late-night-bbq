@@ -62,6 +62,12 @@ export default function ManageTestimonialsPage() {
   return (
     <main className="p-6 bg-zinc-950 min-h-screen text-white">
       <h1 className="text-2xl font-bold text-pink-500 mb-6">Manage Testimonials</h1>
+      <button
+        onClick={() => router.push('/admin')}
+        className="mb-6 text-sm text-white hover:text-pink-400 border border-white/20 px-4 py-2 rounded"
+      >
+        ← Back to Admin Dashboard
+      </button>
 
       {/* Form */}
       <div className="grid sm:grid-cols-2 gap-4 mb-10">
@@ -118,12 +124,7 @@ export default function ManageTestimonialsPage() {
         ))}
       </ul>
 
-      <button
-        onClick={() => router.push('/admin')}
-        className="mt-10 text-sm text-white hover:text-pink-400 border border-white/20 px-4 py-2 rounded"
-      >
-        ← Back to Admin Dashboard
-      </button>
+      
     </main>
   )
 }

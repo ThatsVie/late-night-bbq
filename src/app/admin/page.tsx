@@ -42,20 +42,17 @@ export default function AdminDashboard() {
           <a href="/admin/banner" className="block hover:text-pink-400">
             Switch Homepage Banner
           </a>
+          <a href="/admin/about" className="block hover:text-pink-400">
+            Edit About Page
+          </a>
           <a href="/admin/menu" className="block hover:text-pink-400">
-            Manage Menu (Food)
+            Manage Menu
           </a>
           <a href="#" className="block hover:text-pink-400">
             Manage Merch
           </a>
-          <a href="#" className="block hover:text-pink-400">
-            Edit About Page
-          </a>
           <a href="/admin/testimonials" className="block hover:text-pink-400">
-            Manage Reviews
-          </a>
-          <a href="#" className="block hover:text-pink-400">
-            Photo Uploads
+            Manage Testimonials
           </a>
           <a href="#" className="block hover:text-pink-400">
             View Site Metrics
@@ -78,18 +75,6 @@ export default function AdminDashboard() {
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* Menu Card */}
-          <div
-            onClick={() => router.push('/admin/menu')}
-            onKeyDown={(e) => e.key === 'Enter' && router.push('/admin/menu')}
-            tabIndex={0}
-            role="button"
-            className="bg-black p-6 rounded-lg border border-white/10 hover:border-pink-500 hover:shadow-pink-500/10 cursor-pointer transition outline-none focus:ring-2 focus:ring-pink-500"
-          >
-            <h2 className="text-lg font-semibold mb-2">Menu</h2>
-            <p className="text-white/70">Update food items and their descriptions.</p>
-          </div>
-
           {/* Banner Card */}
           <div
             onClick={() => router.push('/admin/banner')}
@@ -99,10 +84,45 @@ export default function AdminDashboard() {
             className="bg-black p-6 rounded-lg border border-white/10 hover:border-pink-500 hover:shadow-pink-500/10 cursor-pointer transition outline-none focus:ring-2 focus:ring-pink-500"
           >
             <h2 className="text-lg font-semibold mb-2">Banner</h2>
-            <p className="text-white/70">Customize the homepage banner message or CTA.</p>
+            <p className="text-white/70">
+              Customize the homepage banner message and/or Call To Action.
+            </p>
           </div>
 
-          {/* Reviews Card */}
+          {/* About Card */}
+          <div
+            onClick={() => router.push('/admin/about')}
+            onKeyDown={(e) => e.key === 'Enter' && router.push('/admin/about')}
+            tabIndex={0}
+            role="button"
+            className="bg-black p-6 rounded-lg border border-white/10 hover:border-pink-500 hover:shadow-pink-500/10 cursor-pointer transition outline-none focus:ring-2 focus:ring-pink-500"
+          >
+            <h2 className="text-lg font-semibold mb-2">About</h2>
+            <p className="text-white/70">Edit the Pitmaster story and image on the About page.</p>
+          </div>
+
+          {/* Menu Card */}
+          <div
+            onClick={() => router.push('/admin/menu')}
+            onKeyDown={(e) => e.key === 'Enter' && router.push('/admin/menu')}
+            tabIndex={0}
+            role="button"
+            className="bg-black p-6 rounded-lg border border-white/10 hover:border-pink-500 hover:shadow-pink-500/10 cursor-pointer transition outline-none focus:ring-2 focus:ring-pink-500"
+          >
+            <h2 className="text-lg font-semibold mb-2">Menu</h2>
+            <p className="text-white/70">Update food items, their descriptions, and images.</p>
+          </div>
+
+          {/* Merch Placeholder Card */}
+          <div
+            className="bg-black p-6 rounded-lg border border-white/10 hover:border-pink-500 hover:shadow-pink-500/10 cursor-pointer transition outline-none focus:ring-2 focus:ring-pink-500"
+            title="Coming Soon"
+          >
+            <h2 className="text-lg font-semibold mb-2">Merch</h2>
+            <p className="text-white/70">Manage products in the merch store (coming soon).</p>
+          </div>
+
+          {/* Testimonials Card */}
           <div
             onClick={() => router.push('/admin/testimonials')}
             onKeyDown={(e) => e.key === 'Enter' && router.push('/admin/testimonials')}
@@ -110,11 +130,11 @@ export default function AdminDashboard() {
             role="button"
             className="bg-black p-6 rounded-lg border border-white/10 hover:border-pink-500 hover:shadow-pink-500/10 cursor-pointer transition outline-none focus:ring-2 focus:ring-pink-500"
           >
-            <h2 className="text-lg font-semibold mb-2">Reviews</h2>
+            <h2 className="text-lg font-semibold mb-2">Testimonials</h2>
             <p className="text-white/70">Add, edit, or delete customer testimonials.</p>
           </div>
 
-          {/* Analytics Card */}
+          {/* Analytics Placeholder Card */}
           <div
             className="bg-black p-6 rounded-lg border border-white/10 hover:border-pink-500 hover:shadow-pink-500/10 cursor-pointer transition"
             role="button"

@@ -44,14 +44,12 @@
   },
 
   "about": {
-    "title": "Nuestra Historia",
-    "intro": "Comenzamos con asados en el patio y una pasión por alimentar a los nuestros. Así nació Late Night BBQ.",
-    "story": {
-      "p1": "Late Night BBQ nació del amor entre dos personas que simplemente disfrutaban cocinar y compartir. Todo empezó con costillas y brisket para la familia y vecinos en noches tranquilas.",
-      "p2": "Sin local ni publicidad, el boca a boca hizo su magia. Nos llamaban para celebraciones, baby showers y fines de semana 'porque sí'. Cada entrega llegaba con una sonrisa y mucho cariño.",
-      "p3": "Hoy estamos felices de compartir nuestra barbacoa con más gente en Houston,  hecha como siempre: lenta, suave y con el corazón."
-    },
-    "quote": "La comida es nuestra manera de dar amor."
+    "pitmasterTitle": "Sobre el Pitmaster",
+    "devsTitle": "Sobre las Desarrolladoras del Sitio Web",
+    "vieQuote": "Lo que no podemos imaginar no puede existir. — bell hooks ✨",
+    "courtneyBio": "Ingeniera de software, profesora, formadora, y aprendiz de por vida.",
+    "starleeBio": "Ingeniera de software.",
+    "viewPortfolio": "Ver portafolio"
   },
 
   "menuPage": {

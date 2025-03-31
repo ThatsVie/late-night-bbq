@@ -44,14 +44,12 @@
   },
 
   "about": {
-    "title": "Our Story",
-    "intro": "We started with backyard cookouts and a passion for feeding our people. Here's how Late Night BBQ was born.",
-    "story": {
-      "p1": "Late Night BBQ began as a labor of love between two people who simply loved to cook and connect. What started with late-night ribs and brisket for family and neighbors grew into something bigger.",
-      "p2": "Without a storefront or marketing, word of mouth spread. Orders came in for celebrations, baby showers, and 'just because' weekends. Every delivery came with a side of joy and connection.",
-      "p3": "Now, we’re excited to share our BBQ with more of Houston, still made the same way: slow, tender, and from the heart."
-    },
-    "quote": "Food is how we love on people."
+    "pitmasterTitle": "About the Pitmaster",
+    "devsTitle": "About the Website Developers",
+    "vieQuote": "What we cannot imagine cannot come into being. — bell hooks ✨",
+    "courtneyBio": "Software Engineer, Teacher, Trainer, Life-long learner.",
+    "starleeBio": "Software Engineer.",
+    "viewPortfolio": "View Portfolio"
   },
 
   "menuPage": {

@@ -2,52 +2,85 @@
 
 import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
+import { fetchAboutContent } from '@/utils/aboutService'
+import Image from 'next/image'
 
 export default function AboutPage() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const [mounted, setMounted] = useState(false)
+  const [content, setContent] = useState('')
+  const [imageUrl, setImageUrl] = useState('')
 
   useEffect(() => {
     setMounted(true)
-  }, [])
+
+    const fetchContent = async () => {
+      const data = await fetchAboutContent(i18n.language as 'en' | 'es')
+      if (data) {
+        setContent(data.content)
+        setImageUrl(data.activeImage || data.imageUrl)
+      }
+    }
+
+    fetchContent()
+  }, [i18n.language])
 
   if (!mounted) return null
 
   return (
     <main className="bg-black text-white min-h-screen px-6 py-20" id="main-content">
-      {/* Title + Intro */}
-      <section className="text-center mb-16" aria-labelledby="about-heading" role="region">
-        <h1 id="about-heading" className="text-4xl font-bold text-pink-500 mb-4">
-          {t('about.title')}
+      {/* About the Pitmaster */}
+      <section className="text-center mb-16" aria-labelledby="pitmaster-heading" role="region">
+        <h1 id="pitmaster-heading" className="text-4xl font-bold text-pink-500 mb-6">
+          {t('about.pitmasterTitle')}
         </h1>
-        <p className="text-white/80 max-w-2xl mx-auto">{t('about.intro')}</p>
+        {imageUrl && (
+          <div className="mx-auto mb-6 w-60 h-60 sm:w-80 sm:h-80 md:w-96 md:h-96 relative rounded overflow-hidden border border-white/20 shadow-lg">
+            <Image
+              src={imageUrl}
+              alt={t('about.pitmasterTitle')}
+              fill
+              className="object-cover"
+              sizes="(max-width: 640px) 15rem, (max-width: 768px) 20rem, 24rem"
+              priority
+            />
+          </div>
+        )}
+        <p className="text-white/80 max-w-2xl mx-auto px-4">{content}</p>
       </section>
 
-      {/* Story Section */}
+      {/* About the Website Developers */}
       <section
-        className="max-w-3xl mx-auto space-y-8 text-lg text-white/90"
-        aria-labelledby="story-section"
+        className="max-w-4xl mx-auto space-y-12 text-lg text-white/90"
+        aria-labelledby="devs-section"
         role="region"
       >
-        <h2 id="story-section" className="sr-only">
-          {t('about.title')}
+        <h2 id="devs-section" className="text-2xl font-bold text-pink-400 mb-8 text-center">
+          {t('about.devsTitle')}
         </h2>
-        <p>{t('about.story.p1')}</p>
-        <p>{t('about.story.p2')}</p>
-        <p>{t('about.story.p3')}</p>
-      </section>
 
-      {/* Quote or Mission */}
-      <section className="mt-16 text-center" aria-labelledby="quote-section" role="region">
-        <h2 id="quote-section" className="sr-only">
-          Quote
-        </h2>
-        <blockquote
-          className="text-pink-400 italic text-xl max-w-xl mx-auto border-l-4 border-pink-500 pl-4"
-          aria-label="Mission quote"
-        >
-          {t('about.quote')}
-        </blockquote>
+        <div className="space-y-4">
+          <h3 className="text-xl font-semibold text-pink-300">Vie P.</h3>
+          <p>&ldquo;{t('about.vieQuote')}&rdquo;</p>
+          <a
+            href="https://whatdoyouknowaboutlove.com/viep"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-pink-400 underline text-sm"
+          >
+            {t('about.viewPortfolio')}
+          </a>
+        </div>
+
+        <div className="space-y-2">
+          <h3 className="text-xl font-semibold text-pink-300">Courtney G.</h3>
+          <p>{t('about.courtneyBio')}</p>
+        </div>
+
+        <div className="space-y-2">
+          <h3 className="text-xl font-semibold text-pink-300">Starlee J.</h3>
+          <p>{t('about.starleeBio')}</p>
+        </div>
       </section>
     </main>
   )

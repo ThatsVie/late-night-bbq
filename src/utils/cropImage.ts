@@ -1,9 +1,6 @@
 import { Area } from 'react-easy-crop'
 
-export async function getCroppedImg(
-  imageSrc: string,
-  pixelCrop: Area
-): Promise<Blob | null> {
+export async function getCroppedImg(imageSrc: string, pixelCrop: Area): Promise<Blob | null> {
   const image = await createImage(imageSrc)
   const canvas = document.createElement('canvas')
   canvas.width = pixelCrop.width

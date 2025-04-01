@@ -59,24 +59,7 @@
 
   "merchPage": {
     "title": "Merch",
-    "description": "Coming soon. Limited-edition gear and gifts!",
-    "items": {
-      "shirt": {
-        "name": "Late Night BBQ Tee",
-        "desc": "Soft cotton tee with neon pink logo",
-        "status": "Coming Soon"
-      },
-      "sauce": {
-        "name": "House BBQ Sauce",
-        "desc": "Small batch smoky-sweet sauce",
-        "status": "Sold Out"
-      },
-      "gift": {
-        "name": "Gift Card",
-        "desc": "Give the gift of smoky goodness",
-        "status": "Available Soon"
-      }
-    }
+    "description": "Limited-edition gear and gifts!"
   },
 
   "testimonials": {

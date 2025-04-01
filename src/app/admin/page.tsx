@@ -48,7 +48,7 @@ export default function AdminDashboard() {
           <a href="/admin/menu" className="block hover:text-pink-400">
             Manage Menu
           </a>
-          <a href="#" className="block hover:text-pink-400">
+          <a href="/admin/merch" className="block hover:text-pink-400">
             Manage Merch
           </a>
           <a href="/admin/testimonials" className="block hover:text-pink-400">
@@ -113,13 +113,16 @@ export default function AdminDashboard() {
             <p className="text-white/70">Update food items, their descriptions, and images.</p>
           </div>
 
-          {/* Merch Placeholder Card */}
+          {/* Merch Card */}
           <div
+            onClick={() => router.push('/admin/merch')}
+            onKeyDown={(e) => e.key === 'Enter' && router.push('/admin/merch')}
+            tabIndex={0}
+            role="button"
             className="bg-black p-6 rounded-lg border border-white/10 hover:border-pink-500 hover:shadow-pink-500/10 cursor-pointer transition outline-none focus:ring-2 focus:ring-pink-500"
-            title="Coming Soon"
           >
             <h2 className="text-lg font-semibold mb-2">Merch</h2>
-            <p className="text-white/70">Manage products in the merch store (coming soon).</p>
+            <p className="text-white/70">Manage products in the merch store.</p>
           </div>
 
           {/* Testimonials Card */}

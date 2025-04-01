@@ -59,24 +59,7 @@
 
   "merchPage": {
     "title": "Tienda",
-    "description": "Próximamente. Artículos y regalos de edición limitada.",
-    "items": {
-      "shirt": {
-        "name": "Camiseta de Late Night BBQ",
-        "desc": "Camiseta de algodón suave con el logo en rosa neón",
-        "status": "Próximamente"
-      },
-      "sauce": {
-        "name": "Salsa BBQ de la Casa",
-        "desc": "Salsa artesanal dulce y ahumada",
-        "status": "Agotado"
-      },
-      "gift": {
-        "name": "Tarjeta de Regalo",
-        "desc": "Regala el sabor de la barbacoa",
-        "status": "Disponible Pronto"
-      }
-    }
+    "description": "Artículos y regalos de edición limitada."
   },
 
   "testimonials": {

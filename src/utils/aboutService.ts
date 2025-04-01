@@ -15,7 +15,7 @@ export async function fetchAboutContent(locale: 'en' | 'es'): Promise<AboutConte
   const data = snap.data()
   return {
     content: data?.[locale]?.content || '',
-    imageUrl: data?.imageUrl || '', 
+    imageUrl: data?.imageUrl || '',
     images: data?.images || [],
     activeImage: data?.activeImage || '',
   }

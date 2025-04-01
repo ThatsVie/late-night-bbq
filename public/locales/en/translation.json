@@ -54,7 +54,12 @@
 
   "menuPage": {
     "title": "Menu",
-    "description": "Our small but mighty rotating menu. Subject to availability!"
+    "description": "Our small but mighty rotating menu. Subject to availability!",
+    "categories": {
+      "BBQ Meats": "BBQ Meats",
+      "Sides": "Sides",
+      "Fixins": "Fixins"
+    }
   },
 
   "merchPage": {

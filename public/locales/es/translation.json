@@ -54,7 +54,12 @@
 
   "menuPage": {
     "title": "Menú",
-    "description": "Nuestro menú rotativo es pequeño pero poderoso. ¡Sujeto a disponibilidad!"
+    "description": "Nuestro menú rotativo es pequeño pero poderoso. ¡Sujeto a disponibilidad!",
+    "categories": {
+      "BBQ Meats": "Carnes BBQ",
+      "Sides": "Acompañamientos",
+      "Fixins": "Complementos"
+    }
   },
 
   "merchPage": {

@@ -2,21 +2,15 @@
 
 import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
-import { fetchMenuItems } from '@/utils/menuService'
+import { fetchMenuItems, MenuItemData, MenuCategory } from '@/utils/menuService'
 import Image from 'next/image'
+
+const CATEGORIES: MenuCategory[] = ['BBQ Meats', 'Sides', 'Fixins']
 
 export default function MenuPage() {
   const { t, i18n } = useTranslation()
   const [mounted, setMounted] = useState(false)
-  const [items, setItems] = useState<
-    {
-      id: string
-      en: { title: string; description: string }
-      es: { title: string; description: string }
-      images: string[]
-      activeImage: string
-    }[]
-  >([])
+  const [items, setItems] = useState<(MenuItemData & { id: string })[]>([])
 
   useEffect(() => {
     setMounted(true)
@@ -37,27 +31,43 @@ export default function MenuPage() {
         <h1 className="text-4xl font-bold text-pink-500 mb-4">{t('menuPage.title')}</h1>
         <p className="text-white/70 mb-12">{t('menuPage.description')}</p>
 
-        <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-3">
-          {items.map((item) => (
-            <div
-              key={item.id}
-              className="bg-zinc-900 p-6 rounded-xl border border-white/10 hover:border-pink-400 transition-all hover:shadow-lg"
-            >
-              {item.activeImage && (
-                <div className="relative w-full h-48 mb-4">
-                  <Image
-                    src={item.activeImage}
-                    alt={item[lang].title}
-                    fill
-                    className="object-cover rounded"
-                  />
-                </div>
-              )}
-              <h2 className="text-xl font-bold text-pink-400 mb-2">{item[lang].title}</h2>
-              <p className="text-white/80 text-sm mb-3">{item[lang].description}</p>
+        {CATEGORIES.map((category) => {
+          const categoryItems = items
+            .filter((item) => item.category === category)
+            .sort((a, b) => a.order - b.order)
+
+          if (categoryItems.length === 0) return null
+
+          return (
+            <div key={category} className="mb-12 text-left">
+              <h2 className="text-2xl font-bold text-pink-400 mb-6">
+                {t(`menuPage.categories.${category}`)}
+              </h2>
+
+              <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-3">
+                {categoryItems.map((item) => (
+                  <div
+                    key={item.id}
+                    className="bg-zinc-900 p-6 rounded-xl border border-white/10 hover:border-pink-400 transition-all hover:shadow-lg"
+                  >
+                    {item.activeImage && (
+                      <div className="relative w-full h-48 mb-4">
+                        <Image
+                          src={item.activeImage}
+                          alt={item[lang].title}
+                          fill
+                          className="object-cover rounded"
+                        />
+                      </div>
+                    )}
+                    <h3 className="text-xl font-bold text-pink-400 mb-2">{item[lang].title}</h3>
+                    <p className="text-white/80 text-sm mb-3">{item[lang].description}</p>
+                  </div>
+                ))}
+              </div>
             </div>
-          ))}
-        </div>
+          )
+        })}
       </section>
     </main>
   )

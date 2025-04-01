@@ -6,6 +6,7 @@ import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import Image from 'next/image'
 import { fetchHomepageBanner } from '@/utils/firebaseService'
+import FacebookEmbed from '@/components/FacebookEmbed'
 
 function AnimatedSection({ id, children }: { id: string; children: React.ReactNode }) {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 })
@@ -116,6 +117,13 @@ export default function Home() {
         >
           {t('cta.button')}
         </a>
+      </AnimatedSection>
+      <AnimatedSection id="facebook">
+        <div className='facebook-embed-container'>
+          <h1 className='text-2xl font-bold text-pink-400 mb-2'>Check our our Facebook!</h1>
+          <p className='text-sm italic mb-4'>Will not load if privacy mode or ad blockers enabled. Click our name below to be redirected to Facebook</p>
+          <FacebookEmbed />
+        </div>
       </AnimatedSection>
     </main>
   )

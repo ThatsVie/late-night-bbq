@@ -1,11 +1,65 @@
 'use client'
 
 import { useTranslation } from 'react-i18next'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
+
 
 export default function ContactPage() {
   const { t } = useTranslation()
   const [mounted, setMounted] = useState(false)
+
+  // state for input fields
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    details: ''
+  })
+
+  const handleChange = (e:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const {name, value} = e.target;
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Submit triggered', formData);
+    // console.log('Form submitted!');
+
+    const incompleteFields = Object.keys(formData).filter((key) => {
+      const typedKey = key as keyof typeof formData;
+      return formData[typedKey].trim() === '';
+    });
+
+
+
+    if (incompleteFields.length > 0) {
+      alert(`Please complete the following fields: ${incompleteFields.join(', ')}`);
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/send', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData),
+    });
+
+    console.log('response from server:', response);
+
+    if (response.ok) {
+      alert('Message sent successfully!');
+    } else {
+      alert('Failed to send message, please double check information and resubmit')
+    }
+  } catch (error) {
+    console.error('error sending message', error);
+    alert('an unexpected error occured');
+  }
+}
 
   useEffect(() => {
     setMounted(true)
@@ -33,7 +87,7 @@ export default function ContactPage() {
           {t('contact.title')}
         </h2>
 
-        <form className="space-y-6" noValidate>
+        <form className="space-y-6" onSubmit={handleSubmit} noValidate>
           <div>
             <label htmlFor="name" className="block mb-2 text-sm">
               {t('contact.fields.name')}
@@ -42,6 +96,8 @@ export default function ContactPage() {
               id="name"
               name="name"
               type="text"
+              value={formData.name}
+              onChange={handleChange}
               placeholder="Jane Doe"
               autoComplete="name"
               className="w-full p-3 rounded bg-black text-white border border-white/10"
@@ -56,6 +112,8 @@ export default function ContactPage() {
               id="email"
               name="email"
               type="email"
+              value={formData.email}
+              onChange={handleChange}
               placeholder="jane@example.com"
               autoComplete="email"
               className="w-full p-3 rounded bg-black text-white border border-white/10"
@@ -70,6 +128,8 @@ export default function ContactPage() {
               id="phone"
               name="phone"
               type="tel"
+              value={formData.phone}
+              onChange={handleChange}
               placeholder="(123) 456-7890"
               autoComplete="tel"
               className="w-full p-3 rounded bg-black text-white border border-white/10"
@@ -84,6 +144,8 @@ export default function ContactPage() {
               id="details"
               name="details"
               rows={4}
+              value={formData.details}
+              onChange={handleChange}
               placeholder={t('contact.placeholders.details')}
               className="w-full p-3 rounded bg-black text-white border border-white/10"
             />
@@ -93,9 +155,8 @@ export default function ContactPage() {
 
           <button
             type="submit"
-            disabled
-            aria-disabled="true"
-            className="w-full mt-6 bg-pink-500 text-black font-semibold py-3 rounded disabled:opacity-50 cursor-not-allowed"
+            className="w-full mt-6 bg-pink-500 text-black font-semibold py-3 rounded hover:bg-pink-700 focus:outline-2 focus:outline-offset-2 focus:outline-pink-700"
+            // disabled={submitDisabled}
           >
             {t('contact.button')}
           </button>

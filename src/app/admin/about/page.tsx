@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
+import CropModal from '@/components/CropModal'
 import {
   fetchAboutContent,
   updateAboutContent,
@@ -20,6 +21,7 @@ export default function ManageAboutPage() {
   const [file, setFile] = useState<File | null>(null)
   const [preview, setPreview] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const [showCropper, setShowCropper] = useState(false)
 
   useEffect(() => {
     const load = async () => {
@@ -36,11 +38,31 @@ export default function ManageAboutPage() {
     if (file) {
       const objectUrl = URL.createObjectURL(file)
       setPreview(objectUrl)
+      setShowCropper(true)
       return () => URL.revokeObjectURL(objectUrl)
     } else {
       setPreview(null)
     }
   }, [file])
+
+  const handleCroppedImage = async (croppedFile: File) => {
+    setLoading(true)
+    try {
+      const croppedUrl = await uploadPitmasterImage(croppedFile)
+      const newImages = [...images, croppedUrl]
+      await updatePitmasterImages(newImages)
+      setImages(newImages)
+      setActiveImage(croppedUrl)
+      setFile(null)
+      setPreview(null)
+    } catch (err) {
+      console.error(err)
+      alert('There was an error saving the cropped image.')
+    } finally {
+      setShowCropper(false)
+      setLoading(false)
+    }
+  }
 
   const handleSave = async () => {
     if (!content.en.trim() || !content.es.trim()) {
@@ -48,30 +70,16 @@ export default function ManageAboutPage() {
       return
     }
 
-    if (!activeImage && !file) {
-      alert('Please upload at least one image of the pitmaster.')
+    if (!activeImage) {
+      alert('Please upload and crop an image of the pitmaster.')
       return
     }
 
     setLoading(true)
 
     try {
-      let uploadedUrl = activeImage
-
-      if (file) {
-        uploadedUrl = await uploadPitmasterImage(file)
-        const newImages = images.includes(uploadedUrl) ? images : [...images, uploadedUrl]
-
-        await updatePitmasterImages(newImages)
-        setImages(newImages)
-        setActiveImage(uploadedUrl)
-      }
-
-      await updateAboutContent('en', content.en, uploadedUrl)
-      await updateAboutContent('es', content.es, uploadedUrl)
-
-      setFile(null)
-      setPreview(null)
+      await updateAboutContent('en', content.en, activeImage)
+      await updateAboutContent('es', content.es, activeImage)
       alert('Pitmaster content successfully updated!')
     } catch (err) {
       console.error(err)
@@ -195,6 +203,18 @@ export default function ManageAboutPage() {
       >
         {loading ? 'Saving...' : 'Save'}
       </button>
+
+      {showCropper && preview && (
+        <CropModal
+          imageSrc={preview}
+          onClose={() => {
+            setShowCropper(false)
+            setFile(null)
+            setPreview(null)
+          }}
+          onCropComplete={handleCroppedImage}
+        />
+      )}
     </main>
   )
 }

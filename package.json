@@ -11,6 +11,7 @@
     "format": "prettier --write ."
   },
   "dependencies": {
+    "@hello-pangea/dnd": "^18.0.1",
     "firebase": "^11.5.0",
     "framer-motion": "^12.5.0",
     "i18next": "^24.2.3",
@@ -20,9 +21,11 @@
     "next": "15.2.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-easy-crop": "^5.4.1",
     "react-i18next": "^15.4.1",
     "react-intersection-observer": "^9.16.0",
     "resend": "^4.2.0"
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

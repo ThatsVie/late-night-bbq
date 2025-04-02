@@ -34,8 +34,10 @@ export default function Home() {
     imageUrl: string
     altText: string
     subtitle: string
-    title: string
+    title?: string
+    shape?: 'square' | 'rect'
   } | null>(null)
+  
 
   useEffect(() => {
     setMounted(true)
@@ -82,18 +84,24 @@ export default function Home() {
         {/* Dynamic Banner Image */}
         {banner && (
           <>
-            <div className="w-[400px] h-[400px] mx-auto border border-white/10 rounded-lg shadow overflow-hidden">
+            <div
+              className={`mx-auto border border-white/10 rounded-lg shadow overflow-hidden ${
+                banner.shape === 'rect'
+                  ? 'w-[600px] h-[300px]'
+                  : 'w-[400px] h-[400px]'
+              }`}
+            >
               <Image
                 src={banner.imageUrl}
                 alt={banner.altText}
-                width={400}
-                height={400}
+                width={banner.shape === 'rect' ? 600 : 400}
+                height={banner.shape === 'rect' ? 300 : 400}
                 className="w-full h-full object-contain"
                 priority
               />
             </div>
 
-            <p className="text-xl max-w-xl text-white/80">{banner.subtitle}</p>
+            <p className="text-xl max-w-xl text-white/80 mt-4">{banner.subtitle}</p>
           </>
         )}
       </motion.section>

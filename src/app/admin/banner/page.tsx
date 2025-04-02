@@ -77,7 +77,9 @@ export default function EditBannerPage() {
 
   const handleDeleteBanner = async (bannerId: string) => {
     if (bannerId === activeBanner) {
-      alert('You cannot delete the currently active banner. Please set another banner as active first.')
+      alert(
+        'You cannot delete the currently active banner. Please set another banner as active first.'
+      )
       return
     }
 

@@ -36,7 +36,6 @@ export default function Home() {
     title?: string
     shape?: 'square' | 'rect'
   } | null>(null)
-  
 
   useEffect(() => {
     setMounted(true)
@@ -85,9 +84,7 @@ export default function Home() {
           <>
             <div
               className={`mx-auto border border-white/10 rounded-lg shadow overflow-hidden ${
-                banner.shape === 'rect'
-                  ? 'w-[600px] h-[300px]'
-                  : 'w-[400px] h-[400px]'
+                banner.shape === 'rect' ? 'w-[600px] h-[300px]' : 'w-[400px] h-[400px]'
               }`}
             >
               <Image

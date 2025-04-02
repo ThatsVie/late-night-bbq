@@ -46,7 +46,8 @@ export default function AboutPage() {
             />
           </div>
         )}
-        <p className="text-white/80 max-w-2xl mx-auto px-4">{content}</p>
+        <p className="text-white font-semibold text-lg mb-2">{t('about.pitmasterName')}</p>
+        <p className="text-white/80 max-w-2xl mx-auto px-4 whitespace-pre-line">{content}</p>
       </section>
 
       {/* About the Website Developers */}

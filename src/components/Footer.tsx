@@ -23,7 +23,11 @@ export default function Footer() {
     <footer className="bg-zinc-950 text-white border-t border-white/10 px-6 py-10 text-sm">
       <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
         {/* Footer text */}
-        <p className="text-white/60">{t('footer.madeWithLove')}</p>
+        <p className="text-white">
+          <Link href="/about#devs-section" className="hover:text-pink-400 transition">
+            {t('footer.madeWithLove')}
+          </Link>
+        </p>
 
         {/* Navigation */}
         <nav
@@ -57,9 +61,9 @@ export default function Footer() {
             aria-label="Toggle language"
             className="border border-white/20 rounded px-3 py-1 text-xs hover:bg-white hover:text-black transition"
           >
-            {i18n.language === 'en' ? 'ES' : 'EN'}
+            {i18n.language === 'en' ? 'Español' : 'English'}
           </button>
-          <span className="text-white/40" aria-hidden="true">
+          <span className="text-white" aria-hidden="true">
             © {new Date().getFullYear()} Late Night BBQ
           </span>
         </div>

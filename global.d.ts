@@ -1,7 +1,7 @@
 declare global {
-    interface Window {
-        FB: any;
-    }
+  interface Window {
+    FB: any
+  }
 }
 
 export {}

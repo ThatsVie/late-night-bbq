@@ -66,7 +66,7 @@ export default function Navbar() {
             aria-label="Toggle language"
             className="ml-2 px-3 py-1 border rounded text-xs hover:bg-white hover:text-black transition"
           >
-            {i18n.language === 'en' ? 'ES' : 'EN'}
+            {i18n.language === 'en' ? 'Español' : 'English'}
           </button>
         </nav>
       </div>
@@ -113,9 +113,9 @@ export default function Navbar() {
               setIsOpen(false)
             }}
             aria-label="Toggle language"
-            className="block w-full text-left px-2 py-1 border rounded text-xs hover:bg-white hover:text-black transition"
+            className="inline-block px-3 py-1 border rounded text-xs hover:bg-white hover:text-black transition"
           >
-            {i18n.language === 'en' ? 'ES' : 'EN'}
+            {i18n.language === 'en' ? 'Español' : 'English'}
           </button>
         </nav>
       )}

@@ -1,15 +1,19 @@
 'use client'
 
 import { useTranslation } from 'react-i18next'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { fetchAboutContent } from '@/utils/aboutService'
 import Image from 'next/image'
+import { usePathname } from 'next/navigation'
 
 export default function AboutPage() {
   const { t, i18n } = useTranslation()
   const [mounted, setMounted] = useState(false)
   const [content, setContent] = useState('')
   const [imageUrl, setImageUrl] = useState('')
+
+  const devsSectionRef = useRef<HTMLElement>(null)
+  const pathname = usePathname()
 
   useEffect(() => {
     setMounted(true)
@@ -24,6 +28,18 @@ export default function AboutPage() {
 
     fetchContent()
   }, [i18n.language])
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && mounted) {
+      const hash = window.location.hash
+
+      if (hash === '#devs-section' && devsSectionRef.current) {
+        setTimeout(() => {
+          devsSectionRef.current?.scrollIntoView({ behavior: 'smooth' })
+        }, 150) // wait for hydration
+      }
+    }
+  }, [mounted, pathname])
 
   if (!mounted) return null
 
@@ -52,11 +68,13 @@ export default function AboutPage() {
 
       {/* About the Website Developers */}
       <section
-        className="max-w-4xl mx-auto space-y-12 text-lg text-white/90"
+        id="devs-section"
+        ref={devsSectionRef}
+        className="scroll-mt-24 max-w-4xl mx-auto space-y-12 text-lg text-white/90"
         aria-labelledby="devs-section"
         role="region"
       >
-        <h2 id="devs-section" className="text-2xl font-bold text-pink-400 mb-8 text-center">
+        <h2 className="text-2xl font-bold text-pink-400 mb-8 text-center">
           {t('about.devsTitle')}
         </h2>
 
@@ -76,11 +94,27 @@ export default function AboutPage() {
         <div className="space-y-2">
           <h3 className="text-xl font-semibold text-pink-300">Courtney G.</h3>
           <p>{t('about.courtneyBio')}</p>
+          <a
+            href="https://whatdoyouknowaboutlove.com/viep"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-pink-400 underline text-sm"
+          >
+            {t('about.viewPortfolio')}
+          </a>
         </div>
 
         <div className="space-y-2">
           <h3 className="text-xl font-semibold text-pink-300">Starlee J.</h3>
           <p>{t('about.starleeBio')}</p>
+          <a
+            href="https://whatdoyouknowaboutlove.com/viep"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-pink-400 underline text-sm"
+          >
+            {t('about.viewPortfolio')}
+          </a>
         </div>
       </section>
     </main>

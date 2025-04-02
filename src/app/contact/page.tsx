@@ -3,7 +3,6 @@
 import { useTranslation } from 'react-i18next'
 import React, { useEffect, useState } from 'react'
 
-
 export default function ContactPage() {
   const { t } = useTranslation()
   const [mounted, setMounted] = useState(false)
@@ -13,53 +12,51 @@ export default function ContactPage() {
     name: '',
     email: '',
     phone: '',
-    details: ''
+    details: '',
   })
 
-  const handleChange = (e:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const {name, value} = e.target;
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target
     setFormData({
       ...formData,
-      [name]: value
-    });
+      [name]: value,
+    })
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('Submit triggered', formData);
+    e.preventDefault()
+    console.log('Submit triggered', formData)
     // console.log('Form submitted!');
 
     const incompleteFields = Object.keys(formData).filter((key) => {
-      const typedKey = key as keyof typeof formData;
-      return formData[typedKey].trim() === '';
-    });
-
-
+      const typedKey = key as keyof typeof formData
+      return formData[typedKey].trim() === ''
+    })
 
     if (incompleteFields.length > 0) {
-      alert(`Please complete the following fields: ${incompleteFields.join(', ')}`);
-      return;
+      alert(`Please complete the following fields: ${incompleteFields.join(', ')}`)
+      return
     }
 
     try {
       const response = await fetch('/api/send', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData),
-    });
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      })
 
-    console.log('response from server:', response);
+      console.log('response from server:', response)
 
-    if (response.ok) {
-      alert('Message sent successfully!');
-    } else {
-      alert('Failed to send message, please double check information and resubmit')
+      if (response.ok) {
+        alert('Message sent successfully!')
+      } else {
+        alert('Failed to send message, please double check information and resubmit')
+      }
+    } catch (error) {
+      console.error('error sending message', error)
+      alert('an unexpected error occured')
     }
-  } catch (error) {
-    console.error('error sending message', error);
-    alert('an unexpected error occured');
   }
-}
 
   useEffect(() => {
     setMounted(true)

@@ -2,15 +2,22 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 import { db } from '@/firebase/config'
 import { collection, setDoc, doc } from 'firebase/firestore'
 import { uploadBannerImage } from '@/utils/uploadBannerImage'
+import CropModal from '@/components/CropModal'
+import CropRectModal from '@/components/CropRectModal'
 
 export default function UploadBannerPage() {
   const router = useRouter()
-
   const [file, setFile] = useState<File | null>(null)
+  const [preview, setPreview] = useState<string | null>(null)
+  const [croppedFile, setCroppedFile] = useState<File | null>(null)
+  const [showCropModal, setShowCropModal] = useState(false)
+  const [cropMode, setCropMode] = useState<'square' | 'rect'>('square')
   const [uploaded, setUploaded] = useState(false)
+
   const [formData, setFormData] = useState({
     id: '',
     en: { title: '', subtitle: '', altText: '' },
@@ -24,17 +31,44 @@ export default function UploadBannerPage() {
     }))
   }
 
+  const handleFileChange = (incomingFile: File | null) => {
+    if (!incomingFile) return
+    const objectUrl = URL.createObjectURL(incomingFile)
+    setFile(incomingFile)
+    setPreview(objectUrl)
+    setShowCropModal(true)
+  }
+
+  const handleCropComplete = (cropped: File) => {
+    const objectUrl = URL.createObjectURL(cropped)
+    setCroppedFile(cropped)
+    setPreview(objectUrl)
+    setShowCropModal(false)
+  }
+
   const handleUpload = async () => {
-    if (!file || !formData.id) {
-      alert('Please select an image and provide a banner ID')
+    if (!croppedFile || !formData.id) {
+      alert('Please crop an image and provide a Banner ID.')
       return
     }
 
-    const imageUrl = await uploadBannerImage(file)
+    const isMissingField =
+      !formData.en.subtitle ||
+      !formData.es.subtitle ||
+      !formData.en.altText ||
+      !formData.es.altText
+
+    if (isMissingField) {
+      alert('Please fill out all required text fields.')
+      return
+    }
+
+    const imageUrl = await uploadBannerImage(croppedFile)
 
     const bannerDoc = {
       en: { ...formData.en, imageUrl },
       es: { ...formData.es, imageUrl },
+      shape: cropMode,
     }
 
     await setDoc(doc(collection(db, 'banners'), formData.id), bannerDoc)
@@ -56,20 +90,6 @@ export default function UploadBannerPage() {
         <div className="text-center mt-10">
           <p className="text-green-400 font-semibold mb-4">Banner uploaded successfully!</p>
           <p className="text-white/80 mb-6">You can now activate it from the Banner page.</p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button
-              onClick={() => router.push('/admin/banner')}
-              className="bg-pink-500 hover:bg-pink-600 text-black px-6 py-2 rounded font-bold"
-            >
-              Go to Banners
-            </button>
-            <button
-              onClick={() => router.push('/admin')}
-              className="bg-white/10 hover:bg-white/20 text-white px-6 py-2 rounded font-bold"
-            >
-              Back to Admin Dashboard
-            </button>
-          </div>
         </div>
       ) : (
         <>
@@ -85,16 +105,56 @@ export default function UploadBannerPage() {
             onChange={(e) => setFormData((prev) => ({ ...prev, id: e.target.value }))}
           />
 
-          <label className="block mb-2 font-semibold text-white">
-            Upload Image File{' '}
-            <span className="text-white/60 text-sm">(JPG/PNG, 1024x1024 recommended)</span>
-          </label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => setFile(e.target.files?.[0] || null)}
-            className="mb-6 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-pink-500 file:text-black hover:file:bg-pink-600"
-          />
+          <div className="mb-6">
+            <label className="block mb-2 font-semibold text-white">
+              Upload Image File{' '}
+              <span className="text-white/60 text-sm">(JPG/PNG)</span>
+            </label>
+            <div className="flex items-center gap-4 mb-4">
+              <label className="text-sm">
+                <input
+                  type="radio"
+                  name="cropMode"
+                  value="square"
+                  checked={cropMode === 'square'}
+                  onChange={() => setCropMode('square')}
+                  className="mr-2"
+                />
+                Square
+              </label>
+              <label className="text-sm">
+                <input
+                  type="radio"
+                  name="cropMode"
+                  value="rect"
+                  checked={cropMode === 'rect'}
+                  onChange={() => setCropMode('rect')}
+                  className="mr-2"
+                />
+                Rectangle
+              </label>
+            </div>
+
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => handleFileChange(e.target.files?.[0] || null)}
+              className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-pink-500 file:text-black hover:file:bg-pink-600"
+            />
+          </div>
+
+          {preview && (
+            <div className="mb-6">
+              <p className="text-white/70 text-sm mb-2">Cropped Preview:</p>
+              <Image
+                src={preview}
+                alt="Preview"
+                width={400}
+                height={400}
+                className="rounded border border-white/10 object-contain"
+              />
+            </div>
+          )}
 
           {['en', 'es'].map((lang) => (
             <div key={lang} className="mb-6">
@@ -129,6 +189,28 @@ export default function UploadBannerPage() {
             Upload Banner
           </button>
         </>
+      )}
+
+      {showCropModal && preview && file && (
+        cropMode === 'square' ? (
+          <CropModal
+            imageSrc={preview}
+            onClose={() => {
+              setShowCropModal(false)
+              URL.revokeObjectURL(preview)
+            }}
+            onCropComplete={handleCropComplete}
+          />
+        ) : (
+          <CropRectModal
+            imageSrc={preview}
+            onClose={() => {
+              setShowCropModal(false)
+              URL.revokeObjectURL(preview)
+            }}
+            onCropComplete={handleCropComplete}
+          />
+        )
       )}
     </main>
   )

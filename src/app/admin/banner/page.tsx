@@ -57,6 +57,17 @@ export default function EditBannerPage() {
     fetchData()
   }, [])
 
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (!activeBanner) {
+        e.preventDefault()
+        e.returnValue = 'You must select an active banner before leaving.'
+      }
+    }
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload)
+  }, [activeBanner])
+
   const handleBannerChange = async (newBanner: string) => {
     await updateDoc(doc(db, 'homepage', 'settings'), {
       activeBanner: newBanner,
@@ -65,18 +76,16 @@ export default function EditBannerPage() {
   }
 
   const handleDeleteBanner = async (bannerId: string) => {
+    if (bannerId === activeBanner) {
+      alert('You cannot delete the currently active banner. Please set another banner as active first.')
+      return
+    }
+
     const confirmed = window.confirm(`Delete banner "${bannerId}"? This cannot be undone.`)
     if (!confirmed) return
 
     await deleteDoc(doc(db, 'banners', bannerId))
     setBanners((prev) => prev.filter((b) => b.id !== bannerId))
-
-    if (activeBanner === bannerId) {
-      await updateDoc(doc(db, 'homepage', 'settings'), {
-        activeBanner: '',
-      })
-      setActiveBanner('')
-    }
   }
 
   const handleEditToggle = (id: string) => {
@@ -122,8 +131,19 @@ export default function EditBannerPage() {
       <h1 className="text-2xl font-bold text-pink-500 mb-6">Select Active Homepage Banner</h1>
 
       <button
-        onClick={() => router.push('/admin')}
-        className="mb-6 text-sm text-white hover:text-pink-400 border border-white/20 px-4 py-2 rounded"
+        onClick={() => {
+          if (!activeBanner) {
+            alert('Please select an active banner before leaving this page.')
+            return
+          }
+          router.push('/admin')
+        }}
+        disabled={!activeBanner}
+        className={`mb-6 text-sm px-4 py-2 rounded border border-white/20 ${
+          !activeBanner
+            ? 'bg-white/10 text-white/40 cursor-not-allowed'
+            : 'text-white hover:text-pink-400'
+        }`}
       >
         ← Back to Admin Dashboard
       </button>

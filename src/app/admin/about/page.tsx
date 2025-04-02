@@ -183,6 +183,9 @@ export default function ManageAboutPage() {
             <label className="block mb-2 text-white/80 font-medium">
               About Content ({lang === 'en' ? 'English' : 'Spanish'})
             </label>
+            <p className="text-white/50 text-xs mb-2">
+              Press Enter to add line breaks and format paragraphs.
+            </p>
             <textarea
               className="w-full p-3 bg-zinc-900 border border-white/20 rounded"
               rows={6}

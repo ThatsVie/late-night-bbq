@@ -29,10 +29,10 @@ export default function TestimonialsPage() {
   return (
     <main className="bg-black text-white min-h-screen px-6 py-20" id="main-content">
       <section className="text-center mb-12" aria-labelledby="testimonials-heading" role="region">
-        <h1 id="testimonials-heading" className="text-4xl font-bold text-pink-500 mb-4">
+        <h1 id="testimonials-heading" className="text-5xl font-bold pinkText neon-text tilt-neon-font mb-4">
           {t('testimonials.title')}
         </h1>
-        <p className="text-white/80 max-w-2xl mx-auto">{t('testimonials.intro')}</p>
+        <p className="pinkText tilt-neon-font max-w-2xl mx-auto">{t('testimonials.intro')}</p>
       </section>
 
       <section className="max-w-4xl mx-auto space-y-8" aria-label="Customer testimonials">

@@ -27,7 +27,7 @@ export default function MerchPage() {
   return (
     <main className="bg-black text-white min-h-screen px-6 py-20">
       <section className="max-w-5xl mx-auto text-center">
-        <h1 className="text-4xl font-bold text-pink-500 mb-4">{t('merchPage.title')}</h1>
+        <h1 className="text-5xl font-bold pinkText neon-text tilt-neon-font mb-4">{t('merchPage.title')}</h1>
         <p className="text-white/70 mb-12">{t('merchPage.description')}</p>
 
         <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-3">
@@ -46,7 +46,7 @@ export default function MerchPage() {
                   />
                 </div>
               )}
-              <h2 className="text-xl font-bold text-pink-400 mb-2">{item[lang].title}</h2>
+              <h2 className="text-xl font-bold pinkText mb-2">{item[lang].title}</h2>
               <p className="text-white/80 text-sm">{item[lang].description}</p>
             </div>
           ))}

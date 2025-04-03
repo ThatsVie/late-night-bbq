@@ -4,6 +4,11 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  --pink-light-text: #E66590;
+  --pink-dark-text: rgb(192, 32, 144);
+  --pink-light-bg: #E66590;
+  --pink-dark-bg: rgb(192, 32, 144);
 }
 
 @theme inline {
@@ -39,29 +44,109 @@ body {
 @keyframes neonGlow {
   0% {
     text-shadow:
-      0 0 3px #ff00ff,
-      0 0 8px #ff00ff,
-      0 0 10px #ff00ff,
-      0 0 15px #ff00ff;
+      0 0 3px #E66590,
+      0 0 8px #E66590,
+      0 0 10px #E66590,
+      0 0 15px #E66590;
     text-color: black;
   }
   50% {
     text-shadow:
-      0 0 5px #ff66ff,
-      0 0 10px #ff66ff,
-      0 0 20px #ff66ff,
-      0 0 22px #ff66ff;
+      0 0 5px #E66590,
+      0 0 10px #E66590,
+      0 0 20px #E66590,
+      0 0 22px #E66590;
   }
   100% {
     text-shadow:
-      0 0 3px #ff00ff,
-      0 0 8px #ff00ff,
-      0 0 10px #ff00ff,
-      0 0 15px #ff00ff;
+      0 0 3px #E66590,
+      0 0 8px #E66590,
+      0 0 10px #E66590,
+      0 0 15px #E66590;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 }
 
 .neon-text {
-  color: #ff00ff;
+  color: #E66590;
   animation: neonGlow 0.5s ease-in-out infinite alternate;
+}
+
+.pinkText {
+  color: var(--pink-light-text);
+}
+
+.darkText {
+  color: var(--pink-dark-text);
+}
+
+.bgPink {
+  background-color: var(--pink-light-bg);
+}
+
+.bgDark {
+  background-color: var(--pink-dark-bg);
+}
+
+button:hover {
+  background-color: var(--pink-dark-bg);
+}
+
+.alert {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  min-width: 300px;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  position: fixed;
+  bottom: 8rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1rem;
+  font-weight: 700;
+  z-index: 1000;
+  opacity: 0;
+  animation: fadeIn 0.5s forwards;
+}
+
+
+.alert.success {
+  background-color: #E66590;
+  color: #171717;
+}
+
+.alert.warning {
+  background-color: #ef9400;
+  color:rgb(2, 2, 2);
+}
+
+.alert.error {
+  background-color: #ec4d2b;
+  color:rgb(14, 13, 13);
+}
+
+.alert .close {
+  background-color: transparent;
+  transition: all 0.2s ease-in-out;
+  padding: 0.5rem;
+  border-radius: 50%;
+  cursor: pointer;
+  color:rgb(67, 66, 66);
+  font-size: 1.25rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.alert .close:hover {
+  background-color: rgb(192, 32, 144);
 }

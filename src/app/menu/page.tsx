@@ -28,7 +28,7 @@ export default function MenuPage() {
   return (
     <main className="bg-black text-white min-h-screen px-6 py-20">
       <section className="max-w-5xl mx-auto text-center">
-        <h1 className="text-4xl font-bold text-pink-500 mb-4">{t('menuPage.title')}</h1>
+        <h1 className="text-5xl font-bold pinkText neon-text tilt-neon-font mb-4">{t('menuPage.title')}</h1>
         <p className="text-white/70 mb-12">{t('menuPage.description')}</p>
 
         {CATEGORIES.map((category) => {
@@ -40,7 +40,7 @@ export default function MenuPage() {
 
           return (
             <div key={category} className="mb-12 text-left">
-              <h2 className="text-2xl font-bold text-pink-400 mb-6">
+              <h2 className="text-2xl font-bold pinkText mb-6">
                 {t(`menuPage.categories.${category}`)}
               </h2>
 
@@ -60,7 +60,7 @@ export default function MenuPage() {
                         />
                       </div>
                     )}
-                    <h3 className="text-xl font-bold text-pink-400 mb-2">{item[lang].title}</h3>
+                    <h3 className="text-xl font-bold pinkText mb-2">{item[lang].title}</h3>
                     <p className="text-white/80 text-sm mb-3">{item[lang].description}</p>
                   </div>
                 ))}

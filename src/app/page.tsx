@@ -105,31 +105,30 @@ export default function Home() {
 
       {/* Sections */}
       <AnimatedSection id="how">
-        <h2 id="how-heading" className="text-3xl font-bold text-pink-400 mb-6">
+        <h2 id="how-heading" className="text-3xl tilt-neon-font font-bold pinkText mb-6">
           {t('howItWorks.title')}
         </h2>
         <p className="text-white/80 max-w-2xl mx-auto">{t('howItWorks.body')}</p>
       </AnimatedSection>
 
       <AnimatedSection id="cta">
-        <h2 id="cta-heading" className="text-3xl font-bold text-pink-400 mb-6">
+        <h2 id="cta-heading" className="text-3xl tilt-neon-font font-bold pinkText mb-6">
           {t('cta.title')}
         </h2>
         <p className="text-white/80 mb-6">{t('cta.body')}</p>
         <a
           href="/contact"
-          className="inline-block bg-pink-500 hover:bg-pink-600 text-black font-bold py-3 px-6 rounded-full transition focus:outline focus:ring-2 focus:ring-pink-400 shadow-[0_0_10px_#ec4899] animate-pulse"
+          className="inline-block bgPink hover:bgDark text-black font-bold py-3 px-6 rounded-full transition focus:outline focus:ring-2 focus:ring-pinkText shadow-[0_0_10px_#ec4899] animate-pulse"
         >
           {t('cta.button')}
         </a>
       </AnimatedSection>
       <AnimatedSection id="facebook">
         <div className="facebook-embed-container">
-          <h1 className="text-2xl font-bold text-pink-400 mb-2">Check our our Facebook!</h1>
-          <p className="text-sm italic mb-4">
-            Will not load if privacy mode or ad blockers enabled. Click our name below to be
-            redirected to Facebook
-          </p>
+          <h1 className="text-2xl font-bold pinkText tilt-neon-font mb-2">Check our our Facebook!</h1>
+          <p className="text-sm italic mx-auto">
+            Will not load if privacy mode or ad blockers enabled.</p>
+            <p className='text-sm italic mb-4'>Click our name below to be redirected to Facebook</p>
           <FacebookEmbed />
         </div>
       </AnimatedSection>

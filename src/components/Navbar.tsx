@@ -25,7 +25,7 @@ export default function Navbar() {
     <header className="bg-black text-white border-b border-white/10">
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
         {/* Site title */}
-        <Link href="/" className="text-xl font-bold text-pink-500">
+        <Link href="/" className="text-2xl font-bold pinkText tilt-neon-font">
           {t('title')}
         </Link>
 

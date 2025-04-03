@@ -15,6 +15,9 @@ export default function ContactPage() {
     details: '',
   })
 
+  const [alert, setAlert] = useState<{ message: String, type: 'success' | 'error' | 'warning' | null}>({message: '', type: null})
+  const [loading, setLoading] = useState(false);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData({
@@ -25,8 +28,8 @@ export default function ContactPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log('Submit triggered', formData)
-    // console.log('Form submitted!');
+
+    setLoading(true);
 
     const incompleteFields = Object.keys(formData).filter((key) => {
       const typedKey = key as keyof typeof formData
@@ -34,7 +37,11 @@ export default function ContactPage() {
     })
 
     if (incompleteFields.length > 0) {
-      alert(`Please complete the following fields: ${incompleteFields.join(', ')}`)
+      setAlert({
+        message:`Please complete the following fields: ${incompleteFields.join(', ')}`,
+        type: 'warning',
+      })
+      setLoading(false);
       return
     }
 
@@ -48,15 +55,24 @@ export default function ContactPage() {
       console.log('response from server:', response)
 
       if (response.ok) {
-        alert('Message sent successfully!')
+        setAlert({
+          message: 'Message sent successfully!',
+          type: 'success',
+        })
       } else {
-        alert('Failed to send message, please double check information and resubmit')
+        setAlert({
+          message: 'Failed to send message, please double check information and resubmit',
+          type: 'error',
+        })
       }
     } catch (error) {
-      console.error('error sending message', error)
-      alert('an unexpected error occured')
-    }
+      setAlert({
+        message:'an unexpected error occured',
+        type: 'error',
+    })
   }
+  setLoading(false)
+}
 
   useEffect(() => {
     setMounted(true)
@@ -64,15 +80,47 @@ export default function ContactPage() {
 
   if (!mounted) return null
 
+  const closeAlert = () => {
+    setAlert({ message: '', type: null })
+  }
+
   return (
     <main className="bg-black text-white min-h-screen px-6 py-20" id="main-content">
       {/* Intro */}
       <section className="text-center mb-12" aria-labelledby="contact-heading" role="region">
-        <h1 id="contact-heading" className="text-4xl font-bold text-pink-500 mb-4">
+        <h1 id="contact-heading" className="text-5xl font-bold pinkText neon-text tilt-neon-font mb-4">
           {t('contact.title')}
         </h1>
         <p className="text-white/80 max-w-2xl mx-auto">{t('contact.intro')}</p>
       </section>
+
+      {/* custom alert message styling */}
+      {alert.message && (
+        <div
+          className={`alert w-full max-w-xs p-4 rounded-lg shadow-lg text-center text-sm ${
+            alert.type === 'success'
+            ? 'success'
+            : alert.type === 'error'
+            ? 'error'
+            : alert.type === 'warning'
+            ? 'warning'
+            : ''
+          }`}
+          >
+            <span>{alert.message}</span>
+            <button onClick={closeAlert} className='close'>
+              &times;
+            </button>
+          </div>
+      )}
+
+      {/* Loader */}
+      {loading && (
+        <div className='loader-container fixed inset-0 flex items-center justify-center z-50 bg-black/50'>
+          <div className='loader border-4 border-t-transparent border-pink-500 w-16 h-16 rounded-full animate-spin'>
+          </div>
+        </div>
+      )}
 
       {/* Contact Form */}
       <section
@@ -152,7 +200,7 @@ export default function ContactPage() {
 
           <button
             type="submit"
-            className="w-full mt-6 bg-pink-500 text-black font-semibold py-3 rounded hover:bg-pink-700 focus:outline-2 focus:outline-offset-2 focus:outline-pink-700"
+            className="w-full mt-6 bgPink text-black font-semibold py-3 rounded focus:outline-2 focus:outline-offset-2 focus:outline-pink-700"
             // disabled={submitDisabled}
           >
             {t('contact.button')}

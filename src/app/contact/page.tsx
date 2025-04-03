@@ -15,7 +15,7 @@ export default function ContactPage() {
     details: '',
   })
 
-  const [alert, setAlert] = useState<{ message: String, type: 'success' | 'error' | 'warning' | null}>({message: '', type: null})
+  const [alert, setAlert] = useState<{ message: string, type: 'success' | 'error' | 'warning' | null}>({message: '', type: null})
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -65,7 +65,7 @@ export default function ContactPage() {
           type: 'error',
         })
       }
-    } catch (error) {
+    } catch {
       setAlert({
         message:'an unexpected error occured',
         type: 'error',

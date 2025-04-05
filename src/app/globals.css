@@ -104,18 +104,18 @@ button:hover {
   display: flex;
   align-items: center;
   padding: 1rem;
-  min-width: 300px;
-  justify-content: space-between;
-  margin-bottom: 1rem;
+  width: auto;
+  max-width: 600px;
+  justify-content: center;
   position: fixed;
-  bottom: 8rem;
+  top: 50%;
   left: 50%;
   transform: translateX(-50%);
   font-size: 1rem;
   font-weight: 700;
-  z-index: 1000;
-  opacity: 0;
+  z-index: 9999;
   animation: fadeIn 0.5s forwards;
+  border-radius: 1rem;
 }
 
 
@@ -137,14 +137,16 @@ button:hover {
 .alert .close {
   background-color: transparent;
   transition: all 0.2s ease-in-out;
-  padding: 0.5rem;
+  padding: 0.25rem;
   border-radius: 50%;
   cursor: pointer;
   color:rgb(67, 66, 66);
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 2rem;
+  height: 2rem;
 }
 
 .alert .close:hover {

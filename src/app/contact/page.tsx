@@ -45,6 +45,28 @@ export default function ContactPage() {
       return
     }
 
+    // validate email input
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex?.test(formData.email)) {
+      setAlert({
+        message: 'Please enter a valid email address',
+        type: 'warning',
+      })
+      setLoading(false)
+      return
+    }
+
+    //validate phone input
+    const phoneRegex = /^\d{3}-\d{3}-\d{4}$/;
+    if (!phoneRegex.test(formData.phone)) {
+      setAlert({
+        message: 'Please enter a valid phone number (e.g., 123-456-7890).',
+        type: 'warning',
+      })
+      setLoading(false)
+      return;
+    }
+
     try {
       const response = await fetch('/api/send', {
         method: 'POST',
@@ -97,7 +119,7 @@ export default function ContactPage() {
       {/* custom alert message styling */}
       {alert.message && (
         <div
-          className={`alert w-full max-w-xs p-4 rounded-lg shadow-lg text-center text-sm ${
+          className={`alert p-4 rounded-lg shadow-lg text-center text-sm ${
             alert.type === 'success'
             ? 'success'
             : alert.type === 'error'
@@ -108,7 +130,7 @@ export default function ContactPage() {
           }`}
           >
             <span>{alert.message}</span>
-            <button onClick={closeAlert} className='close'>
+            <button onClick={closeAlert} className='close rounded-full'>
               &times;
             </button>
           </div>
@@ -200,7 +222,7 @@ export default function ContactPage() {
 
           <button
             type="submit"
-            className="w-full mt-6 bgPink text-black font-semibold py-3 rounded focus:outline-2 focus:outline-offset-2 focus:outline-pink-700"
+            className="w-full mt-6 bgPink text-black font-semibold py-3 rounded-4xl focus:outline-2 focus:outline-offset-2 focus:outline-pink-700"
             // disabled={submitDisabled}
           >
             {t('contact.button')}

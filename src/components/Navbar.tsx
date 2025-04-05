@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
 import { Menu, X } from 'lucide-react'
 
-export default function Navbar() {
+export default function Navbar({ handleRouteChange }: { handleRouteChange: (url: string) => void}) {
   const { i18n, t } = useTranslation()
   const [mounted, setMounted] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
@@ -25,7 +25,7 @@ export default function Navbar() {
     <header className="bg-black text-white border-b border-white/10">
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
         {/* Site title */}
-        <Link href="/" className="text-2xl font-bold pinkText tilt-neon-font">
+        <Link href="/" onClick={(e) => { e.preventDefault(); handleRouteChange('/'); }} className="text-2xl font-bold pinkText tilt-neon-font">
           {t('title')}
         </Link>
 
@@ -43,22 +43,22 @@ export default function Navbar() {
           className="hidden md:flex gap-6 items-center text-sm sm:text-base"
           aria-label="Main navigation"
         >
-          <Link href="/" className="hover:text-pink-400">
+          <Link href="/" onClick={(e) => { e.preventDefault(); handleRouteChange('/'); }} className="hover:text-pink-400">
             {t('nav.home')}
           </Link>
-          <Link href="/about" className="hover:text-pink-400">
+          <Link href="/about" onClick={(e) => { e.preventDefault(); handleRouteChange('/about'); }} className="hover:text-pink-400">
             {t('nav.about')}
           </Link>
-          <Link href="/menu" className="hover:text-pink-400">
+          <Link href="/menu" onClick={(e) => { e.preventDefault(); handleRouteChange('/menu'); }} className="hover:text-pink-400">
             {t('nav.store')}
           </Link>
-          <Link href="/merch" className="hover:text-pink-400">
+          <Link href="/merch" onClick={(e) => { e.preventDefault(); handleRouteChange('/merch'); }} className="hover:text-pink-400">
             {t('nav.merch')}
           </Link>
-          <Link href="/testimonials" className="hover:text-pink-400">
+          <Link href="/testimonials" onClick={(e) => { e.preventDefault(); handleRouteChange('/testimonials'); }} className="hover:text-pink-400">
             {t('nav.testimonials')}
           </Link>
-          <Link href="/contact" className="hover:text-pink-400">
+          <Link href="/contact" onClick={(e) => { e.preventDefault(); handleRouteChange('/contact'); }} className="hover:text-pink-400">
             {t('nav.contact')}
           </Link>
           <button

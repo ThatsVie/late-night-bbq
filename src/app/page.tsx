@@ -7,6 +7,7 @@ import { useInView } from 'react-intersection-observer'
 import Image from 'next/image'
 import { fetchHomepageBanner } from '@/utils/firebaseService'
 import FacebookEmbed from '@/components/FacebookEmbed'
+import Loader from '@/components/Loader'
 
 function AnimatedSection({ id, children }: { id: string; children: React.ReactNode }) {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 })
@@ -39,11 +40,11 @@ export default function Home() {
   } | null>(null)
 
   useEffect(() => {
-    setMounted(true)
+    setMounted(true);
 
     fetchHomepageBanner(i18n.language as 'en' | 'es').then((data) => {
       console.log('Banner data from Firestore:', data)
-      setBanner(data)
+      setBanner(data);
     })
   }, [i18n.language])
 

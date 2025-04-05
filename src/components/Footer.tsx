@@ -2,11 +2,15 @@
 
 import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
+import { FacebookIcon, FacebookShareButton } from 'react-share'
 import Link from 'next/link'
 
 export default function Footer() {
   const { t, i18n } = useTranslation()
   const [mounted, setMounted] = useState(false)
+
+  const shareUrl = 'https://www.facebook.com/profile.php?id=100068667966462'
+  const title = 'Check out our facebook!'
 
   useEffect(() => {
     setMounted(true)
@@ -56,6 +60,10 @@ export default function Footer() {
 
         {/* Language toggle + copyright */}
         <div className="flex items-center gap-3">
+        <FacebookShareButton url={shareUrl} title={title}>
+          <FacebookIcon size={24} round={true} />
+          </FacebookShareButton>
+
           <button
             onClick={toggleLanguage}
             aria-label="Toggle language"

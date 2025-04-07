@@ -4,25 +4,30 @@ import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import CropRectModal from '@/components/CropRectModal'
-import {
-  fetchMenuItems,
-  addMenuItem,
-  updateMenuItem,
-  deleteMenuItem,
-  uploadMenuImage,
-  updateMenuOrder,
-  MenuItemData,
-  MenuCategory,
-} from '@/utils/menuService'
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd'
+
+export type MenuCategory = 'BBQ Meats' | 'Sides' | 'Fixins'
+export interface MenuLocale {
+  title: string
+  description: string
+}
+export interface MenuItemData {
+  id: string
+  category: MenuCategory
+  en: MenuLocale
+  es: MenuLocale
+  images: string[]
+  activeImage: string
+  order: number
+}
 
 const CATEGORIES: MenuCategory[] = ['BBQ Meats', 'Sides', 'Fixins']
 
 export default function ManageMenuPage() {
   const router = useRouter()
   const formRef = useRef<HTMLDivElement | null>(null)
-  const [items, setItems] = useState<(MenuItemData & { id: string })[]>([])
-  const [formState, setFormState] = useState<MenuItemData>({
+  const [items, setItems] = useState<MenuItemData[]>([])
+  const [formState, setFormState] = useState<Omit<MenuItemData, 'id'>>({
     en: { title: '', description: '' },
     es: { title: '', description: '' },
     images: [],
@@ -35,14 +40,21 @@ export default function ManageMenuPage() {
   const [preview, setPreview] = useState<string | null>(null)
   const [editingId, setEditingId] = useState<string | null>(null)
   const [showCropModal, setShowCropModal] = useState(false)
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  useEffect(() => {
+    if (!mounted) return
     const load = async () => {
-      const data = await fetchMenuItems()
+      const res = await fetch('/api/menu')
+      const data = await res.json()
       setItems(data)
     }
     load()
-  }, [])
+  }, [mounted])
 
   useEffect(() => {
     if (file) {
@@ -52,6 +64,21 @@ export default function ManageMenuPage() {
       return () => URL.revokeObjectURL(objectUrl)
     }
   }, [file])
+
+  const uploadMenuImage = async (file: File) => {
+    const formData = new FormData()
+    formData.append('file', file)
+    const res = await fetch('/api/admin/menu/upload-image', {
+      method: 'POST',
+      body: formData,
+    })
+    if (!res.ok) {
+      const errorData = await res.json()
+      throw new Error(errorData.error || 'Image upload failed')
+    }
+    const { url } = await res.json()
+    return url
+  }
 
   const handleCropComplete = async (cropped: File) => {
     setCroppedFile(cropped)
@@ -76,7 +103,12 @@ export default function ManageMenuPage() {
 
     let imageUrl = ''
     if (croppedFile) {
-      imageUrl = await uploadMenuImage(croppedFile)
+      try {
+        imageUrl = await uploadMenuImage(croppedFile)
+      } catch (error) {
+        console.error('Upload error:', error)
+        return alert('Image upload failed. Please try again.')
+      }
     }
 
     const updatedImages = [...formState.images, ...(imageUrl ? [imageUrl] : [])]
@@ -89,13 +121,22 @@ export default function ManageMenuPage() {
     if (!updatedForm.activeImage) return alert('Please add and crop at least one image.')
 
     if (editingId) {
-      await updateMenuItem(editingId, updatedForm)
+      await fetch(`/api/menu/${editingId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatedForm),
+      })
     } else {
       updatedForm.order = items.filter((i) => i.category === formState.category).length
-      await addMenuItem(updatedForm)
+      await fetch('/api/menu', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatedForm),
+      })
     }
 
-    const updated = await fetchMenuItems()
+    const res = await fetch('/api/menu')
+    const updated = await res.json()
     setItems(updated)
     setFormState({
       en: { title: '', description: '' },
@@ -111,9 +152,10 @@ export default function ManageMenuPage() {
     setEditingId(null)
   }
 
-  const handleEdit = (item: MenuItemData & { id: string }) => {
-    setFormState(item)
-    setEditingId(item.id)
+  const handleEdit = (item: MenuItemData) => {
+    const { id, ...rest } = item
+    setFormState(rest)
+    setEditingId(id)
     setTimeout(() => {
       formRef.current?.scrollIntoView({ behavior: 'smooth' })
     }, 100)
@@ -121,8 +163,9 @@ export default function ManageMenuPage() {
 
   const handleDelete = async (id: string) => {
     if (!confirm('Are you sure you want to delete this item?')) return
-    await deleteMenuItem(id)
-    const updated = await fetchMenuItems()
+    await fetch(`/api/menu/${id}`, { method: 'DELETE' })
+    const res = await fetch('/api/menu')
+    const updated = await res.json()
     setItems(updated)
   }
 
@@ -135,14 +178,24 @@ export default function ManageMenuPage() {
       images: filtered,
       activeImage: filtered[0] || '',
     }
-    await updateMenuItem(itemId, updated)
-    const refreshed = await fetchMenuItems()
+    await fetch(`/api/menu/${itemId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updated),
+    })
+    const res = await fetch('/api/menu')
+    const refreshed = await res.json()
     setItems(refreshed)
   }
 
   const handleSetActiveImage = async (id: string, url: string) => {
-    await updateMenuItem(id, { activeImage: url })
-    const updated = await fetchMenuItems()
+    await fetch(`/api/menu/${id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ activeImage: url }),
+    })
+    const res = await fetch('/api/menu')
+    const updated = await res.json()
     setItems(updated)
   }
 
@@ -165,8 +218,15 @@ export default function ManageMenuPage() {
     const updatedWithOrder = reordered.map((item, index) => ({ ...item, order: index }))
     const merged = [...otherItems, ...updatedWithOrder]
     setItems(merged)
-    await updateMenuOrder(updatedWithOrder)
+
+    await fetch('/api/menu/order', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updatedWithOrder.map(({ id, order }) => ({ id, order }))),
+    })
   }
+
+  if (!mounted) return null
 
   return (
     <main className="min-h-screen bg-zinc-950 text-white p-6">

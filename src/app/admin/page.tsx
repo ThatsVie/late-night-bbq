@@ -1,29 +1,34 @@
 'use client'
+export const dynamic = 'force-dynamic'
 
 import { useRouter } from 'next/navigation'
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/hooks/useAuth'
 import { signOut } from 'firebase/auth'
 import { auth } from '@/firebase/config'
+import { useEffect } from 'react'
+import Link from 'next/link'
 
 export default function AdminDashboard() {
   const router = useRouter()
-  const { user, loading } = useAuth();
+  const { user, loading } = useAuth()
 
   const handleLogout = async () => {
     await signOut(auth)
     router.push('/login')
   }
 
-  if (loading) {
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push('/login')
+    }
+  }, [loading, user, router])
+
+  if (loading || !user) {
     return (
       <main className="min-h-screen bg-black text-white flex items-center justify-center">
         <p>Loading...</p>
       </main>
     )
-  }
-  if (!user) {
-    router.push('/login')
-    return null
   }
 
   return (
@@ -32,24 +37,24 @@ export default function AdminDashboard() {
       <aside className="w-full sm:w-64 bg-black border-r border-white/10 px-6 py-10">
         <h2 className="text-xl font-bold text-pink-500 mb-10">Admin Panel</h2>
         <nav className="space-y-4 text-sm">
-          <a href="/admin/banner" className="block hover:text-pink-400">
+          <Link href="/admin/banner" className="block hover:text-pink-400">
             Switch Homepage Banner
-          </a>
-          <a href="/admin/about" className="block hover:text-pink-400">
+          </Link>
+          <Link href="/admin/about" className="block hover:text-pink-400">
             Edit About Page
-          </a>
-          <a href="/admin/menu" className="block hover:text-pink-400">
+          </Link>
+          <Link href="/admin/menu" className="block hover:text-pink-400">
             Manage Menu
-          </a>
-          <a href="/admin/merch" className="block hover:text-pink-400">
+          </Link>
+          <Link href="/admin/merch" className="block hover:text-pink-400">
             Manage Merch
-          </a>
-          <a href="/admin/testimonials" className="block hover:text-pink-400">
+          </Link>
+          <Link href="/admin/testimonials" className="block hover:text-pink-400">
             Manage Testimonials
-          </a>
-          <a href="#" className="block hover:text-pink-400">
+          </Link>
+          <Link href="#" className="block hover:text-pink-400">
             View Site Metrics
-          </a>
+          </Link>
         </nav>
         <button
           onClick={handleLogout}
@@ -68,75 +73,32 @@ export default function AdminDashboard() {
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* Banner Card */}
-          <div
-            onClick={() => router.push('/admin/banner')}
-            onKeyDown={(e) => e.key === 'Enter' && router.push('/admin/banner')}
-            tabIndex={0}
-            role="button"
-            className="bg-black p-6 rounded-lg border border-white/10 hover:border-pink-500 hover:shadow-pink-500/10 cursor-pointer transition outline-none focus:ring-2 focus:ring-pink-500"
-          >
-            <h2 className="text-lg font-semibold mb-2">Banner</h2>
-            <p className="text-white/70">
-              Customize the homepage banner message and/or Call To Action.
-            </p>
-          </div>
+          {[
+            { label: 'Banner', path: '/admin/banner', desc: 'Customize the homepage banner message and/or Call To Action.' },
+            { label: 'About', path: '/admin/about', desc: 'Edit the Pitmaster story and image on the About page.' },
+            { label: 'Menu', path: '/admin/menu', desc: 'Update food items, their descriptions, and images.' },
+            { label: 'Merch', path: '/admin/merch', desc: 'Manage products in the merch store.' },
+            { label: 'Testimonials', path: '/admin/testimonials', desc: 'Add, edit, or delete customer testimonials.' }
+          ].map((item) => (
+            <div
+              key={item.label}
+              onClick={() => router.push(item.path)}
+              onKeyDown={(e) => e.key === 'Enter' && router.push(item.path)}
+              tabIndex={0}
+              role="button"
+              className="bg-black p-6 rounded-lg border border-white/10 hover:border-pink-500 hover:shadow-pink-500/10 cursor-pointer transition outline-none focus:ring-2 focus:ring-pink-500"
+            >
+              <h2 className="text-lg font-semibold mb-2">{item.label}</h2>
+              <p className="text-white/70">{item.desc}</p>
+            </div>
+          ))}
 
-          {/* About Card */}
           <div
-            onClick={() => router.push('/admin/about')}
-            onKeyDown={(e) => e.key === 'Enter' && router.push('/admin/about')}
-            tabIndex={0}
-            role="button"
-            className="bg-black p-6 rounded-lg border border-white/10 hover:border-pink-500 hover:shadow-pink-500/10 cursor-pointer transition outline-none focus:ring-2 focus:ring-pink-500"
-          >
-            <h2 className="text-lg font-semibold mb-2">About</h2>
-            <p className="text-white/70">Edit the Pitmaster story and image on the About page.</p>
-          </div>
-
-          {/* Menu Card */}
-          <div
-            onClick={() => router.push('/admin/menu')}
-            onKeyDown={(e) => e.key === 'Enter' && router.push('/admin/menu')}
-            tabIndex={0}
-            role="button"
-            className="bg-black p-6 rounded-lg border border-white/10 hover:border-pink-500 hover:shadow-pink-500/10 cursor-pointer transition outline-none focus:ring-2 focus:ring-pink-500"
-          >
-            <h2 className="text-lg font-semibold mb-2">Menu</h2>
-            <p className="text-white/70">Update food items, their descriptions, and images.</p>
-          </div>
-
-          {/* Merch Card */}
-          <div
-            onClick={() => router.push('/admin/merch')}
-            onKeyDown={(e) => e.key === 'Enter' && router.push('/admin/merch')}
-            tabIndex={0}
-            role="button"
-            className="bg-black p-6 rounded-lg border border-white/10 hover:border-pink-500 hover:shadow-pink-500/10 cursor-pointer transition outline-none focus:ring-2 focus:ring-pink-500"
-          >
-            <h2 className="text-lg font-semibold mb-2">Merch</h2>
-            <p className="text-white/70">Manage products in the merch store.</p>
-          </div>
-
-          {/* Testimonials Card */}
-          <div
-            onClick={() => router.push('/admin/testimonials')}
-            onKeyDown={(e) => e.key === 'Enter' && router.push('/admin/testimonials')}
-            tabIndex={0}
-            role="button"
-            className="bg-black p-6 rounded-lg border border-white/10 hover:border-pink-500 hover:shadow-pink-500/10 cursor-pointer transition outline-none focus:ring-2 focus:ring-pink-500"
-          >
-            <h2 className="text-lg font-semibold mb-2">Testimonials</h2>
-            <p className="text-white/70">Add, edit, or delete customer testimonials.</p>
-          </div>
-
-          {/* Analytics Placeholder Card */}
-          <div
-            className="bg-black p-6 rounded-lg border border-white/10 hover:border-pink-500 hover:shadow-pink-500/10 cursor-pointer transition"
-            role="button"
+            className="bg-black p-6 rounded-lg border border-white/10 text-white/70"
+            aria-disabled
           >
             <h2 className="text-lg font-semibold mb-2">Analytics</h2>
-            <p className="text-white/70">Track visits and engagement via Google Analytics.</p>
+            <p>Track visits and engagement via Google Analytics. (Coming soon)</p>
           </div>
         </div>
       </section>

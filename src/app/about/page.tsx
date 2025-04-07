@@ -1,4 +1,5 @@
 'use client'
+export const dynamic = 'force-dynamic';
 
 import { useTranslation } from 'react-i18next'
 import { useEffect, useRef, useState } from 'react'

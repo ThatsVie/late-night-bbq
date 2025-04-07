@@ -1,4 +1,5 @@
 'use client'
+export const dynamic = 'force-dynamic';
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -23,10 +24,17 @@ interface Banner {
 
 export default function EditBannerPage() {
   const router = useRouter()
+  const [mounted, setMounted] = useState(false)
   const [banners, setBanners] = useState<Banner[]>([])
   const [activeBanner, setActiveBanner] = useState<string>('')
 
   useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  useEffect(() => {
+    if (!mounted) return
+
     const fetchData = async () => {
       const bannersSnap = await getDocs(collection(db, 'banners'))
       const bannersData: Banner[] = bannersSnap.docs.map((doc) => {
@@ -55,7 +63,7 @@ export default function EditBannerPage() {
     }
 
     fetchData()
-  }, [])
+  }, [mounted])
 
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
@@ -120,6 +128,8 @@ export default function EditBannerPage() {
       )
     )
   }
+
+  if (!mounted) return null
 
   return (
     <main className="p-6 text-white bg-zinc-950 min-h-screen">

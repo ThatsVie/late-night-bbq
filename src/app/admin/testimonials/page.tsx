@@ -1,4 +1,5 @@
 'use client'
+export const dynamic = 'force-dynamic';
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -63,7 +64,11 @@ export default function ManageTestimonialsPage() {
     <main className="p-6 bg-zinc-950 min-h-screen text-white">
       <h1 className="text-2xl font-bold text-pink-500 mb-6">Manage Testimonials</h1>
       <button
-        onClick={() => router.push('/admin')}
+        onClick={() => {
+          if (typeof window !== 'undefined') {
+            router.push('/admin')
+          }
+        }}
         className="mb-6 text-sm text-white hover:text-pink-400 border border-white/20 px-4 py-2 rounded"
       >
         ← Back to Admin Dashboard
@@ -89,6 +94,7 @@ export default function ManageTestimonialsPage() {
           </div>
         ))}
       </div>
+
       <button
         onClick={handleSubmit}
         className="bg-pink-500 hover:bg-pink-600 text-black px-6 py-2 rounded font-bold mb-10"

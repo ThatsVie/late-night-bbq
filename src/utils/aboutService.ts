@@ -1,6 +1,7 @@
 import { db } from '@/firebase/config'
 import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore'
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage'
+import { v4 as uuidv4 } from 'uuid'
 
 export interface AboutContent {
   content: string
@@ -39,10 +40,12 @@ export async function updateAboutContent(
 
 export async function uploadPitmasterImage(file: File): Promise<string> {
   const storage = getStorage()
-  const fileRef = ref(storage, `about/${file.name}`)
+  const uniqueName = `${uuidv4()}-${file.name}`
+  const fileRef = ref(storage, `about/${uniqueName}`)
   await uploadBytes(fileRef, file)
   return await getDownloadURL(fileRef)
 }
+
 
 export async function updatePitmasterImages(images: string[]) {
   const ref = doc(db, 'about', 'pitmaster')

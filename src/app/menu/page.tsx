@@ -2,20 +2,35 @@
 
 import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
-import { fetchMenuItems, MenuItemData, MenuCategory } from '@/utils/menuService'
 import Image from 'next/image'
+
+export type MenuCategory = 'BBQ Meats' | 'Sides' | 'Fixins'
+export interface MenuLocale {
+  title: string
+  description: string
+}
+export interface MenuItemData {
+  id: string
+  category: MenuCategory
+  en: MenuLocale
+  es: MenuLocale
+  images: string[]
+  activeImage: string
+  order: number
+}
 
 const CATEGORIES: MenuCategory[] = ['BBQ Meats', 'Sides', 'Fixins']
 
 export default function MenuPage() {
   const { t, i18n } = useTranslation()
   const [mounted, setMounted] = useState(false)
-  const [items, setItems] = useState<(MenuItemData & { id: string })[]>([])
+  const [items, setItems] = useState<MenuItemData[]>([])
 
   useEffect(() => {
     setMounted(true)
     const loadItems = async () => {
-      const data = await fetchMenuItems()
+      const res = await fetch('/api/menu')
+      const data = await res.json()
       setItems(data)
     }
     loadItems()
@@ -28,7 +43,9 @@ export default function MenuPage() {
   return (
     <main className="bg-black text-white min-h-screen px-6 py-20">
       <section className="max-w-5xl mx-auto text-center">
-        <h1 className="text-5xl font-bold pinkText neon-text tilt-neon-font mb-4">{t('menuPage.title')}</h1>
+        <h1 className="text-5xl font-bold pinkText neon-text tilt-neon-font mb-4">
+          {t('menuPage.title')}
+        </h1>
         <p className="text-white/70 mb-12">{t('menuPage.description')}</p>
 
         {CATEGORIES.map((category) => {

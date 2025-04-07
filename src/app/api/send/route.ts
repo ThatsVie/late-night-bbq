@@ -5,9 +5,7 @@ const resend = new Resend(process.env.RESEND_API_KEY)
 export async function POST(req: Request) {
   try {
     const { name, email, phone, details } = await req.json()
-
-    console.log('Received form data:', { name, email, phone, details })
-
+    
     const emailHTML = `
         <div>
             <h1>Inquiry from ${name}</h1>

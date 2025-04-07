@@ -1,24 +1,13 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { onAuthStateChanged, signOut } from 'firebase/auth'
+import { useAuth } from '@/hooks/useAuth';
+import { signOut } from 'firebase/auth'
 import { auth } from '@/firebase/config'
 
 export default function AdminDashboard() {
   const router = useRouter()
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (!user) {
-        router.push('/login')
-      } else {
-        setLoading(false)
-      }
-    })
-    return () => unsubscribe()
-  }, [router])
+  const { user, loading } = useAuth();
 
   const handleLogout = async () => {
     await signOut(auth)
@@ -31,6 +20,10 @@ export default function AdminDashboard() {
         <p>Loading...</p>
       </main>
     )
+  }
+  if (!user) {
+    router.push('/login')
+    return null
   }
 
   return (

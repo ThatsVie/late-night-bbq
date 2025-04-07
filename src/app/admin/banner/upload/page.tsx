@@ -1,6 +1,7 @@
 'use client'
+export const dynamic = 'force-dynamic';
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { db } from '@/firebase/config'
@@ -12,17 +13,34 @@ import CropRectModal from '@/components/CropRectModal'
 export default function UploadBannerPage() {
   const router = useRouter()
   const [file, setFile] = useState<File | null>(null)
-  const [preview, setPreview] = useState<string | null>(null)
+  const [fileUrl, setFileUrl] = useState<string | null>(null)
   const [croppedFile, setCroppedFile] = useState<File | null>(null)
   const [showCropModal, setShowCropModal] = useState(false)
   const [cropMode, setCropMode] = useState<'square' | 'rect'>('square')
   const [uploaded, setUploaded] = useState(false)
+  const [preview, setPreview] = useState<string | null>(null)
 
   const [formData, setFormData] = useState({
     id: '',
     en: { title: '', subtitle: '', altText: '' },
     es: { title: '', subtitle: '', altText: '' },
   })
+
+  // Cleanup fileUrl
+  useEffect(() => {
+    if (!file) return
+    const objectUrl = URL.createObjectURL(file)
+    setFileUrl(objectUrl)
+    return () => URL.revokeObjectURL(objectUrl)
+  }, [file])
+
+  // Generate preview from cropped file
+  useEffect(() => {
+    if (!croppedFile) return
+    const objectUrl = URL.createObjectURL(croppedFile)
+    setPreview(objectUrl)
+    return () => URL.revokeObjectURL(objectUrl)
+  }, [croppedFile])
 
   const handleChange = (lang: 'en' | 'es', key: string, value: string) => {
     setFormData((prev) => ({
@@ -33,16 +51,12 @@ export default function UploadBannerPage() {
 
   const handleFileChange = (incomingFile: File | null) => {
     if (!incomingFile) return
-    const objectUrl = URL.createObjectURL(incomingFile)
     setFile(incomingFile)
-    setPreview(objectUrl)
     setShowCropModal(true)
   }
 
   const handleCropComplete = (cropped: File) => {
-    const objectUrl = URL.createObjectURL(cropped)
     setCroppedFile(cropped)
-    setPreview(objectUrl)
     setShowCropModal(false)
   }
 
@@ -77,7 +91,11 @@ export default function UploadBannerPage() {
       <h1 className="text-2xl font-bold text-pink-500 mb-6">Upload New Homepage Banner</h1>
 
       <button
-        onClick={() => router.push('/admin/banner')}
+        onClick={() => {
+          if (typeof window !== 'undefined') {
+            router.push('/admin/banner')
+          }
+        }}
         className="mb-6 text-sm text-white hover:text-pink-400 border border-white/20 px-4 py-2 rounded"
       >
         ← Back to Banners
@@ -187,28 +205,21 @@ export default function UploadBannerPage() {
         </>
       )}
 
-      {showCropModal &&
-        preview &&
-        file &&
-        (cropMode === 'square' ? (
+      {showCropModal && fileUrl && (
+        cropMode === 'square' ? (
           <CropModal
-            imageSrc={preview}
-            onClose={() => {
-              setShowCropModal(false)
-              URL.revokeObjectURL(preview)
-            }}
+            imageSrc={fileUrl}
+            onClose={() => setShowCropModal(false)}
             onCropComplete={handleCropComplete}
           />
         ) : (
           <CropRectModal
-            imageSrc={preview}
-            onClose={() => {
-              setShowCropModal(false)
-              URL.revokeObjectURL(preview)
-            }}
+            imageSrc={fileUrl}
+            onClose={() => setShowCropModal(false)}
             onCropComplete={handleCropComplete}
           />
-        ))}
+        )
+      )}
     </main>
   )
 }

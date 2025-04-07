@@ -1,4 +1,5 @@
 'use client'
+export const dynamic = 'force-dynamic';
 
 import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
@@ -24,7 +25,9 @@ export default function LoginPage() {
     e.preventDefault()
     try {
       await signInWithEmailAndPassword(auth, email, password)
-      router.push('/admin') // Redirect on success
+      if (typeof window !== 'undefined') {
+        router.push('/admin') // Redirect on success
+      }
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message)

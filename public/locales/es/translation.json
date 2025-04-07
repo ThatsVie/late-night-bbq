@@ -18,23 +18,23 @@
 
   "howItWorks": {
     "title": "Cómo Funciona",
-    "body": "Nuestra barbacoa es artesanal, hecha por encargo y entregada con cariño. Operamos en lotes pequeños y personalizados — cuéntanos tu plan y llevamos el sabor."
+    "body": "Nuestra barbacoa es artesanal, hecha por encargo y entregada con cariño. Operamos en lotes pequeños y personalizados — cuéntanos su plan y le llevamos el sabor."
   },
 
   "cta": {
     "title": "¿Listo para ordenar?",
-    "body": "Contáctanos para reservar tu noche de BBQ, evento o pedido de catering. Nos encantaría servirte.",
+    "body": "Contáctanos para reservar su noche de BBQ, evento o pedido de catering. Nos encantaría servirle.",
     "button": "Contáctanos"
   },
 
   "contact": {
-    "title": "Ponte en Contacto",
-    "intro": "Cuéntanos sobre tu evento o solicitud de catering y te responderemos lo antes posible.",
+    "title": "Póngase en contacto",
+    "intro": "Cuéntanos sobre su evento o solicitud de catering y le responderemos lo antes posible.",
     "fields": {
-      "name": "Tu Nombre",
-      "email": "Tu Correo",
+      "name": "Nombre",
+      "email": "Correo electrónico",
       "phone": "Número de Teléfono",
-      "details": "¿Cómo podemos ayudarte?"
+      "details": "¿Cómo podemos ayudarle?"
     },
     "placeholders": {
       "details": "Ej. Fecha, lugar, cantidad de personas, y cualquier solicitud especial"
@@ -46,7 +46,7 @@
   "about": {
     "pitmasterTitle": "Sobre el Pitmaster",
     "pitmasterName": "Adam Bernal",
-    "devsTitle": "Sobre las Desarrolladoras del Sitio Web",
+    "devsTitle": "Sobre los Desarrolladores del Sitio Web",
     "vieQuote": "Lo que no podemos imaginar no puede existir. — bell hooks ✨",
     "courtneyBio": "Ingeniera de software, profesora, formadora, y aprendiz de por vida.",
     "starleeBio": "Ingeniera de software.",

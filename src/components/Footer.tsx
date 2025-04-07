@@ -9,7 +9,7 @@ export default function Footer() {
   const { t, i18n } = useTranslation()
   const [mounted, setMounted] = useState(false)
 
-  const shareUrl = 'https://www.facebook.com/profile.php?id=100068667966462'
+  const shareUrl = 'https://www.facebook.com/people/Late-Night-BBQ/100068667966462/'
   const title = 'Check out our facebook!'
 
   useEffect(() => {

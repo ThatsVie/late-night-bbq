@@ -17,7 +17,8 @@ const adminConfig = {
   storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
 }
 
-const adminApp: App = getApps().length === 0 ? initializeApp(adminConfig) : getApps()[0]
+export const adminApp: App =
+  getApps().length === 0 ? initializeApp(adminConfig) : getApps()[0]
 
 export const adminStorage = getStorage(adminApp)
 export const adminDb = getFirestore(adminApp)

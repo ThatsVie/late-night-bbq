@@ -4,7 +4,6 @@ import { adminStorage } from '@/firebase/admin'
 import { verifyAdminToken } from '@/utils/verifyAdmin'
 
 export async function POST(req: NextRequest) {
-  // Verify token
   const user = await verifyAdminToken(req)
   if (!user) {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 })
@@ -21,7 +20,7 @@ export async function POST(req: NextRequest) {
     const bucket = adminStorage.bucket()
     const buffer = Buffer.from(await file.arrayBuffer())
 
-    const filename = `menu/${uuidv4()}-${file.name}`
+    const filename = `banners/${uuidv4()}-${file.name}`
     const fileRef = bucket.file(filename)
 
     await fileRef.save(buffer, {
@@ -33,7 +32,7 @@ export async function POST(req: NextRequest) {
 
     return Response.json({ url: publicUrl })
   } catch (err) {
-    console.error('Upload error:', err)
+    console.error('Upload error:', err instanceof Error ? err.message : err)
     return new Response(JSON.stringify({ error: 'Failed to upload image' }), { status: 500 })
   }
 }

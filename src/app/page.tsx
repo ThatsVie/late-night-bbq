@@ -1,12 +1,10 @@
 'use client'
-export const dynamic = 'force-dynamic';
 
 import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import Image from 'next/image'
-import { fetchHomepageBanner } from '@/utils/firebaseService'
 import FacebookEmbed from '@/components/FacebookEmbed'
 
 function AnimatedSection({ id, children }: { id: string; children: React.ReactNode }) {
@@ -32,27 +30,38 @@ export default function Home() {
   const { t, i18n } = useTranslation()
   const [mounted, setMounted] = useState(false)
   const [banner, setBanner] = useState<{
+    id?: string
     imageUrl: string
     altText: string
     subtitle: string
-    title?: string
     shape?: 'square' | 'rect'
   } | null>(null)
 
   useEffect(() => {
-    setMounted(true);
+    setMounted(true)
 
-    fetchHomepageBanner(i18n.language as 'en' | 'es').then((data) => {
-      console.log('Banner data from Firestore:', data)
-      setBanner(data);
-    })
+    async function fetchBanner() {
+      try {
+        const res = await fetch(`/api/banner/active?locale=${i18n.language}`)
+        const data = await res.json()
+        if (data?.imageUrl) {
+          setBanner(data)
+        } else {
+          console.warn('No active banner found.')
+        }
+      } catch (err) {
+        console.error('Failed to load homepage banner:', err)
+      }
+    }
+
+    fetchBanner()
   }, [i18n.language])
 
   if (!mounted) return null
 
   return (
     <main className="bg-black text-white" id="main-content">
-      {/* Hero */}
+      {/* Hero Section */}
       <motion.section
         role="region"
         aria-labelledby="hero-heading"
@@ -81,8 +90,8 @@ export default function Home() {
 
         <p className="text-white/70 text-lg mb-6">{t('tagline')}</p>
 
-        {/* Dynamic Banner Image */}
-        {banner && (
+        {/* Dynamic Banner */}
+        {banner ? (
           <>
             <div
               className={`mx-auto border border-white/10 rounded-lg shadow overflow-hidden ${
@@ -101,10 +110,12 @@ export default function Home() {
 
             <p className="text-xl max-w-xl text-white/80 mt-4">{banner.subtitle}</p>
           </>
+        ) : (
+          <p className="text-white/50 text-sm italic mt-4">No active banner currently set.</p>
         )}
       </motion.section>
 
-      {/* Sections */}
+      {/* Info Sections */}
       <AnimatedSection id="how">
         <h2 id="how-heading" className="text-3xl tilt-neon-font font-bold pinkText mb-6">
           {t('howItWorks.title')}
@@ -124,12 +135,14 @@ export default function Home() {
           {t('cta.button')}
         </a>
       </AnimatedSection>
+
       <AnimatedSection id="facebook">
         <div className="facebook-embed-container">
-          <h1 className="text-2xl font-bold pinkText tilt-neon-font mb-2">Check our our Facebook!</h1>
+          <h1 className="text-2xl font-bold pinkText tilt-neon-font mb-2">Check out our Facebook!</h1>
           <p className="text-sm italic mx-auto">
-            Will not load if privacy mode or ad blockers enabled.</p>
-            <p className='text-sm italic mb-4'>Click our name below to be redirected to Facebook</p>
+            Will not load if privacy mode or ad blockers enabled.
+          </p>
+          <p className="text-sm italic mb-4">Click our name below to be redirected to Facebook</p>
           <FacebookEmbed />
         </div>
       </AnimatedSection>

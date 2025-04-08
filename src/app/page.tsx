@@ -138,11 +138,11 @@ export default function Home() {
 
       <AnimatedSection id="facebook">
         <div className="facebook-embed-container">
-          <h1 className="text-2xl font-bold pinkText tilt-neon-font mb-2">Check out our Facebook!</h1>
-          <p className="text-sm italic mx-auto">
-            Will not load if privacy mode or ad blockers enabled.
-          </p>
-          <p className="text-sm italic mb-4">Click our name below to be redirected to Facebook</p>
+          <h1 className="text-2xl font-bold pinkText tilt-neon-font mb-2">
+            {t('facebook.title')}
+          </h1>
+          <p className="text-sm italic mx-auto">{t('facebook.privacyNote')}</p>
+          <p className="text-sm italic mb-4">{t('facebook.redirectNote')}</p>
           <FacebookEmbed />
         </div>
       </AnimatedSection>

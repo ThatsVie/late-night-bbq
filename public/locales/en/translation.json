@@ -27,6 +27,12 @@
     "button": "Contact Us"
   },
 
+  "facebook": {
+    "title": "Check out our Facebook!",
+    "privacyNote": "Will not load if privacy mode or ad blockers enabled.",
+    "redirectNote": "Click our name below to be redirected to Facebook"
+  },
+  
   "contact": {
     "title": "Get in Touch",
     "intro": "Tell us about your event or catering needs and we'll get back to you ASAP!",

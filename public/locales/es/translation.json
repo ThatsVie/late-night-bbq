@@ -27,6 +27,12 @@
     "button": "Contáctanos"
   },
 
+  "facebook": {
+    "title": "¡Visita nuestro Facebook!",
+    "privacyNote": "No se cargará si el modo de privacidad o los bloqueadores de anuncios están activados.",
+    "redirectNote": "Haz clic en nuestro nombre abajo para ir a Facebook"
+  },
+
   "contact": {
     "title": "Póngase en contacto",
     "intro": "Cuéntanos sobre su evento o solicitud de catering y le responderemos lo antes posible.",

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
+import { getAuth } from 'firebase/auth'
 import CropRectModal from '@/components/CropRectModal'
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd'
 
@@ -65,17 +66,30 @@ export default function ManageMenuPage() {
     }
   }, [file])
 
+  const getAdminToken = async () => {
+    const user = getAuth().currentUser
+    if (!user) throw new Error('User not authenticated')
+    return user.getIdToken()
+  }
+
   const uploadMenuImage = async (file: File) => {
+    const token = await getAdminToken()
     const formData = new FormData()
     formData.append('file', file)
+
     const res = await fetch('/api/admin/menu/upload-image', {
       method: 'POST',
       body: formData,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     })
+
     if (!res.ok) {
       const errorData = await res.json()
       throw new Error(errorData.error || 'Image upload failed')
     }
+
     const { url } = await res.json()
     return url
   }
@@ -101,6 +115,8 @@ export default function ManageMenuPage() {
 
     if (!hasContent) return alert('Please complete all fields.')
 
+    const token = await getAdminToken()
+
     let imageUrl = ''
     if (croppedFile) {
       try {
@@ -120,23 +136,30 @@ export default function ManageMenuPage() {
 
     if (!updatedForm.activeImage) return alert('Please add and crop at least one image.')
 
-    if (editingId) {
-      await fetch(`/api/menu/${editingId}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updatedForm),
-      })
-    } else {
+    const endpoint = editingId ? `/api/admin/menu/${editingId}` : '/api/admin/menu'
+    const method = editingId ? 'PATCH' : 'POST'
+
+    if (!editingId) {
       updatedForm.order = items.filter((i) => i.category === formState.category).length
-      await fetch('/api/menu', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updatedForm),
-      })
     }
 
-    const res = await fetch('/api/menu')
-    const updated = await res.json()
+    const res = await fetch(endpoint, {
+      method,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(updatedForm),
+    })
+
+    if (!res.ok) {
+      const errData = await res.json()
+      console.error('Menu submit error:', errData)
+      alert(errData.error || 'Failed to submit menu item.')
+      return
+    }
+
+    const updated = await (await fetch('/api/menu')).json()
     setItems(updated)
     setFormState({
       en: { title: '', description: '' },
@@ -163,7 +186,13 @@ export default function ManageMenuPage() {
 
   const handleDelete = async (id: string) => {
     if (!confirm('Are you sure you want to delete this item?')) return
-    await fetch(`/api/menu/${id}`, { method: 'DELETE' })
+    const token = await getAdminToken()
+    await fetch(`/api/admin/menu/${id}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
     const res = await fetch('/api/menu')
     const updated = await res.json()
     setItems(updated)
@@ -178,9 +207,13 @@ export default function ManageMenuPage() {
       images: filtered,
       activeImage: filtered[0] || '',
     }
-    await fetch(`/api/menu/${itemId}`, {
+    const token = await getAdminToken()
+    await fetch(`/api/admin/menu/${itemId}`, {
       method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify(updated),
     })
     const res = await fetch('/api/menu')
@@ -189,9 +222,13 @@ export default function ManageMenuPage() {
   }
 
   const handleSetActiveImage = async (id: string, url: string) => {
-    await fetch(`/api/menu/${id}`, {
+    const token = await getAdminToken()
+    await fetch(`/api/admin/menu/${id}`, {
       method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify({ activeImage: url }),
     })
     const res = await fetch('/api/menu')
@@ -219,9 +256,13 @@ export default function ManageMenuPage() {
     const merged = [...otherItems, ...updatedWithOrder]
     setItems(merged)
 
-    await fetch('/api/menu/order', {
+    const token = await getAdminToken()
+    await fetch('/api/admin/menu/order', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify(updatedWithOrder.map(({ id, order }) => ({ id, order }))),
     })
   }

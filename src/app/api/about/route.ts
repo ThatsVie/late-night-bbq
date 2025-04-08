@@ -3,24 +3,19 @@ import { getDoc, doc} from "firebase/firestore";
 import { db } from "@/firebase/config";
 
 // Fetch about page details
-export async function GET(req: Request) {
+export async function GET() {
     try {
-        const url = new URL(req.url)
-        const language = url.searchParams.get('lang') || 'en'
-        console.log('fetching content for language:' , language)
-        const snapshot = await getDoc(doc(db, 'about', 'pitmaster'))
-
+        const snapshot = await getDoc(doc(db, 'about', 'pitmaster'));
         if (!snapshot.exists()) {
             return new NextResponse('About content not found', { status: 400 })     
         }
         const data = snapshot.data()
-        const content = data?.[language]?.content || ''
-        console.log('Fetched content:', content)
-        
         return NextResponse.json({
-            [language]: {
-                content,
-                activeImage: data?.activeImage || '',
+            en: {
+                content: data?.en?.content || '',
+            },
+            es: {
+                content: data?.es?.content || '',
             },
             images: data?.images || [],
             activeImage: data?.activeImage || '',

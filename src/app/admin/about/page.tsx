@@ -9,7 +9,7 @@ import i18n from '@/i18n';
 
 export default function ManageAboutPage() {
   const router = useRouter()
-  const [content, setContent] = useState({ en: '', es: '' })
+  const [formState, setFormState] = useState({ en: { content: ''}, es: { content: ''}, })
   const [images, setImages] = useState<string[]>([])
   const [activeImage, setActiveImage] = useState('')
   const [file, setFile] = useState<File | null>(null)
@@ -25,9 +25,9 @@ export default function ManageAboutPage() {
       const data = await res.json()
       console.log('data loaded from API:', data);
       
-      setContent({
-        en: data?.en?.content || '',
-        es: data?.es?.content || ''
+      setFormState({
+        en: { content: data?.en?.content || ''},
+        es: { content: data?.es?.content || ''},
       })
       setImages(data?.images || [])
       setActiveImage(data?.activeImage || '')
@@ -72,7 +72,7 @@ export default function ManageAboutPage() {
 }
 
 const handleSave = async () => {
-  if (!content.en.trim() || !content.es.trim()) {
+  if (!formState.en.content.trim() || !formState.es.content.trim()) {
     alert('Please fill out both English and Spanish content.')
     return
   }
@@ -89,7 +89,7 @@ const handleSave = async () => {
       fetch('/api/about/update', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ locale, content: content[locale], activeImage }),
+        body: JSON.stringify({ locale, content: formState[locale].content, activeImage }),
       })
       
       await Promise.all([saveContent('en'), saveContent('es')])
@@ -215,8 +215,15 @@ const handleSave = async () => {
             <textarea
               className="w-full p-3 bg-zinc-900 border border-white/20 rounded"
               rows={6}
-              value={content[lang as 'en' | 'es']}
-              onChange={(e) => setContent((prev) => ({ ...prev, [lang]: e.target.value }))}
+              value={formState[lang as 'en' | 'es'].content}
+              onChange={(e) => setFormState((prev) => ({
+                ...prev,
+                [lang]: {
+                  ...prev[lang as 'en' | 'es'],
+                  content: e.target.value,
+                },
+              }))
+            }
               placeholder={`Enter about content in ${lang === 'en' ? 'English' : 'Spanish'}...`}
             />
           </div>

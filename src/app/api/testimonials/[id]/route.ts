@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { doc, updateDoc, deleteDoc} from "firebase/firestore";
 import { db } from "@/firebase/config";
 
+
+// Update existing testimonial
 export async function PUT(req: NextRequest) {
     const id = req.nextUrl.pathname.split('/').pop()
     if (!id) {
@@ -18,6 +20,7 @@ export async function PUT(req: NextRequest) {
     return NextResponse.json({ success: true })
 }
 
+// delete existing testimonial
 export async function DELETE(req: NextRequest) {
     const id = req.nextUrl.pathname.split('/').pop()
     if (!id) {

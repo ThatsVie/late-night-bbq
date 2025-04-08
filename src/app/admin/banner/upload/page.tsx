@@ -1,12 +1,9 @@
 'use client'
-export const dynamic = 'force-dynamic';
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
-import { db } from '@/firebase/config'
-import { collection, setDoc, doc } from 'firebase/firestore'
-import { uploadBannerImage } from '@/utils/uploadBannerImage'
+import { getAuth } from 'firebase/auth'
 import CropModal from '@/components/CropModal'
 import CropRectModal from '@/components/CropRectModal'
 
@@ -26,7 +23,6 @@ export default function UploadBannerPage() {
     es: { title: '', subtitle: '', altText: '' },
   })
 
-  // Cleanup fileUrl
   useEffect(() => {
     if (!file) return
     const objectUrl = URL.createObjectURL(file)
@@ -34,7 +30,6 @@ export default function UploadBannerPage() {
     return () => URL.revokeObjectURL(objectUrl)
   }, [file])
 
-  // Generate preview from cropped file
   useEffect(() => {
     if (!croppedFile) return
     const objectUrl = URL.createObjectURL(croppedFile)
@@ -74,16 +69,53 @@ export default function UploadBannerPage() {
       return
     }
 
-    const imageUrl = await uploadBannerImage(croppedFile)
+    const auth = getAuth()
+    const user = auth.currentUser
+    const token = user && (await user.getIdToken())
 
-    const bannerDoc = {
-      en: { ...formData.en, imageUrl },
-      es: { ...formData.es, imageUrl },
-      shape: cropMode,
+    if (!token) {
+      alert('Authentication failed. Please log in again.')
+      return
     }
 
-    await setDoc(doc(collection(db, 'banners'), formData.id), bannerDoc)
-    setUploaded(true)
+    const form = new FormData()
+    form.append('file', croppedFile)
+
+    try {
+      const uploadRes = await fetch('/api/admin/banner/upload-image', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: form,
+      })
+
+      const { url } = await uploadRes.json()
+
+      const bannerDoc = {
+        en: { ...formData.en, imageUrl: url },
+        es: { ...formData.es, imageUrl: url },
+        shape: cropMode,
+      }
+
+      const saveRes = await fetch(`/api/admin/banner/${formData.id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(bannerDoc),
+      })
+
+      if (!saveRes.ok) {
+        throw new Error('Failed to save banner document')
+      }
+
+      setUploaded(true)
+    } catch (error) {
+      console.error('Error uploading banner:', error)
+      alert('Something went wrong. Please try again.')
+    }
   }
 
   return (
@@ -91,11 +123,7 @@ export default function UploadBannerPage() {
       <h1 className="text-2xl font-bold text-pink-500 mb-6">Upload New Homepage Banner</h1>
 
       <button
-        onClick={() => {
-          if (typeof window !== 'undefined') {
-            router.push('/admin/banner')
-          }
-        }}
+        onClick={() => router.push('/admin/banner')}
         className="mb-6 text-sm text-white hover:text-pink-400 border border-white/20 px-4 py-2 rounded"
       >
         ← Back to Banners

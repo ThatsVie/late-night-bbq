@@ -1,5 +1,8 @@
 'use client'
 
+export const dynamic = 'force-dynamic'
+
+
 import { useTranslation } from 'react-i18next'
 import Loader from '@/components/Loader'
 import React, { useEffect, useState } from 'react'

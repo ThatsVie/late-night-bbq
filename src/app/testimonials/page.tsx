@@ -57,7 +57,7 @@ export default function TestimonialsPage() {
             key={id}
             className='bg-zinc-900 p-6 rounded-xl border border-white/10 shadow'
             >
-              <p className='text-lg text-white/90 italic'>"{quote}"</p>
+              <p className='text-lg text-white/90 italic'>&ldquo;{quote}&rdquo;</p>
               <footer className='mt-4 text-sm text-white/60'>- {name}</footer>
             </blockquote>
             )

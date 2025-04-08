@@ -5,14 +5,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import CropModal from '@/components/CropModal'
-import {
-  fetchAboutContent,
-  updateAboutContent,
-  uploadPitmasterImage,
-  setActivePitmasterImage,
-  deletePitmasterImage,
-  updatePitmasterImages,
-} from '@/utils/aboutService'
+import i18n from '@/i18n';
 
 export default function ManageAboutPage() {
   const router = useRouter()
@@ -26,11 +19,18 @@ export default function ManageAboutPage() {
 
   useEffect(() => {
     const load = async () => {
-      const en = await fetchAboutContent('en')
-      const es = await fetchAboutContent('es')
-      setContent({ en: en?.content || '', es: es?.content || '' })
-      setImages(en?.images || [])
-      setActiveImage(en?.activeImage || '')
+      const lang = i18n.language || 'en';
+      console.log('language used for API request:', lang);
+      const res = await fetch(`/api/about?lang=${lang}`)
+      const data = await res.json()
+      console.log('data loaded from API:', data);
+      
+      setContent({
+        en: data?.en?.content || '',
+        es: data?.es?.content || ''
+      })
+      setImages(data?.images || [])
+      setActiveImage(data?.activeImage || '')
     }
     load()
   }, [])
@@ -49,42 +49,57 @@ export default function ManageAboutPage() {
   const handleCroppedImage = async (croppedFile: File) => {
     setLoading(true)
     try {
-      const croppedUrl = await uploadPitmasterImage(croppedFile)
-      const newImages = [...images, croppedUrl]
-      await updatePitmasterImages(newImages)
+      const formData = new FormData()
+      formData.append('file', croppedFile)
+
+      const uploadRes = await fetch ('/api/about/images', {
+        method: 'POST',
+        body: formData
+      })
+
+      const { url } = await uploadRes.json()
+      const newImages = [...images, url]
+
       setImages(newImages)
-      setActiveImage(croppedUrl)
-      setFile(null)
-      setPreview(null)
-    } catch (err) {
-      console.error(err)
-      alert('There was an error saving the cropped image.')
-    } finally {
-      setShowCropper(false)
-      setLoading(false)
-    }
+      setActiveImage(url)
+  } catch (err) {
+    console.error(err)
+    alert('There was an error uploading the image.')
+  } finally {
+    setShowCropper(false)
+    setLoading(false)
   }
+}
 
-  const handleSave = async () => {
-    if (!content.en.trim() || !content.es.trim()) {
-      alert('Please fill out both English and Spanish content.')
-      return
-    }
-
-    if (!activeImage) {
-      alert('Please upload and crop an image of the pitmaster.')
-      return
-    }
-
-    setLoading(true)
-
-    try {
-      await updateAboutContent('en', content.en, activeImage)
-      await updateAboutContent('es', content.es, activeImage)
-      alert('Pitmaster content successfully updated!')
+const handleSave = async () => {
+  if (!content.en.trim() || !content.es.trim()) {
+    alert('Please fill out both English and Spanish content.')
+    return
+  }
+  
+  if (!activeImage) {
+    alert('Please upload and crop an image of the pitmaster.')
+    return
+  }
+  
+  setLoading(true)
+  
+  try {
+    const saveContent = async (locale: 'en' | 'es') =>
+      fetch('/api/about/update', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ locale, content: content[locale], activeImage }),
+      })
+      
+      await Promise.all([saveContent('en'), saveContent('es')])
+      const res = await fetch(`/api/about?lang=${i18n.language}`)
+      const data = await res.json()
+      setActiveImage(data?.activeImage || '')
+      alert('Content saved!')
     } catch (err) {
       console.error(err)
-      alert('There was an error saving the content.')
+      alert('error saving content.')
     } finally {
       setLoading(false)
     }
@@ -92,18 +107,28 @@ export default function ManageAboutPage() {
 
   const handleSetActiveImage = async (url: string) => {
     setActiveImage(url)
-    await setActivePitmasterImage(url)
+    await fetch ('/api/about/images', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ activeImage: url }),
+    })
   }
 
   const handleDeleteImage = async (url: string) => {
     if (!confirm('Are you sure you want to delete this image?')) return
-    await deletePitmasterImage(url)
+    await fetch('/api/about/images', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url }),
+    });
+    
     const updated = images.filter((img) => img !== url)
     setImages(updated)
+
     if (activeImage === url) {
       const newActive = updated[0] || ''
       setActiveImage(newActive)
-      await setActivePitmasterImage(newActive)
+      await handleSetActiveImage(newActive)
     }
   }
 

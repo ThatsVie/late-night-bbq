@@ -3,32 +3,40 @@ export const dynamic = 'force-dynamic';
 
 import { useTranslation } from 'react-i18next'
 import { useEffect, useRef, useState } from 'react'
-import { fetchAboutContent } from '@/utils/aboutService'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
+
+export interface AboutContent {
+  content: string
+  imageUrl: string
+  images: string[]
+  activeImage: string
+}
 
 export default function AboutPage() {
   const { t, i18n } = useTranslation()
   const [mounted, setMounted] = useState(false)
   const [content, setContent] = useState('')
   const [imageUrl, setImageUrl] = useState('')
-
   const devsSectionRef = useRef<HTMLElement>(null)
   const pathname = usePathname()
 
   useEffect(() => {
     setMounted(true)
-
-    const fetchContent = async () => {
-      const data = await fetchAboutContent(i18n.language as 'en' | 'es')
-      if (data) {
-        setContent(data.content)
-        setImageUrl(data.activeImage || data.imageUrl)
+    const fetchAboutContent = async () => {
+      try {
+        const response = await fetch(`/api/about?lang=${i18n.language}`)
+        const data = await response.json()
+        setContent(data?.[i18n.language]?.content || '')
+        setImageUrl(data?.activeImage || '')
+      } catch (err) {
+        console.error('Error fetching about page', err)
       }
     }
-
-    fetchContent()
+    fetchAboutContent()
   }, [i18n.language])
+
+
 
   useEffect(() => {
     if (typeof window !== 'undefined' && mounted) {

@@ -23,15 +23,23 @@ const CATEGORIES: MenuCategory[] = ['BBQ Meats', 'Sides', 'Fixins']
 
 export default function MenuPage() {
   const { t, i18n } = useTranslation()
-  const [mounted, setMounted] = useState(false)
   const [items, setItems] = useState<MenuItemData[]>([])
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
     setMounted(true)
     const loadItems = async () => {
-      const res = await fetch('/api/menu')
-      const data = await res.json()
-      setItems(data)
+      try {
+        const res = await fetch('/api/menu')
+        const data = await res.json()
+        if (Array.isArray(data)) {
+          setItems(data)
+        } else {
+          console.error('Invalid menu data format:', data)
+        }
+      } catch (err) {
+        console.error('Failed to fetch menu items:', err)
+      }
     }
     loadItems()
   }, [])

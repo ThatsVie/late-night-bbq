@@ -128,6 +128,11 @@ export default function EditBannerPage() {
     esSubtitle: string,
     esAltText: string
   ) => {
+    if (!enSubtitle.trim() || !enAltText.trim() || !esSubtitle.trim() || !esAltText.trim()) {
+      alert('Please fill out all fields before saving.')
+      return
+    }
+
     const token = await getToken()
     await fetch(`/api/admin/banner/${id}`, {
       method: 'PATCH',
@@ -136,8 +141,8 @@ export default function EditBannerPage() {
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
-        subtitle: enSubtitle,
-        altText: enAltText,
+        en: { subtitle: enSubtitle, altText: enAltText },
+        es: { subtitle: esSubtitle, altText: esAltText },
       }),
     })
     setBanners((prev) =>

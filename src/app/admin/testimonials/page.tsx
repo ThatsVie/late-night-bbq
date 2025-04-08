@@ -3,17 +3,24 @@ export const dynamic = 'force-dynamic';
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import {
-  TestimonialData,
-  fetchAllTestimonials,
-  addTestimonial,
-  updateTestimonial,
-  deleteTestimonial,
-} from '@/utils/testimonialService'
+
+export interface TestimonialLocale {
+  name: string
+  quote: string
+}
+
+export interface TestimonialData {
+  en: TestimonialLocale
+  es: TestimonialLocale
+}
+
+export interface TestimonialWithId extends TestimonialData {
+  id: string
+}
 
 export default function ManageTestimonialsPage() {
   const router = useRouter()
-  const [testimonials, setTestimonials] = useState<(TestimonialData & { id: string })[]>([])
+  const [testimonials, setTestimonials] = useState<TestimonialWithId[]>([])
   const [editingId, setEditingId] = useState<string | null>(null)
   const [newTestimonial, setNewTestimonial] = useState<TestimonialData>({
     en: { name: '', quote: '' },
@@ -21,12 +28,14 @@ export default function ManageTestimonialsPage() {
   })
 
   useEffect(() => {
-    const fetchData = async () => {
-      const data = await fetchAllTestimonials()
-      setTestimonials(data)
-    }
-    fetchData()
+    fetchAllTestimonials()
   }, [])
+
+  const fetchAllTestimonials = async () => {
+    const response = await fetch('/api/testimonials')
+    const data = await response.json()
+    setTestimonials(data)
+  }
 
   const handleInputChange = (lang: 'en' | 'es', field: 'name' | 'quote', value: string) => {
     setNewTestimonial((prev) => ({
@@ -37,28 +46,38 @@ export default function ManageTestimonialsPage() {
 
   const handleSubmit = async () => {
     if (editingId) {
-      await updateTestimonial(editingId, newTestimonial)
+      await fetch(`/api/testimonials/${editingId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify(newTestimonial),
+      })
     } else {
-      await addTestimonial(newTestimonial)
+      await fetch ('/api/testimonials', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify(newTestimonial),
+      })
     }
-    const updated = await fetchAllTestimonials()
-    setTestimonials(updated)
+
+    await fetchAllTestimonials()
     setNewTestimonial({ en: { name: '', quote: '' }, es: { name: '', quote: '' } })
     setEditingId(null)
   }
 
-  const handleEdit = (testimonial: TestimonialData & { id: string }) => {
+  const handleEdit = (testimonial: TestimonialWithId) => {
     setEditingId(testimonial.id)
     setNewTestimonial({ en: testimonial.en, es: testimonial.es })
   }
 
   const handleDelete = async (id: string) => {
     if (confirm('Are you sure you want to delete this testimonial?')) {
-      await deleteTestimonial(id)
-      const updated = await fetchAllTestimonials()
-      setTestimonials(updated)
+      await fetch(`/api/testimonials/${id}`, {
+        method: 'DELETE',
+      })
+      await fetchAllTestimonials()
     }
   }
+
 
   return (
     <main className="p-6 bg-zinc-950 min-h-screen text-white">

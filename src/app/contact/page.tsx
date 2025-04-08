@@ -193,7 +193,7 @@ export default function ContactPage() {
               type="tel"
               value={formData.phone}
               onChange={handleChange}
-              placeholder="(123) 456-7890"
+              placeholder="123-456-7890"
               autoComplete="tel"
               className="w-full p-3 rounded bg-black text-white border border-white/10"
             />

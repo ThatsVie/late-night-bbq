@@ -1,11 +1,11 @@
 'use client'
-export const dynamic = 'force-dynamic';
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import CropModal from '@/components/CropModal'
 import i18n from '@/i18n';
+import { auth } from '@/firebase/config'
 
 export default function ManageAboutPage() {
   const router = useRouter()
@@ -46,15 +46,25 @@ export default function ManageAboutPage() {
     }
   }, [file])
 
+  const getAdminToken = async () => {
+    const user = auth.currentUser
+    if (!user) throw new Error('User not authenticated')
+      return user.getIdToken()
+  }
+
   const handleCroppedImage = async (croppedFile: File) => {
     setLoading(true)
     try {
+      const token = await getAdminToken()
       const formData = new FormData()
       formData.append('file', croppedFile)
 
-      const uploadRes = await fetch ('/api/about/images', {
+      const uploadRes = await fetch ('/api/admin/about/images', {
         method: 'POST',
-        body: formData
+        body: formData,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       })
 
       const { url } = await uploadRes.json()
@@ -85,18 +95,32 @@ const handleSave = async () => {
   setLoading(true)
   
   try {
+    const token = await getAdminToken()
+
     const saveContent = async (locale: 'en' | 'es') =>
-      fetch('/api/about/update', {
+      fetch('/api/admin/about/update', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ locale, content: formState[locale].content, activeImage }),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          locale,
+          content: formState[locale].content,
+          activeImage
+        }),
       })
       
       await Promise.all([saveContent('en'), saveContent('es')])
-      const res = await fetch(`/api/about?lang=${i18n.language}`)
+      const res = await fetch(`/api/about?lang=${i18n.language}`, { cache: 'no-store' })
       const data = await res.json()
+      setFormState({
+        en: { content: data?.en?.content || ''},
+        es: { content: data?.es?.content || ''},
+      })
       setActiveImage(data?.activeImage || '')
       alert('Content saved!')
+
     } catch (err) {
       console.error(err)
       alert('error saving content.')
@@ -106,19 +130,32 @@ const handleSave = async () => {
   }
 
   const handleSetActiveImage = async (url: string) => {
-    setActiveImage(url)
-    await fetch ('/api/about/images', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ activeImage: url }),
+    try {
+      const token = await getAdminToken()
+      setActiveImage(url)
+      await fetch ('/api/admin/about/images', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ activeImage: url }),
     })
+  } catch (err) {
+    console.error('Failed to set active image', err)
   }
+}
 
   const handleDeleteImage = async (url: string) => {
     if (!confirm('Are you sure you want to delete this image?')) return
-    await fetch('/api/about/images', {
+    const token = await getAdminToken();
+
+    await fetch('/api/admin/about/images', {
       method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify({ url }),
     });
     

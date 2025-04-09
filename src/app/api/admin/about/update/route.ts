@@ -1,9 +1,14 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { doc, setDoc } from "firebase/firestore";
-import { db } from "@/firebase/config"
+import { db } from "@/firebase/config";
+import { verifyAdminToken } from '@/utils/verifyAdmin'
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
     try {
+        const decodedToken = await verifyAdminToken(req)
+        if (!decodedToken) {
+            return new NextResponse('Unauthorized', { status: 400 })
+        }
         const body = await req.json()
         const { locale, content, activeImage } = body
         if (!locale || !content || !activeImage) {

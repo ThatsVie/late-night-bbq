@@ -1,7 +1,6 @@
-import { adminDb } from '@/firebase/admin'
+import { adminDb, adminStorage } from '@/firebase/admin'
 import { verifyAdminToken } from '@/utils/verifyAdmin'
 import { NextResponse, NextRequest } from 'next/server'
-import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage'
 import { v4 as uuidv4 } from 'uuid'
 import { FieldValue } from 'firebase-admin/firestore'
 
@@ -16,13 +15,17 @@ export async function POST(req: NextRequest) {
         if (!file) {
             return new NextResponse('no file provided', { status:  400 })
         }
-        const storage = getStorage()
-        const uniqueName = `${uuidv4()}-${file.name}`
-        const fileRef = ref(storage, `about/${uniqueName}`)
+        const bucket = adminStorage.bucket()
         const buffer = Buffer.from(await file.arrayBuffer())
+        const filename = `about/${uuidv4()}-${file.name}`
+        const fileRef = bucket.file(filename)
 
-        await uploadBytes(fileRef, buffer)
-        const url = await getDownloadURL(fileRef)
+        await fileRef.save(buffer, {
+            contentType: file.type,
+            public: true,
+        })
+
+        const url = `https://storage.googleapis.com/${bucket.name}/${filename}`
 
         const docRef = adminDb.collection('about').doc('pitmaster')
         await docRef.update({
@@ -81,10 +84,10 @@ export async function DELETE(req: NextRequest) {
         const updatedImages = images.filter((img) => img !== url)
         const newActive = data.activeImage === url ? updatedImages[0] || '' : data.activeImage
 
-        const storage = getStorage()
-        const path = decodeURIComponent(new URL(url).pathname.split('/o/')[1])
-        const fileRef = ref(storage, path)
-        await deleteObject(fileRef)
+        const bucket = adminStorage.bucket()
+        const path = decodeURIComponent(new URL(url).pathname.replace(`/`, '').replace(`storage.googleapis.com/${bucket.name}/`, ''))
+        const fileRef = bucket.file(path)
+        await fileRef.delete()
 
         await docRef.update({
             images: FieldValue.arrayRemove(url),

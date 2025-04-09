@@ -3,6 +3,7 @@ export const dynamic = 'force-dynamic';
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { getAuth } from 'firebase/auth'
 
 export interface TestimonialLocale {
   name: string
@@ -45,19 +46,27 @@ export default function ManageTestimonialsPage() {
   }
 
   const handleSubmit = async () => {
-    if (editingId) {
-      await fetch(`/api/testimonials/${editingId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json'},
-        body: JSON.stringify(newTestimonial),
-      })
-    } else {
-      await fetch ('/api/testimonials', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json'},
-        body: JSON.stringify(newTestimonial),
-      })
+    const auth = getAuth()
+    const user = auth.currentUser
+    const token = user && (await user.getIdToken())
+    if (!token) {
+      alert('Authentication failed. Please login again.')
+      return
     }
+
+    const method = editingId ? 'PUT' : 'POST'
+    const url = editingId
+      ? `/api/admin/testimonials/${editingId}`
+      : '/api/admin/testimonials'
+
+    await fetch(url, {
+      method,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(newTestimonial),
+    })
 
     await fetchAllTestimonials()
     setNewTestimonial({ en: { name: '', quote: '' }, es: { name: '', quote: '' } })
@@ -66,17 +75,32 @@ export default function ManageTestimonialsPage() {
 
   const handleEdit = (testimonial: TestimonialWithId) => {
     setEditingId(testimonial.id)
-    setNewTestimonial({ en: testimonial.en, es: testimonial.es })
+    setNewTestimonial({
+      en: { name: testimonial.en.name, quote: testimonial.en.quote },
+      es: { name: testimonial.es.name, quote: testimonial.es.quote },
+    })
   }
 
   const handleDelete = async (id: string) => {
-    if (confirm('Are you sure you want to delete this testimonial?')) {
-      await fetch(`/api/testimonials/${id}`, {
+    if (!confirm('Are you sure you want to delete this testimonial?')) return
+    const auth = getAuth()
+    const user = auth.currentUser
+    const token = user && (await user.getIdToken())
+
+    if (!token) {
+      alert('Authentication failed. Please login again.')
+      return
+    }
+
+    await fetch(`/api/admin/testimonials/${id}`, {
         method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       })
+
       await fetchAllTestimonials()
     }
-  }
 
 
   return (

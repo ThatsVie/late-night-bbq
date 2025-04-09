@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { doc, setDoc } from "firebase/firestore";
-import { db } from "@/firebase/config";
+import { adminDb } from '@/firebase/admin'
 import { verifyAdminToken } from '@/utils/verifyAdmin'
 
 export async function POST(req: NextRequest) {
@@ -15,9 +14,8 @@ export async function POST(req: NextRequest) {
             return new NextResponse('Missing required fields', { status: 400 })
         }
 
-        const ref = doc(db, 'about', 'pitmaster')
-        await setDoc(
-            ref,
+        const ref = adminDb.collection('about').doc('pitmaster');
+            await ref.set(
             {
                 [locale]: { content },
                 activeImage,

@@ -1,20 +1,24 @@
 'use client'
-export const dynamic = 'force-dynamic';
 
 import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import CropRectModal from '@/components/CropRectModal'
-import {
-  fetchMerchItems,
-  addMerchItem,
-  updateMerchItem,
-  deleteMerchItem,
-  uploadMerchImage,
-  updateMerchOrder,
-  MerchItemData,
-} from '@/utils/merchService'
+import { getAuth } from 'firebase/auth'
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd'
+
+export interface MerchLocale {
+  title: string
+  description: string
+}
+
+export interface MerchItemData {
+  en: MerchLocale
+  es: MerchLocale
+  images: string[]
+  activeImage: string
+  order: number
+}
 
 export default function ManageMerchPage() {
   const router = useRouter()
@@ -35,7 +39,8 @@ export default function ManageMerchPage() {
 
   useEffect(() => {
     const load = async () => {
-      const data = await fetchMerchItems()
+      const res = await fetch('/api/merch')
+      const data = await res.json()
       setItems(data)
     }
     load()
@@ -51,6 +56,25 @@ export default function ManageMerchPage() {
       setPreview(null)
     }
   }, [file])
+
+  const uploadMerchImage = async (file: File): Promise<string> => {
+    const user = getAuth().currentUser
+    if (!user) throw new Error('User not authenticated')
+    const token = await user.getIdToken()
+
+    const formData = new FormData()
+    formData.append('file', file)
+
+    const res = await fetch('/api/admin/merch/upload-image', {
+      method: 'POST',
+      body: formData,
+      headers: { Authorization: `Bearer ${token}` },
+    })
+
+    if (!res.ok) throw new Error('Image upload failed')
+    const { url } = await res.json()
+    return url
+  }
 
   const handleCropComplete = async (cropped: File) => {
     setCroppedFile(cropped)
@@ -68,9 +92,18 @@ export default function ManageMerchPage() {
 
     if (!hasContent) return alert('Please complete all fields.')
 
+    const user = getAuth().currentUser
+    if (!user) return alert('User not authenticated')
+    const token = await user.getIdToken()
+
     let imageUrl = ''
     if (croppedFile) {
-      imageUrl = await uploadMerchImage(croppedFile)
+      try {
+        imageUrl = await uploadMerchImage(croppedFile)
+      } catch (err) {
+        console.error(err)
+        return alert('Image upload failed')
+      }
     }
 
     const updatedImages = [...formState.images, ...(imageUrl ? [imageUrl] : [])]
@@ -82,22 +115,28 @@ export default function ManageMerchPage() {
 
     if (!updatedForm.activeImage) return alert('Please add and crop at least one image.')
 
-    if (editingId) {
-      await updateMerchItem(editingId, updatedForm)
-    } else {
+    const endpoint = editingId ? `/api/admin/merch/${editingId}` : '/api/admin/merch'
+    const method = editingId ? 'PATCH' : 'POST'
+
+    if (!editingId) {
       updatedForm.order = items.length
-      await addMerchItem(updatedForm)
     }
 
-    const updated = await fetchMerchItems()
-    setItems(updated)
-    setFormState({
-      en: { title: '', description: '' },
-      es: { title: '', description: '' },
-      images: [],
-      activeImage: '',
-      order: 0,
+    const res = await fetch(endpoint, {
+      method,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(updatedForm),
     })
+
+    if (!res.ok) return alert('Failed to save item')
+
+    const refreshed = await fetch('/api/merch')
+    const newData = await refreshed.json()
+    setItems(newData)
+    setFormState({ en: { title: '', description: '' }, es: { title: '', description: '' }, images: [], activeImage: '', order: 0 })
     setCroppedFile(null)
     setFile(null)
     setPreview(null)
@@ -107,39 +146,64 @@ export default function ManageMerchPage() {
   const handleEdit = (item: MerchItemData & { id: string }) => {
     setFormState(item)
     setEditingId(item.id)
-    setTimeout(() => {
-      formRef.current?.scrollIntoView({ behavior: 'smooth' })
-    }, 100)
+    setTimeout(() => formRef.current?.scrollIntoView({ behavior: 'smooth' }), 100)
   }
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this merch item?')) return
-    await deleteMerchItem(id)
-    const updated = await fetchMerchItems()
-    setItems(updated)
+    if (!confirm('Are you sure you want to delete this item?')) return
+    const user = getAuth().currentUser
+    if (!user) return alert('User not authenticated')
+    const token = await user.getIdToken()
+    await fetch(`/api/admin/merch/${id}`, { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } })
+    const refreshed = await fetch('/api/merch')
+    const newData = await refreshed.json()
+    setItems(newData)
   }
 
-  const handleSetActiveImage = async (id: string, imageUrl: string) => {
-    const item = items.find((i) => i.id === id)
-    if (!item) return
-    await updateMerchItem(id, { ...item, activeImage: imageUrl })
-    const updated = await fetchMerchItems()
-    setItems(updated)
+  const handleSetActiveImage = async (id: string, url: string) => {
+    const user = getAuth().currentUser
+    if (!user) return alert('User not authenticated')
+    const token = await user.getIdToken()
+
+    await fetch(`/api/admin/merch/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ activeImage: url }),
+    })
+
+    const refreshed = await fetch('/api/merch')
+    const newData = await refreshed.json()
+    setItems(newData)
   }
 
-  const handleDeleteImage = async (itemId: string, imageUrl: string) => {
-    if (!confirm('Are you sure you want to delete this image?')) return
-    const item = items.find((i) => i.id === itemId)
+  const handleDeleteImage = async (id: string, url: string) => {
+    const item = items.find(i => i.id === id)
     if (!item) return
-    const filtered = item.images.filter((url) => url !== imageUrl)
+    const user = getAuth().currentUser
+    if (!user) return alert('User not authenticated')
+    const token = await user.getIdToken()
+
     const updated = {
       ...item,
-      images: filtered,
-      activeImage: filtered[0] || '',
+      images: item.images.filter(i => i !== url),
+      activeImage: item.images[0] === url ? item.images[1] || '' : item.activeImage,
     }
-    await updateMerchItem(itemId, updated)
-    const refreshed = await fetchMerchItems()
-    setItems(refreshed)
+
+    await fetch(`/api/admin/merch/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(updated),
+    })
+
+    const refreshed = await fetch('/api/merch')
+    const newData = await refreshed.json()
+    setItems(newData)
   }
 
   const handleDragEnd = async (result: DropResult) => {
@@ -147,10 +211,24 @@ export default function ManageMerchPage() {
     const reordered = Array.from(items)
     const [moved] = reordered.splice(result.source.index, 1)
     reordered.splice(result.destination.index, 0, moved)
+    const updated = reordered.map((item, idx) => ({ id: item.id, order: idx }))
 
-    const updatedWithOrder = reordered.map((item, idx) => ({ ...item, order: idx }))
-    setItems(updatedWithOrder)
-    await updateMerchOrder(updatedWithOrder)
+    const user = getAuth().currentUser
+    if (!user) return alert('User not authenticated')
+    const token = await user.getIdToken()
+
+    await fetch('/api/admin/merch/order', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(updated),
+    })
+
+    const refreshed = await fetch('/api/merch')
+    const newData = await refreshed.json()
+    setItems(newData)
   }
 
   return (

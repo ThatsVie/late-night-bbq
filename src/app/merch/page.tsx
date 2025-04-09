@@ -1,22 +1,38 @@
 'use client'
-export const dynamic = 'force-dynamic';
 
 import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
-import { fetchMerchItems } from '@/utils/merchService'
-import type { MerchItemData } from '@/utils/merchService'
+
+export interface MerchLocale {
+  title: string
+  description: string
+}
+
+export interface MerchItemData {
+  id: string
+  en: MerchLocale
+  es: MerchLocale
+  images: string[]
+  activeImage: string
+  order: number
+}
 
 export default function MerchPage() {
   const { t, i18n } = useTranslation()
   const [mounted, setMounted] = useState(false)
-  const [items, setItems] = useState<(MerchItemData & { id: string })[]>([])
+  const [items, setItems] = useState<MerchItemData[]>([])
 
   useEffect(() => {
     setMounted(true)
     const load = async () => {
-      const data = await fetchMerchItems()
-      setItems(data)
+      try {
+        const res = await fetch('/api/merch', { cache: 'no-store' })
+        const data = await res.json()
+        setItems(data)
+      } catch (err) {
+        console.error('Error loading merch items:', err)
+      }
     }
     load()
   }, [])
@@ -28,7 +44,9 @@ export default function MerchPage() {
   return (
     <main className="bg-black text-white min-h-screen px-6 py-20">
       <section className="max-w-5xl mx-auto text-center">
-        <h1 className="text-5xl font-bold pinkText neon-text tilt-neon-font mb-4">{t('merchPage.title')}</h1>
+        <h1 className="text-5xl font-bold pinkText neon-text tilt-neon-font mb-4">
+          {t('merchPage.title')}
+        </h1>
         <p className="text-white/70 mb-12">{t('merchPage.description')}</p>
 
         <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-3">

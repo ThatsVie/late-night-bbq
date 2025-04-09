@@ -1,146 +1,99 @@
 # 🔥 Late Night BBQ: Website & Admin Dashboard
 
 ## Purpose
+**Late Night BBQ** is a modern, bilingual content-managed website and admin dashboard built for a beloved BBQ catering business in Houston, Texas. Our mission was to honor their story while giving them full ownership over their digital presence.
 
-To build a beautiful, accessible, bilingual website for a small BBQ delivery business in Houston. It will:
+We designed and built a people-first, tech-forward solution that:
 
-- Help users place orders, and leave reviews
-- Give admins a dashboard to manage users, track orders, and view metrics
-- Reflect the warmth, connection, and reputation the couple has built in their community
+- Lets the business showcase their menu, merch, story, and community love
+- Allows customers to explore the business in English or Spanish
+- Supports secure content editing through a custom-built admin dashboard
+- Shares authentic community voices through testimonials
+- Delivers a fast, accessible, and scalable experience with modern tools
+
+**This project empowers the business to:**
+- Update homepage banners, menu items, testimonials, about page content, and merch directly
+- Receive order requests through a dynamic contact form linked via Resend
+
+**And it lets visitors:**
+- Navigate a warm, modern site in English or Spanish
+- Explore the story, food, and love behind the business
+
+Built with **Next.js**, **Firebase**, and **Vercel**, this app reflects both the soul of the brand and the strength of modern web technology.
 
 ---
 
 ## Core Sections
 
 ### 1. Public Website
+Mobile responsive and fully bilingual (EN/ES)
 
-- Homepage
-- About the business / couple
-- Testimonials
-- Storefront (Order / Merch options)
-- Booking calendar (embed or custom)
+- **Homepage** – Banner (admin-editable), intro content, and Facebook embed.
+- **About Page** – Featuring "About the Pitmaster" (editable) and "About the Developers" (hardcoded)
+- **Menu Page** – Categorized menu items with images and descriptions (admin-controlled)
+- **Merch Page** – Merchandise display with images and descriptions (admin-controlled)
+- **Testimonials Page** – Community reviews and love.
+- **Contact Us Page** – Order request form powered by [Resend](https://resend.com/) for email delivery
 
-**How:** Built with React + TypeScript, deployed on Vercel  
-**Why:** Fast, responsive, accessible, bilingual. All publicly visible and mobile-friendly
-
----
-
-### 2. Authentication
-
-- Create account (name, email, phone, password)
-- Email verification
-- 2-step authentication (via email or phone)
-- Login / logout
-- Role: user vs admin
-
-**How:** Use Firebase Auth  
-**Why:** Secure, easy to integrate, handles 2FA, and reduces need to manage passwords manually
+> All dynamic content is editable through the admin dashboard and supports both English and Spanish versions.
 
 ---
 
-### 3. User-Specific Functionality (after login)
+### 2. Admin Dashboard
+Accessible only to the business owners via secure login with Firebase Auth.
 
-- Place an order (submit form + pay with Stripe)
-- Leave a review / testimonial
-- View order history
-- Profile management
+-  **Homepage Banner Editor** – Upload and switch between multiple banners
+-  **About the Pitmaster Editor** – Modify text content and pitmaster image
+-  **Menu Manager** – Add, edit, delete, crop images, reorder categories (BBQ Meats, Sides, Fixins)
+-  **Merch Manager** – Upload merch items, images, multilingual descriptions, drag to reorder
+-  **Testimonials** – Curate community testimonials and highlight feedback
 
-**How:** React UI + serverless API routes on Vercel, connected to PostgreSQL + Stripe  
-**Why:** Allows users to interact meaningfully while keeping sensitive actions behind auth
-
----
-
-### 4. Admin Dashboard
-
-- View all orders and filter/search
-- View and manage user data
-- View submitted reviews
-- Access metrics (site visits, order stats, revenue)
-- Possibly export data or manage booking schedule
-
-**How:** Protected admin route in React app + backend API endpoints  
-**Why:** Enables the couple to manage the business without needing external tools
+> Admins use a simple, intuitive interface powered by drag-and-drop, modals, and secure API routes backed by Firebase.
 
 ---
 
-## Tech Stack
+##  Tech Stack
 
-| Area                 | Tool                            | Why                                       |
-| -------------------- | ------------------------------- | ----------------------------------------- |
-| Frontend             | React + TypeScript              | Robust, scalable, modern                  |
-| Styling              | Tailwind CSS                    | Responsive, accessible, fast to build     |
-| Routing & API        | Next.js (App Router)            | Pages + backend routes together on Vercel |
-| Auth                 | Firebase Auth                   | 2FA, email verification, secure login     |
-| Backend Logic        | Vercel Serverless Functions     | Keep frontend + backend in one place      |
-| Database             | PostgreSQL                      | Perfect for orders, users, admin data     |
-| Payments             | Stripe API                      | Secure, scalable payment processing       |
-| Booking              | Calendly API or Google Calendar | Easily syncs bookings to owner's calendar |
-| Analytics            | Google Analytics or Plausible   | Track user activity and traffic           |
-| Internationalization | react-i18next                   | Clean multilingual content (EN/ES)        |
-| Deployment           | Vercel                          | One-click deploy, CI/CD, easy scaling     |
+| Area               | Tool / Library                     | Why                                         |
+| ------------------|-------------------------------------|---------------------------------------------|
+| Frontend          | React + TypeScript                  | Modern, scalable, type-safe UI              |
+| Framework         | Next.js (App Router)                | Server & client logic in one place          |
+| Styling           | Tailwind CSS v4                     | Fast, responsive design                     |
+| Admin CMS         | Firebase Admin SDK + Firestore     | Secure, real-time updates                   |
+| Authentication    | Firebase Auth                      | Secure login for admin dashboard            |
+| Storage           | Firebase Storage + Admin SDK       | Handles image upload and public URLs        |
+| Email             | Resend                              | Reliable, secure form-to-inbox flow         |
+| Translations      | react-i18next                       | EN/ES support for both static and dynamic   |
+| Drag + Crop       | hello-pangea/dnd, react-easy-crop   | Custom drag-and-drop and image cropping     |
+| Deployment        | Vercel                              | One-click deploy, great DX, CI/CD           |
 
 ---
 
 ## How Everything Connects
 
-### Public Flow:
-
-Visitor arrives → picks language → browses homepage → signs up/logs in → places order → pays with Stripe → gets confirmation
+### Public Site Flow:
+Visitor chooses language → Browses homepage → Views about,menu, merch, and testimnials → Sends an order request via contact form
 
 ### Admin Flow:
-
-Logs in with admin account → accesses dashboard → sees orders, reviews, users, bookings, metrics → handles customer interactions
+Admin logs in → Navigates dashboard → Edits banners, menu, merch, about section, and testimonials → Changes go live instantly
 
 ---
 
 ## Security & Privacy
 
-- All sensitive actions (place order, leave review, view dashboard) require authentication
-- Firebase ensures email is verified and 2FA is used
-- Backend serverless functions verify Firebase tokens before interacting with the database
-- Stripe handles all payment data no card data touches your server
-- Role-based routing and API protection ensures only admins can access dashboard content
+- Admin routes are fully protected by Firebase Auth token verification
+- Only authenticated users can upload, delete, or update site content
+- Firebase Admin SDK used for all backend operations (Firestore and Storage)
+- Email and form submissions do not expose sensitive user data
 
 ---
 
-## Development Roadmap
+### 💖 Made with love by:
 
-| Phase   | Focus                                                  |
-| ------- | ------------------------------------------------------ |
-| Phase 1 | Plan layout, pages, content, and translations          |
-| Phase 2 | Set up Firebase Auth, user roles, and protected routes |
-| Phase 3 | Build core UI: homepage, about, order form, booking    |
-| Phase 4 | Integrate Stripe payments and store order data in DB   |
-| Phase 5 | Build and secure admin dashboard                       |
-| Phase 6 | Add i18n, responsive/mobile enhancements, final polish |
-| Phase 7 | Launch and monitor analytics, collect feedback         |
+- **[Vie P.](https://whatdoyouknowaboutlove.com/viep/)** —  Lead Full Stack Engineer & Bilingual UX Contributor  
+- **[Courtney G.](https://github.com/grahacr)** — Full Stack Engineer & Visual Interaction Developer  
+- **[Starlee J.](https://github.com/starles-barkley)** — Project Manager & Quality Assurance
 
----
 
-## Special Touches (Emotional + Personal Goals)
 
-- Tell the couple’s story on the About page (photos, quotes, timeline)
-- Highlight community love (testimonial wall or interactive map)
-- Add developer "about me" page showing how tech brings people together
-- Stick to neon pink and black, but add warmth (shadows, textures, natural tones)
-- Use hand-drawn or brush-style fonts and cozy imagery
 
----
-
-## What We're Building & Why
-
-We're creating:
-
-A community-first, modern, bilingual web app that allows:
-
-- Customers to order food and leave love
-- The business to manage everything in one place
-
-Using the right tools to make it:
-
-- Beautiful (Tailwind + imagery)
-- Functional (React + PostgreSQL + Stripe)
-- Secure (Firebase + serverless backend)
-- Human (storytelling + accessibility + multilingual)
-
-All deployed together via Vercel

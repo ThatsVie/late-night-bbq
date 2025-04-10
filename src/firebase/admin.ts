@@ -2,7 +2,7 @@ import { initializeApp, cert, getApps, App } from 'firebase-admin/app'
 import { getStorage } from 'firebase-admin/storage'
 import { getFirestore } from 'firebase-admin/firestore'
 
-const privateKey = Buffer.from(process.env.FIREBASE_PRIVATE_KEY!, 'base64').toString('utf-8');
+const privateKey = process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n')
 
 if (!privateKey) {
   throw new Error('Missing FIREBASE_PRIVATE_KEY in environment')

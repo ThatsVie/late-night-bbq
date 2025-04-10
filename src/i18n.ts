@@ -25,7 +25,7 @@ i18n
       translation: en,
     },
      es: {
-      tranlation: es,
+      translation: es,
     }
    }
 

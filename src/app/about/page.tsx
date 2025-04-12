@@ -94,7 +94,7 @@ export default function AboutPage() {
             href="https://whatdoyouknowaboutlove.com/viep"
             target="_blank"
             rel="noopener noreferrer"
-            className="pinkText underline text-sm"
+            className="inline-block bg-pink-500 text-black font-semibold text-sm px-4 py-2 rounded hover:bg-pink-600 transition"
           >
             {t('about.viewPortfolio')}
           </a>
@@ -107,7 +107,7 @@ export default function AboutPage() {
             href="https://github.com/grahacr"
             target="_blank"
             rel="noopener noreferrer"
-            className="pinkText underline text-sm"
+            className="inline-block bg-pink-500 text-black font-semibold text-sm px-4 py-2 rounded hover:bg-pink-600 transition"
           >
             {t('about.viewPortfolio')}
           </a>
@@ -120,7 +120,7 @@ export default function AboutPage() {
             href="https://whatdoyouknowaboutlove.com/viep"
             target="_blank"
             rel="noopener noreferrer"
-            className="pinkText underline text-sm"
+            className="inline-block bg-pink-500 text-black font-semibold text-sm px-4 py-2 rounded hover:bg-pink-600 transition"
           >
             {t('about.viewPortfolio')}
           </a>

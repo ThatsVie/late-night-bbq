@@ -186,18 +186,11 @@ const handleSave = async () => {
 
         <label className="block mb-2 font-medium text-white/80">Upload Image</label>
         <input
-          type="file"
-          accept="image/*"
-          id="about-image-upload"
-          onChange={(e) => setFile(e.target.files?.[0] || null)}
-          className="hidden"
+        type="file"
+        accept="image/*"
+        onChange={(e) => setFile(e.target.files?.[0] || null)}
+        className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-pink-500 file:text-black hover:file:bg-pink-600"
         />
-        <label
-          htmlFor="about-image-upload"
-          className="inline-block bg-white/10 text-white px-4 py-2 rounded cursor-pointer hover:bg-white/20"
-        >
-          Choose Image
-        </label>
 
         {(preview || activeImage) && (
           <div className="mt-4">

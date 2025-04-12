@@ -150,7 +150,7 @@ export default function UploadBannerPage() {
 
           <div className="mb-6">
             <label className="block mb-2 font-semibold text-white">
-              Upload Image File <span className="text-white/60 text-sm">(JPG/PNG)</span>
+              Upload Image <span className="text-white/60 text-sm">(JPG/PNG)</span>
             </label>
             <div className="flex items-center gap-4 mb-4">
               <label className="text-sm">

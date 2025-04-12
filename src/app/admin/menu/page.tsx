@@ -308,16 +308,9 @@ export default function ManageMenuPage() {
           <input
             type="file"
             accept="image/*"
-            id="image-upload"
             onChange={(e) => handleFileChange(e.target.files?.[0] || null)}
-            className="hidden"
+            className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-pink-500 file:text-black hover:file:bg-pink-600"
           />
-          <label
-            htmlFor="image-upload"
-            className="inline-block bg-white/10 text-white px-4 py-2 rounded cursor-pointer hover:bg-white/20"
-          >
-            Choose Image
-          </label>
         </div>
 
         <label className="block text-white/70 text-sm mb-2">Category</label>

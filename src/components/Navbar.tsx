@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
 import { Menu, X } from 'lucide-react'
 
-export default function Navbar({ handleRouteChange }: { handleRouteChange: (url: string) => void}) {
+export default function Navbar({ handleRouteChange }: { handleRouteChange: (url: string) => void }) {
   const { i18n, t } = useTranslation()
   const [mounted, setMounted] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
@@ -24,12 +24,17 @@ export default function Navbar({ handleRouteChange }: { handleRouteChange: (url:
   return (
     <header className="bg-black text-white border-b border-white/10">
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-        {/* Site title */}
-        <Link href="/" onClick={(e) => { e.preventDefault(); handleRouteChange('/'); }} className="text-2xl font-bold pinkText tilt-neon-font">
+        <Link
+          href="/"
+          onClick={(e) => {
+            e.preventDefault()
+            handleRouteChange('/')
+          }}
+          className="text-2xl font-bold pinkText tilt-neon-font"
+        >
           {t('title')}
         </Link>
 
-        {/* Hamburger toggle for mobile */}
         <button
           className="md:hidden p-2 rounded focus:outline-none focus:ring-2 focus:ring-pink-400 animate-pulse"
           onClick={() => setIsOpen(!isOpen)}
@@ -39,26 +44,23 @@ export default function Navbar({ handleRouteChange }: { handleRouteChange: (url:
         </button>
 
         {/* Desktop nav */}
-        <nav
-          className="hidden md:flex gap-6 items-center text-sm sm:text-base"
-          aria-label="Main navigation"
-        >
-          <Link href="/" onClick={(e) => { e.preventDefault(); handleRouteChange('/'); }} className="hover:text-pink-400">
+        <nav className="hidden md:flex gap-6 items-center text-sm sm:text-base" aria-label="Main navigation">
+          <Link href="/" onClick={(e) => { e.preventDefault(); handleRouteChange('/') }} className="hover:text-pink-400">
             {t('nav.home')}
           </Link>
-          <Link href="/about" onClick={(e) => { e.preventDefault(); handleRouteChange('/about'); }} className="hover:text-pink-400">
+          <Link href="/about" onClick={(e) => { e.preventDefault(); handleRouteChange('/about') }} className="hover:text-pink-400">
             {t('nav.about')}
           </Link>
-          <Link href="/menu" onClick={(e) => { e.preventDefault(); handleRouteChange('/menu'); }} className="hover:text-pink-400">
+          <Link href="/menu" onClick={(e) => { e.preventDefault(); handleRouteChange('/menu') }} className="hover:text-pink-400">
             {t('nav.store')}
           </Link>
-          <Link href="/merch" onClick={(e) => { e.preventDefault(); handleRouteChange('/merch'); }} className="hover:text-pink-400">
+          <Link href="/merch" onClick={(e) => { e.preventDefault(); handleRouteChange('/merch') }} className="hover:text-pink-400">
             {t('nav.merch')}
           </Link>
-          <Link href="/testimonials" onClick={(e) => { e.preventDefault(); handleRouteChange('/testimonials'); }} className="hover:text-pink-400">
+          <Link href="/testimonials" onClick={(e) => { e.preventDefault(); handleRouteChange('/testimonials') }} className="hover:text-pink-400">
             {t('nav.testimonials')}
           </Link>
-          <Link href="/contact" onClick={(e) => { e.preventDefault(); handleRouteChange('/contact'); }} className="hover:text-pink-400">
+          <Link href="/contact" onClick={(e) => { e.preventDefault(); handleRouteChange('/contact') }} className="hover:text-pink-400">
             {t('nav.contact')}
           </Link>
           <button
@@ -71,40 +73,25 @@ export default function Navbar({ handleRouteChange }: { handleRouteChange: (url:
         </nav>
       </div>
 
-      {/* Mobile dropdown menu */}
+      {/* Mobile nav */}
       {isOpen && (
-        <nav
-          className="md:hidden px-6 pb-4 space-y-2 bg-black border-t border-white/10"
-          aria-label="Mobile navigation"
-        >
-          <Link href="/" className="block hover:text-pink-400" onClick={() => setIsOpen(false)}>
+        <nav className="md:hidden px-6 pb-4 space-y-3 bg-black border-t border-white/10 text-base" aria-label="Mobile navigation">
+          <Link href="/" className="block py-2 hover:text-pink-400" onClick={() => setIsOpen(false)}>
             {t('nav.home')}
           </Link>
-          <Link
-            href="/about"
-            className="block hover:text-pink-400"
-            onClick={() => setIsOpen(false)}
-          >
+          <Link href="/about" className="block py-2 hover:text-pink-400" onClick={() => setIsOpen(false)}>
             {t('nav.about')}
           </Link>
-          <Link href="/menu" className="block hover:text-pink-400" onClick={() => setIsOpen(false)}>
+          <Link href="/menu" className="block py-2 hover:text-pink-400" onClick={() => setIsOpen(false)}>
             {t('nav.store')}
           </Link>
-          <Link
-            href="/merch"
-            className="block hover:text-pink-400"
-            onClick={() => setIsOpen(false)}
-          >
-            Merch
+          <Link href="/merch" className="block py-2 hover:text-pink-400" onClick={() => setIsOpen(false)}>
+            {t('nav.merch')}
           </Link>
-          <Link href="/testimonials" className="hover:text-pink-400">
+          <Link href="/testimonials" className="block py-2 hover:text-pink-400" onClick={() => setIsOpen(false)}>
             {t('nav.testimonials')}
           </Link>
-          <Link
-            href="/contact"
-            className="block hover:text-pink-400"
-            onClick={() => setIsOpen(false)}
-          >
+          <Link href="/contact" className="block py-2 hover:text-pink-400" onClick={() => setIsOpen(false)}>
             {t('nav.contact')}
           </Link>
           <button
@@ -113,7 +100,7 @@ export default function Navbar({ handleRouteChange }: { handleRouteChange: (url:
               setIsOpen(false)
             }}
             aria-label="Toggle language"
-            className="inline-block px-3 py-1 border rounded text-xs hover:bg-white hover:text-black transition"
+            className="inline-block px-4 py-2 border rounded text-sm hover:bg-white hover:text-black transition"
           >
             {i18n.language === 'en' ? 'Español' : 'English'}
           </button>

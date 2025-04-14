@@ -1,5 +1,5 @@
 'use client'
-export const dynamic = 'force-dynamic';
+export const dynamic = 'force-dynamic'
 
 import { useTranslation } from 'react-i18next'
 import { useEffect, useRef, useState } from 'react'
@@ -36,8 +36,6 @@ export default function AboutPage() {
     fetchAboutContent()
   }, [i18n.language])
 
-
-
   useEffect(() => {
     if (typeof window !== 'undefined' && mounted) {
       const hash = window.location.hash
@@ -59,7 +57,9 @@ export default function AboutPage() {
         <h1 id="pitmaster-heading" className="text-5xl font-bold neon-text tilt-neon-font mb-4">
           {t('about.pitmasterTitle')}
         </h1>
-        <p className="pinkText tilt-neon-font font-semibold text-2xl mb-2">{t('about.pitmasterName')}</p>
+        <p className="pinkText tilt-neon-font font-semibold text-2xl mb-2">
+          {t('about.pitmasterName')}
+        </p>
         {imageUrl && (
           <div className="mx-auto mb-6 w-60 h-60 sm:w-80 sm:h-80 md:w-96 md:h-96 relative rounded overflow-hidden border border-white/20 shadow-lg">
             <Image
@@ -87,43 +87,45 @@ export default function AboutPage() {
           {t('about.devsTitle')}
         </h2>
 
-        <div className="space-y-4">
-          <h3 className="text-xl font-semibold pinkText tilt-neon-font">Vie P.</h3>
-          <p>&ldquo;{t('about.vieQuote')}&rdquo;</p>
-          <a
-            href="https://whatdoyouknowaboutlove.com/viep"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block bg-pink-500 text-black font-semibold text-sm px-4 py-2 rounded hover:bg-pink-600 transition"
-          >
-            {t('about.viewPortfolio')}
-          </a>
-        </div>
+        <div className="flex flex-col md:flex-row justify-center gap-12 text-center">
+          {/* Vie */}
+          <div className="space-y-4">
+            <h3 className="text-xl font-semibold pinkText tilt-neon-font">Vie P.</h3>
+            <a
+              href="https://whatdoyouknowaboutlove.com/viep"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block bg-pink-500 text-black font-semibold text-sm px-4 py-2 rounded hover:bg-pink-600 transition"
+            >
+              {t('about.viewPortfolio')}
+            </a>
+          </div>
 
-        <div className="space-y-2">
-          <h3 className="text-xl font-semibold pinkText tilt-neon-font">Courtney G.</h3>
-          <p>{t('about.courtneyBio')}</p>
-          <a
-            href="https://github.com/grahacr"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block bg-pink-500 text-black font-semibold text-sm px-4 py-2 rounded hover:bg-pink-600 transition"
-          >
-            {t('about.viewPortfolio')}
-          </a>
-        </div>
+          {/* Courtney */}
+          <div className="space-y-4">
+            <h3 className="text-xl font-semibold pinkText tilt-neon-font">Courtney G.</h3>
+            <a
+              href="https://linkedin.com/in/courtney-link" // <-- update this link
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block bg-pink-500 text-black font-semibold text-sm px-4 py-2 rounded hover:bg-pink-600 transition"
+            >
+              LinkedIn
+            </a>
+          </div>
 
-        <div className="space-y-2">
-          <h3 className="text-xl font-semibold pinkText tilt-neon-font">Starlee J.</h3>
-          <p>{t('about.starleeBio')}</p>
-          <a
-            href="https://whatdoyouknowaboutlove.com/viep"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block bg-pink-500 text-black font-semibold text-sm px-4 py-2 rounded hover:bg-pink-600 transition"
-          >
-            {t('about.viewPortfolio')}
-          </a>
+          {/* Starlee */}
+          <div className="space-y-4">
+            <h3 className="text-xl font-semibold pinkText tilt-neon-font">Starlee J.</h3>
+            <a
+              href="https://linkedin.com/in/starlee-link" // <-- update this link
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block bg-pink-500 text-black font-semibold text-sm px-4 py-2 rounded hover:bg-pink-600 transition"
+            >
+              LinkedIn
+            </a>
+          </div>
         </div>
       </section>
     </main>

@@ -50,14 +50,12 @@
   },
 
   "about": {
-    "pitmasterTitle": "Sobre el Pitmaster",
-    "pitmasterName": "Adam Bernal",
-    "devsTitle": "Sobre los Desarrolladores del Sitio Web",
-    "vieQuote": "Lo que no podemos imaginar no puede existir. — bell hooks ✨",
-    "courtneyBio": "Ingeniera de software, profesora, formadora, y aprendiz de por vida.",
-    "starleeBio": "Ingeniera de software.",
-    "viewPortfolio": "Ver portafolio"
-  },
+  "pitmasterTitle": "Sobre el Pitmaster",
+  "pitmasterName": "Adam Bernal",
+  "devsTitle": "Desarrolladores de Esta Página Web",
+  "viewPortfolio": "Ver portafolio"
+},
+
 
   "menuPage": {
     "title": "Menú",

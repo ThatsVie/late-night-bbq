@@ -1,8 +1,6 @@
-import { initializeApp, getApps, getApp } from 'firebase/app'
+import { initializeApp } from 'firebase/app'
 import { getAuth } from 'firebase/auth'
 import { getFirestore } from 'firebase/firestore'
-
-console.log('Firebase/config.ts loaded')
 
 export const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API,

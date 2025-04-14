@@ -45,10 +45,14 @@ export default function ManageTestimonialsPage() {
     }))
   }
 
+  const getAdminToken = async () => {
+    const user = getAuth().currentUser
+    if (!user) throw new Error('User not authenticated')
+      return user.getIdToken()
+    }
+
   const handleSubmit = async () => {
-    const auth = getAuth()
-    const user = auth.currentUser
-    const token = user && (await user.getIdToken())
+    const token = await getAdminToken()
     if (!token) {
       alert('Authentication failed. Please login again.')
       return
@@ -83,10 +87,7 @@ export default function ManageTestimonialsPage() {
 
   const handleDelete = async (id: string) => {
     if (!confirm('Are you sure you want to delete this testimonial?')) return
-    const auth = getAuth()
-    const user = auth.currentUser
-    const token = user && (await user.getIdToken())
-
+    const token = await getAdminToken()
     if (!token) {
       alert('Authentication failed. Please login again.')
       return

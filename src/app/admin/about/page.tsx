@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import CropModal from '@/components/CropModal'
 import i18n from '@/i18n';
-import { auth } from '@/firebase/config'
+import { getAuth } from 'firebase/auth'
 
 export default function ManageAboutPage() {
   const router = useRouter()
@@ -47,11 +47,11 @@ export default function ManageAboutPage() {
   }, [file])
 
   const getAdminToken = async () => {
-    const user = auth.currentUser
+    const user = getAuth().currentUser
     if (!user) throw new Error('User not authenticated')
       return user.getIdToken()
-  }
-
+    }
+  
   const handleCroppedImage = async (croppedFile: File) => {
     setLoading(true)
     try {

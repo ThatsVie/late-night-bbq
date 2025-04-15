@@ -109,7 +109,7 @@ export default function Home() {
           <>
             <div
               className={`mx-auto border border-white/10 rounded-lg shadow overflow-hidden ${
-                banner.shape === 'rect' ? 'w-[600px] h-[300px]' : 'w-[400px] h-[400px]'
+                banner.shape === 'rect' ? 'max-w-[600px] w-full aspect-[2/1]' : 'max-w-[400px] w-full aspect-square'
               }`}
             >
               <Image

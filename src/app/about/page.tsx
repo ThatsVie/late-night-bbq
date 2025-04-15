@@ -105,7 +105,7 @@ export default function AboutPage() {
           <div className="space-y-4">
             <h3 className="text-xl font-semibold pinkText tilt-neon-font">Courtney G.</h3>
             <a
-              href="https://linkedin.com/in/courtney-link" // <-- update this link
+              href="https://www.linkedin.com/in/courtney-graham918/"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block bg-pink-500 text-black font-semibold text-sm px-4 py-2 rounded hover:bg-pink-600 transition"

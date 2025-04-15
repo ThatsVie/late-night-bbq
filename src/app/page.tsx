@@ -40,6 +40,20 @@ export default function Home() {
   useEffect(() => {
     setMounted(true)
 
+    async function initAnalytics() {
+      if (typeof window !== 'undefined') {
+        const { getAnalytics, isSupported, logEvent } = await import ('firebase/analytics')
+        const { app } = await import('@/firebase/config')
+
+        if (await isSupported()) {
+          const analytics = getAnalytics(app)
+          logEvent(analytics, 'page_view')
+        }
+      }
+    }
+
+    initAnalytics()
+
     async function fetchBanner() {
       try {
         const res = await fetch(`/api/banner/active?locale=${i18n.language}`)

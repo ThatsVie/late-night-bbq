@@ -1,3 +1,4 @@
+
 'use client'
 export const dynamic = 'force-dynamic';
 
@@ -39,17 +40,52 @@ export default function ManageTestimonialsPage() {
   }
 
   const handleInputChange = (lang: 'en' | 'es', field: 'name' | 'quote', value: string) => {
-    setNewTestimonial((prev) => ({
-      ...prev,
-      [lang]: { ...prev[lang], [field]: value },
-    }))
+    setNewTestimonial((prev) => {
+      const updated = {
+        ...prev,
+        [lang]: { ...prev[lang], [field]: value },
+      }
+  
+      // Auto-translate from English to Spanish if editing English fields
+      if (lang === 'en') {
+        clearTimeout((window as any)._translateTimeout)
+        ;(window as any)._translateTimeout = setTimeout(async () => {
+          if (value.trim()) {
+            try {
+              const res = await fetch('/api/translate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  text: value,
+                  targetLang: 'es',
+                }),
+              })
+              const data = await res.json()
+              if (data.translatedText) {
+                setNewTestimonial((prev) => ({
+                  ...prev,
+                  es: {
+                    ...prev.es,
+                    [field]: data.translatedText,
+                  },
+                }))
+              }
+            } catch (err) {
+              console.error('Translation failed:', err)
+            }
+          }
+        }, 500)
+      }
+  
+      return updated
+    })
   }
-
+  
   const getAdminToken = async () => {
     const user = getAuth().currentUser
     if (!user) throw new Error('User not authenticated')
-      return user.getIdToken()
-    }
+    return user.getIdToken()
+  }
 
   const handleSubmit = async () => {
     const token = await getAdminToken()
@@ -94,15 +130,14 @@ export default function ManageTestimonialsPage() {
     }
 
     await fetch(`/api/admin/testimonials/${id}`, {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
 
-      await fetchAllTestimonials()
-    }
-
+    await fetchAllTestimonials()
+  }
 
   return (
     <main className="p-6 bg-zinc-950 min-h-screen text-white">

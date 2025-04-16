@@ -1,3 +1,4 @@
+
 'use client'
 
 import { useState, useEffect } from 'react'
@@ -38,10 +39,45 @@ export default function UploadBannerPage() {
   }, [croppedFile])
 
   const handleChange = (lang: 'en' | 'es', key: string, value: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      [lang]: { ...prev[lang], [key]: value },
-    }))
+    setFormData((prev) => {
+      const updated = {
+        ...prev,
+        [lang]: { ...prev[lang], [key]: value },
+      }
+
+      // Only auto-translate when typing in English fields
+      if (lang === 'en') {
+        clearTimeout((window as any)._bannerTranslateTimeout)
+        ;(window as any)._bannerTranslateTimeout = setTimeout(async () => {
+          if (value.trim()) {
+            try {
+              const res = await fetch('/api/translate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  text: value,
+                  targetLang: 'es',
+                }),
+              })
+              const data = await res.json()
+              if (data.translatedText) {
+                setFormData((prev) => ({
+                  ...prev,
+                  es: {
+                    ...prev.es,
+                    [key]: data.translatedText,
+                  },
+                }))
+              }
+            } catch (err) {
+              console.error('Translation failed:', err)
+            }
+          }
+        }, 500)
+      }
+
+      return updated
+    })
   }
 
   const handleFileChange = (incomingFile: File | null) => {

@@ -130,8 +130,9 @@ export default function ManageMenuPage() {
     }))
 
     if (lang === 'en') {
-      clearTimeout((window as any)._menuTranslateTimeout)
-      ;(window as any)._menuTranslateTimeout = setTimeout(async () => {
+      const timeoutKey = `_menuTranslate_${field}` as keyof Window & string
+      clearTimeout((window as unknown as Record<string, ReturnType<typeof setTimeout>>)[timeoutKey])
+      ;(window as unknown as Record<string, ReturnType<typeof setTimeout>>)[timeoutKey] = setTimeout(async () => {
         if (!value.trim()) return
         const translated = await autoTranslate(value)
         setFormState((prev) => ({
@@ -140,8 +141,8 @@ export default function ManageMenuPage() {
             ...prev.es,
             [field]: translated,
           },
-        }))        
-      }, 500)
+        }))
+      }, 500)      
     }
   }
 

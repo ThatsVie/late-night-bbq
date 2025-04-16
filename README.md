@@ -1,9 +1,15 @@
+<div align="center">
+  
 # 🔥 Late Night BBQ: Website & Admin Dashboard
 
-## Purpose
+![download](https://github.com/user-attachments/assets/28ff98f5-86c8-49cb-9712-ebbc05e11616)
+
+
 **Late Night BBQ** is a modern, bilingual content-managed website and admin dashboard built for a beloved BBQ catering business in Houston, Texas. Our mission was to honor their story while giving them full ownership over their digital presence.
 
-We designed and built a people-first, tech-forward solution that:
+</div>
+
+## We designed and built a people-first, tech-forward solution that:
 
 - Lets the business showcase their menu, merch, story, and community love
 - Allows customers to explore the business in English or Spanish
@@ -72,7 +78,7 @@ Accessible only to the business owners via secure login with Firebase Auth.
 ## How Everything Connects
 
 ### Public Site Flow:
-Visitor chooses language → Browses homepage → Views about,menu, merch, and testimnials → Sends an order request via contact form
+Visitor chooses language → Browses homepage → Views about, menu, merch, and testimonials → Sends an order request via contact form
 
 ### Admin Flow:
 Admin logs in → Navigates dashboard → Edits banners, menu, merch, about section, and testimonials → Changes go live instantly

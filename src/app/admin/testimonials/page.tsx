@@ -48,17 +48,15 @@ export default function ManageTestimonialsPage() {
   
       // Auto-translate from English to Spanish if editing English fields
       if (lang === 'en') {
-        clearTimeout((window as any)._translateTimeout)
-        ;(window as any)._translateTimeout = setTimeout(async () => {
+        const timeoutKey = `_translate_${field}` as keyof Window & string
+        clearTimeout((window as unknown as Record<string, ReturnType<typeof setTimeout>>)[timeoutKey])
+        ;(window as unknown as Record<string, ReturnType<typeof setTimeout>>)[timeoutKey] = setTimeout(async () => {
           if (value.trim()) {
             try {
               const res = await fetch('/api/translate', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  text: value,
-                  targetLang: 'es',
-                }),
+                body: JSON.stringify({ text: value, targetLang: 'es' }),
               })
               const data = await res.json()
               if (data.translatedText) {
@@ -74,7 +72,7 @@ export default function ManageTestimonialsPage() {
               console.error('Translation failed:', err)
             }
           }
-        }, 500)
+        }, 500)        
       }
   
       return updated

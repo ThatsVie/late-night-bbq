@@ -66,8 +66,9 @@ export default function ManageMerchPage() {
     }))
 
     if (lang === 'en') {
-      clearTimeout((window as any)._merchTranslateTimeout)
-      ;(window as any)._merchTranslateTimeout = setTimeout(async () => {
+      const timeoutKey = `_merchTranslate_${field}` as keyof Window & string
+      clearTimeout((window as unknown as Record<string, ReturnType<typeof setTimeout>>)[timeoutKey])
+      ;(window as unknown as Record<string, ReturnType<typeof setTimeout>>)[timeoutKey] = setTimeout(async () => {
         if (!value.trim()) return
         const translated = await autoTranslate(value)
         setFormState((prev) => ({
@@ -77,7 +78,7 @@ export default function ManageMerchPage() {
             [field]: translated,
           },
         }))
-      }, 500)
+      }, 500)      
     }
   }
 
@@ -349,7 +350,7 @@ export default function ManageMerchPage() {
       <section>
         <h2 className="text-lg font-semibold mb-4">Current Merch Items</h2>
         <p className="text-white/60 text-sm mb-2">
-          Click and drag items to rearrange the order they'll appear on the merch page.
+          Click and drag items to rearrange the order they will appear on the merch page.
         </p>
         <DragDropContext onDragEnd={handleDragEnd}>
           <Droppable droppableId="merch-list">

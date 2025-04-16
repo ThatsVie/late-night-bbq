@@ -1,4 +1,3 @@
-
 'use client'
 
 import { useEffect, useState } from 'react'
@@ -8,9 +7,18 @@ import CropModal from '@/components/CropModal'
 import i18n from '@/i18n'
 import { getAuth } from 'firebase/auth'
 
+interface LocaleContent {
+  content: string
+}
+
+interface FormState {
+  en: LocaleContent
+  es: LocaleContent
+}
+
 export default function ManageAboutPage() {
   const router = useRouter()
-  const [formState, setFormState] = useState({ en: { content: '' }, es: { content: '' } })
+  const [formState, setFormState] = useState<FormState>({ en: { content: '' }, es: { content: '' } })
   const [images, setImages] = useState<string[]>([])
   const [activeImage, setActiveImage] = useState('')
   const [file, setFile] = useState<File | null>(null)
@@ -22,7 +30,13 @@ export default function ManageAboutPage() {
     const load = async () => {
       const lang = i18n.language || 'en'
       const res = await fetch(`/api/about?lang=${lang}`)
-      const data = await res.json()
+      const data: {
+        en?: LocaleContent
+        es?: LocaleContent
+        images?: string[]
+        activeImage?: string
+      } = await res.json()
+
       setFormState({
         en: { content: data?.en?.content || '' },
         es: { content: data?.es?.content || '' },
@@ -44,20 +58,20 @@ export default function ManageAboutPage() {
     }
   }, [file])
 
-  const getAdminToken = async () => {
+  const getAdminToken = async (): Promise<string> => {
     const user = getAuth().currentUser
     if (!user) throw new Error('User not authenticated')
     return user.getIdToken()
   }
 
-  const handleAutoTranslate = async (text: string) => {
+  const handleAutoTranslate = async (text: string): Promise<string> => {
     try {
       const res = await fetch('/api/translate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text, targetLang: 'es' }),
       })
-      const data = await res.json()
+      const data: { translatedText: string } = await res.json()
       return data.translatedText
     } catch (err) {
       console.error('Translation error:', err)
@@ -74,35 +88,20 @@ export default function ManageAboutPage() {
       },
     }))
 
-    // Auto-translate English to Spanish if editing EN
     if (lang === 'en') {
-  clearTimeout((window as any)._aboutTranslateTimeout)
-  ;(window as any)._aboutTranslateTimeout = setTimeout(async () => {
-    if (!value.trim()) return
-    const translated = await handleAutoTranslate(value)
-    setFormState((prev) => ({
-      ...prev,
-      es: {
-        ...prev.es,
-        content: translated,
-      },
-    }))
-  }, 500)
-}
-  if (lang === 'en') {
-    clearTimeout((window as any)._aboutTranslateTimeout)
-    ;(window as any)._aboutTranslateTimeout = setTimeout(async () => {
-      if (!value.trim()) return
-      const translated = await handleAutoTranslate(value)
-      setFormState((prev) => ({
-        ...prev,
-        es: {
-          ...prev.es,
-          content: translated,
-        },
-      }))
-    }, 500)
-  }
+      clearTimeout((window as unknown as { _aboutTranslateTimeout: NodeJS.Timeout })._aboutTranslateTimeout)
+      ;(window as unknown as { _aboutTranslateTimeout: NodeJS.Timeout })._aboutTranslateTimeout = setTimeout(async () => {
+        if (!value.trim()) return
+        const translated = await handleAutoTranslate(value)
+        setFormState((prev) => ({
+          ...prev,
+          es: {
+            ...prev.es,
+            content: translated,
+          },
+        }))
+      }, 500)
+    }
   }
 
   const handleCroppedImage = async (croppedFile: File) => {
@@ -120,7 +119,7 @@ export default function ManageAboutPage() {
         },
       })
 
-      const { url } = await uploadRes.json()
+      const { url }: { url: string } = await uploadRes.json()
       setImages((prev) => [...prev, url])
       setActiveImage(url)
     } catch (err) {

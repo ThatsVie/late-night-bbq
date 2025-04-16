@@ -79,15 +79,16 @@ export default function EditBannerPage() {
       )
     )
 
-    clearTimeout((window as any)[`_bannerTranslate_${field}`])
-    ;(window as any)[`_bannerTranslate_${field}`] = setTimeout(async () => {
-      const translated = await autoTranslate(value)
-      setBanners((prev) =>
-        prev.map((b) =>
-          b.id === id ? { ...b, es: { ...b.es, [field]: translated } } : b
-        )
+  const win = window as unknown as Record<string, ReturnType<typeof setTimeout>>
+  clearTimeout(win[`_bannerTranslate_${field}`])
+  win[`_bannerTranslate_${field}`] = setTimeout(async () => {
+    const translated = await autoTranslate(value)
+    setBanners((prev) =>
+      prev.map((b) =>
+        b.id === id ? { ...b, es: { ...b.es, [field]: translated } } : b
       )
-    }, 400)
+    )
+  }, 400)    
   }
 
   const handleUpdateBanner = async (

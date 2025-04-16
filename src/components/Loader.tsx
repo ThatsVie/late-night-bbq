@@ -1,7 +1,12 @@
 const Loader = () => (
-    <div className='loader-container fixed inset-0 flex items-center justify-center z-50 bg-black/50'>
-        <div className='loader border-4 border-t-transparent border-pink-500 w-16 h-16 rounded-full animate-spin'></div>
+    <div
+      className="loader-container fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+      role="status"
+      aria-label="Loading"
+    >
+      <div className="loader w-16 h-16 border-4 border-pink-500 border-t-transparent rounded-full animate-spin"></div>
     </div>
-)
-
-export default Loader;
+  )
+  
+  export default Loader
+  

@@ -1,5 +1,6 @@
 'use client'
 
+import Loader from '@/components/Loader'
 import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
@@ -59,8 +60,10 @@ export default function Home() {
     fetchBanner()
   }, [i18n.language])
 
-  if (!mounted) return null
-
+  if (!mounted || banner === null) {
+    return <Loader />
+  }
+  
   return (
     <main className="bg-black text-white" id="main-content">
       {/* Hero Section */}

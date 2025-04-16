@@ -18,7 +18,7 @@
 
   "howItWorks": {
     "title": "How It Works",
-    "body": "Our BBQ is handcrafted, made-to-order, and delivered with love. We operate on a custom, small-batch basis. Just let us know what you're planning, and we’ll bring the fire."
+    "body": "Our BBQ is handcrafted, made-to-order, and delivered with love. We operate on a custom, small-batch basis. Just let us know what you're planning, and we’ll bring the flavor."
   },
 
   "cta": {
@@ -30,32 +30,31 @@
   "facebook": {
     "title": "Check out our Facebook!",
     "privacyNote": "Will not load if privacy mode or ad blockers enabled.",
-    "redirectNote": "Click our name below to be redirected to Facebook"
+    "redirectNote": "Click below to be redirected to Facebook"
   },
-  
+
   "contact": {
     "title": "Get in Touch",
     "intro": "Tell us about your event or catering needs and we'll get back to you ASAP!",
     "fields": {
-      "name": "Your Name",
-      "email": "Your Email",
-      "phone": "Phone Number",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Number",
       "details": "How can we help?"
     },
     "placeholders": {
       "details": "e.g. Date, location, number of guests, and any special requests"
     },
     "button": "Submit",
-    "disclaimer": "We’ll respond as soon as possible. For urgent requests, please call or message us directly."
+    "disclaimer": "We’ll respond as soon as possible."
   },
 
   "about": {
-  "pitmasterTitle": "About the Pitmaster",
-  "pitmasterName": "Adam Bernal",
-  "devsTitle": "The Website Developers",
-  "viewPortfolio": "View Portfolio"
-},
-
+    "pitmasterTitle": "About the Pitmaster",
+    "pitmasterName": "Adam Bernal",
+    "devsTitle": "The Website Developers",
+    "viewPortfolio": "View Portfolio"
+  },
 
   "menuPage": {
     "title": "Menu",
@@ -74,7 +73,7 @@
 
   "testimonials": {
     "title": "What People Are Saying",
-    "intro": "Here’s what some of our happy customers have to say about Late Night BBQ."
+    "intro": "Here’s what some of our satisfied customers have to say."
   },
 
   "login": {

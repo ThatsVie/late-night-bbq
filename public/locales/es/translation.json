@@ -18,7 +18,7 @@
 
   "howItWorks": {
     "title": "Cómo Funciona",
-    "body": "Nuestra barbacoa es artesanal, hecha por encargo y entregada con cariño. Operamos en lotes pequeños y personalizados — cuéntanos su plan y le llevamos el sabor."
+    "body": "Nuestra barbacoa es artesanal, hecha por encargo y entregada con cariño. Operamos en lotes pequeños y personalizados. Cuéntanos su plan y le llevamos el sabor."
   },
 
   "cta": {
@@ -30,7 +30,7 @@
   "facebook": {
     "title": "¡Visita nuestro Facebook!",
     "privacyNote": "No se cargará si el modo de privacidad o los bloqueadores de anuncios están activados.",
-    "redirectNote": "Haz clic en nuestro nombre abajo para ir a Facebook"
+    "redirectNote": "Haz clic abajo para ir a Facebook"
   },
 
   "contact": {
@@ -46,16 +46,15 @@
       "details": "Ej. Fecha, lugar, cantidad de personas, y cualquier solicitud especial"
     },
     "button": "Enviar",
-    "disclaimer": "Responderemos lo antes posible. Para solicitudes urgentes, llámanos o mándanos un mensaje directamente."
+    "disclaimer": "Responderemos lo antes posible."
   },
 
   "about": {
-  "pitmasterTitle": "Sobre el Pitmaster",
-  "pitmasterName": "Adam Bernal",
-  "devsTitle": "Desarrolladores de Esta Página Web",
-  "viewPortfolio": "Ver portafolio"
-},
-
+    "pitmasterTitle": "Sobre el Pitmaster",
+    "pitmasterName": "Adam Bernal",
+    "devsTitle": "Desarrolladores de Esta Página Web",
+    "viewPortfolio": "Ver portafolio"
+  },
 
   "menuPage": {
     "title": "Menú",
@@ -74,7 +73,7 @@
 
   "testimonials": {
     "title": "Lo Que Dice la Gente",
-    "intro": "Esto es lo que algunos de nuestros clientes felices dicen sobre Late Night BBQ."
+    "intro": "Esto es lo que dicen algunos de nuestros clientes satisfechos."
   },
 
   "login": {

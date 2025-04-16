@@ -76,21 +76,33 @@ export default function ManageAboutPage() {
 
     // Auto-translate English to Spanish if editing EN
     if (lang === 'en') {
-      clearTimeout((window as any)._aboutTranslateTimeout)
-      ;(window as any)._aboutTranslateTimeout = setTimeout(async () => {
-        if (!value.trim()) return
-        const translated = await handleAutoTranslate(value)
-        setFormState((prev) => {
-          if (!prev.es.content || prev.es.content.trim() === '') {
-            return {
-              ...prev,
-              es: { content: translated },
-            }
-          }
-          return prev
-        })
-      }, 500)
-    }
+  clearTimeout((window as any)._aboutTranslateTimeout)
+  ;(window as any)._aboutTranslateTimeout = setTimeout(async () => {
+    if (!value.trim()) return
+    const translated = await handleAutoTranslate(value)
+    setFormState((prev) => ({
+      ...prev,
+      es: {
+        ...prev.es,
+        content: translated,
+      },
+    }))
+  }, 500)
+}
+  if (lang === 'en') {
+    clearTimeout((window as any)._aboutTranslateTimeout)
+    ;(window as any)._aboutTranslateTimeout = setTimeout(async () => {
+      if (!value.trim()) return
+      const translated = await handleAutoTranslate(value)
+      setFormState((prev) => ({
+        ...prev,
+        es: {
+          ...prev.es,
+          content: translated,
+        },
+      }))
+    }, 500)
+  }
   }
 
   const handleCroppedImage = async (croppedFile: File) => {

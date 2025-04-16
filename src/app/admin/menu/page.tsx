@@ -1,4 +1,4 @@
-'use client'
+"use client"
 
 import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -85,11 +85,6 @@ export default function ManageMenuPage() {
       },
     })
 
-    if (!res.ok) {
-      const errorData = await res.json()
-      throw new Error(errorData.error || 'Image upload failed')
-    }
-
     const { url } = await res.json()
     return url
   }
@@ -106,6 +101,59 @@ export default function ManageMenuPage() {
     setFile(incomingFile)
   }
 
+  const autoTranslate = async (text: string) => {
+    try {
+      const res = await fetch('/api/translate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, targetLang: 'es' }),
+      })
+      const data = await res.json()
+      return data.translatedText
+    } catch (err) {
+      console.error('Translation error:', err)
+      return ''
+    }
+  }
+
+  const handleInputChange = async (
+    lang: 'en' | 'es',
+    field: 'title' | 'description',
+    value: string
+  ) => {
+    setFormState((prev) => ({
+      ...prev,
+      [lang]: {
+        ...prev[lang],
+        [field]: value,
+      },
+    }))
+
+    if (lang === 'en') {
+      const timeoutKey = `_menuTranslate_${field}` as keyof Window & string
+      clearTimeout((window as unknown as Record<string, ReturnType<typeof setTimeout>>)[timeoutKey])
+      ;(window as unknown as Record<string, ReturnType<typeof setTimeout>>)[timeoutKey] = setTimeout(async () => {
+        if (!value.trim()) return
+        const translated = await autoTranslate(value)
+        setFormState((prev) => ({
+          ...prev,
+          es: {
+            ...prev.es,
+            [field]: translated,
+          },
+        }))
+      }, 500)      
+    }
+  }
+
+  const handleEdit = (item: MenuItemData) => {
+    const { id, ...rest } = item
+    setFormState(rest)
+    setEditingId(id)
+    setTimeout(() => {
+      formRef.current?.scrollIntoView({ behavior: 'smooth' })
+    }, 100)
+  }
   const handleSubmit = async () => {
     const hasContent =
       formState.en.title &&
@@ -173,15 +221,6 @@ export default function ManageMenuPage() {
     setFile(null)
     setPreview(null)
     setEditingId(null)
-  }
-
-  const handleEdit = (item: MenuItemData) => {
-    const { id, ...rest } = item
-    setFormState(rest)
-    setEditingId(id)
-    setTimeout(() => {
-      formRef.current?.scrollIntoView({ behavior: 'smooth' })
-    }, 100)
   }
 
   const handleDelete = async (id: string) => {
@@ -268,110 +307,85 @@ export default function ManageMenuPage() {
   }
 
   if (!mounted) return null
-
-  return (
-    <main className="min-h-screen bg-zinc-950 text-white p-6">
-      <h1 className="text-2xl font-bold text-pink-500 mb-6">Manage Menu</h1>
-
-      <button
-        onClick={() => router.push('/admin')}
-        className="mb-6 text-sm text-white hover:text-pink-400 border border-white/20 px-4 py-2 rounded"
-      >
-        ← Back to Admin Dashboard
-      </button>
-
-      <section ref={formRef} className="mb-10 bg-black p-6 rounded-lg border border-white/10">
-        <h2 className="text-lg font-semibold mb-4">{editingId ? 'Edit' : 'Add'} Menu Item</h2>
-        <p className="text-white/60 text-sm mb-4">
-          Start by uploading an image—this will open the cropping tool. After cropping, fill out the
-          item name and description in both English and Spanish. Then, select the appropriate
-          category. Once saved, you can return to this item to upload additional images, change the
-          active image, or edit its content. Drag and drop items within each category to reorder how
-          they appear on the site.
-        </p>
-
-        {preview && (
-          <div className="mt-4">
-            <p className="text-sm text-white/60 mb-2">Cropped Image Preview:</p>
-            <Image
-              src={preview}
-              alt="Preview"
-              width={400}
-              height={200}
-              className="rounded border border-white/10"
-            />
-          </div>
-        )}
-
-        <div className="mb-4">
-          <label className="block mb-2 font-medium text-white/80">Upload Image</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => handleFileChange(e.target.files?.[0] || null)}
-            className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-pink-500 file:text-black hover:file:bg-pink-600"
-          />
-        </div>
-
-        <label className="block text-white/70 text-sm mb-2">Category</label>
-        <select
-          className="mb-4 w-full bg-zinc-900 border border-white/20 p-2 rounded text-white"
-          value={formState.category}
-          onChange={(e) => setFormState({ ...formState, category: e.target.value as MenuCategory })}
-        >
-          {CATEGORIES.map((cat) => (
-            <option key={cat} value={cat}>
-              {cat}
-            </option>
-          ))}
-        </select>
-
-        {['en', 'es'].map((lang) => (
-          <div key={lang} className="mb-4">
-            <h3 className="text-pink-400 font-medium mb-1 uppercase">{lang}</h3>
-            <input
-              className="w-full p-2 mb-2 bg-zinc-900 border border-white/20 rounded"
-              maxLength={100}
-              required
-              placeholder={`Title (${lang})`}
-              value={formState[lang as 'en' | 'es'].title}
-              onChange={(e) =>
-                setFormState({
-                  ...formState,
-                  [lang]: {
-                    ...formState[lang as 'en' | 'es'],
-                    title: e.target.value,
-                  },
-                })
-              }
-            />
-            <textarea
-              className="w-full p-2 mb-2 bg-zinc-900 border border-white/20 rounded max-h-32"
-              maxLength={300}
-              required
-              placeholder={`Description (${lang})`}
-              value={formState[lang as 'en' | 'es'].description}
-              onChange={(e) =>
-                setFormState({
-                  ...formState,
-                  [lang]: {
-                    ...formState[lang as 'en' | 'es'],
-                    description: e.target.value,
-                  },
-                })
-              }
-            />
-          </div>
-        ))}
+    return (
+      <main className="min-h-screen bg-zinc-950 text-white p-6">
+        <h1 className="text-2xl font-bold text-pink-500 mb-6">Manage Menu</h1>
 
         <button
-          onClick={handleSubmit}
-          className="bg-pink-500 text-black font-bold py-2 px-4 rounded hover:bg-pink-600 mt-4"
+          onClick={() => router.push('/admin')}
+          className="mb-6 text-sm text-white hover:text-pink-400 border border-white/20 px-4 py-2 rounded"
         >
-          {editingId ? 'Update' : 'Add'} Item
+          ← Back to Admin Dashboard
         </button>
-      </section>
 
+        <section ref={formRef} className="mb-10 bg-black p-6 rounded-lg border border-white/10">
+          <h2 className="text-lg font-semibold mb-4">{editingId ? 'Edit' : 'Add'} Menu Item</h2>
+
+          {preview && (
+            <div className="mt-4">
+              <p className="text-sm text-white/60 mb-2">Cropped Image Preview:</p>
+              <Image
+                src={preview}
+                alt="Preview"
+                width={400}
+                height={200}
+                className="rounded border border-white/10"
+              />
+            </div>
+          )}
+
+          <div className="mb-4">
+            <label className="block mb-2 font-medium text-white/80">Upload Image</label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => handleFileChange(e.target.files?.[0] || null)}
+              className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-pink-500 file:text-black hover:file:bg-pink-600"
+            />
+          </div>
+
+          <label className="block text-white/70 text-sm mb-2">Category</label>
+          <select
+            className="mb-4 w-full bg-zinc-900 border border-white/20 p-2 rounded text-white"
+            value={formState.category}
+            onChange={(e) => setFormState({ ...formState, category: e.target.value as MenuCategory })}
+          >
+            {CATEGORIES.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat}
+              </option>
+            ))}
+          </select>
+
+          {['en', 'es'].map((lang) => (
+            <div key={lang} className="mb-4">
+              <h3 className="text-pink-400 font-medium mb-1 uppercase">{lang}</h3>
+              <input
+                className="w-full p-2 mb-2 bg-zinc-900 border border-white/20 rounded"
+                maxLength={100}
+                required
+                placeholder={`Title (${lang})`}
+                value={formState[lang as 'en' | 'es'].title}
+                onChange={(e) => handleInputChange(lang as 'en' | 'es', 'title', e.target.value)}
+              />
+              <textarea
+                className="w-full p-2 mb-2 bg-zinc-900 border border-white/20 rounded max-h-32"
+                maxLength={300}
+                required
+                placeholder={`Description (${lang})`}
+                value={formState[lang as 'en' | 'es'].description}
+                onChange={(e) => handleInputChange(lang as 'en' | 'es', 'description', e.target.value)}
+              />
+            </div>
+          ))}
+
+          <button
+            onClick={handleSubmit}
+            className="bg-pink-500 text-black font-bold py-2 px-4 rounded hover:bg-pink-600 mt-4"
+          >
+            {editingId ? 'Update' : 'Add'} Item
+          </button>
+        </section>
       {/* Renders Categories */}
       {CATEGORIES.map((category) => (
         <section key={category} className="mb-10">
@@ -421,7 +435,11 @@ export default function ManageMenuPage() {
                                         alt="menu option"
                                         width={80}
                                         height={80}
-                                        className={`rounded border ${url === item.activeImage ? 'border-pink-500' : 'border-white/20'}`}
+                                        className={`rounded border ${
+                                          url === item.activeImage
+                                            ? 'border-pink-500'
+                                            : 'border-white/20'
+                                        }`}
                                         onClick={() => handleSetActiveImage(item.id, url)}
                                       />
                                       <button

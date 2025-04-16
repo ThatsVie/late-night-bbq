@@ -37,11 +37,44 @@ export default function UploadBannerPage() {
     return () => URL.revokeObjectURL(objectUrl)
   }, [croppedFile])
 
-  const handleChange = (lang: 'en' | 'es', key: string, value: string) => {
+  const autoTranslate = async (text: string) => {
+    try {
+      const res = await fetch('/api/translate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, targetLang: 'es' }),
+      })
+      const data = await res.json()
+      return data.translatedText || ''
+    } catch (err) {
+      console.error('Translation failed:', err)
+      return ''
+    }
+  }
+
+  const handleChange = (lang: 'en' | 'es', key: 'title' | 'subtitle' | 'altText', value: string) => {
     setFormData((prev) => ({
       ...prev,
-      [lang]: { ...prev[lang], [key]: value },
+      [lang]: {
+        ...prev[lang],
+        [key]: value,
+      },
     }))
+
+    if (lang === 'en') {
+      const timeoutKey = `_bannerTranslate_${key}`
+      clearTimeout((window as unknown as { [key: string]: NodeJS.Timeout })[timeoutKey])
+      ;(window as unknown as { [key: string]: NodeJS.Timeout })[timeoutKey] = setTimeout(async () => {
+        const translated = await autoTranslate(value)
+        setFormData((prev) => ({
+          ...prev,
+          es: {
+            ...prev.es,
+            [key]: translated,
+          },
+        }))
+      }, 500)
+    }
   }
 
   const handleFileChange = (incomingFile: File | null) => {

@@ -4,12 +4,21 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import CropModal from '@/components/CropModal'
-import i18n from '@/i18n';
+import i18n from '@/i18n'
 import { getAuth } from 'firebase/auth'
+
+interface LocaleContent {
+  content: string
+}
+
+interface FormState {
+  en: LocaleContent
+  es: LocaleContent
+}
 
 export default function ManageAboutPage() {
   const router = useRouter()
-  const [formState, setFormState] = useState({ en: { content: ''}, es: { content: ''}, })
+  const [formState, setFormState] = useState<FormState>({ en: { content: '' }, es: { content: '' } })
   const [images, setImages] = useState<string[]>([])
   const [activeImage, setActiveImage] = useState('')
   const [file, setFile] = useState<File | null>(null)
@@ -19,15 +28,18 @@ export default function ManageAboutPage() {
 
   useEffect(() => {
     const load = async () => {
-      const lang = i18n.language || 'en';
-      console.log('language used for API request:', lang);
+      const lang = i18n.language || 'en'
       const res = await fetch(`/api/about?lang=${lang}`)
-      const data = await res.json()
-      console.log('data loaded from API:', data);
-      
+      const data: {
+        en?: LocaleContent
+        es?: LocaleContent
+        images?: string[]
+        activeImage?: string
+      } = await res.json()
+
       setFormState({
-        en: { content: data?.en?.content || ''},
-        es: { content: data?.es?.content || ''},
+        en: { content: data?.en?.content || '' },
+        es: { content: data?.es?.content || '' },
       })
       setImages(data?.images || [])
       setActiveImage(data?.activeImage || '')
@@ -46,12 +58,52 @@ export default function ManageAboutPage() {
     }
   }, [file])
 
-  const getAdminToken = async () => {
+  const getAdminToken = async (): Promise<string> => {
     const user = getAuth().currentUser
     if (!user) throw new Error('User not authenticated')
-      return user.getIdToken()
+    return user.getIdToken()
+  }
+
+  const handleAutoTranslate = async (text: string): Promise<string> => {
+    try {
+      const res = await fetch('/api/translate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, targetLang: 'es' }),
+      })
+      const data: { translatedText: string } = await res.json()
+      return data.translatedText
+    } catch (err) {
+      console.error('Translation error:', err)
+      return ''
     }
-  
+  }
+
+  const handleContentChange = async (lang: 'en' | 'es', value: string) => {
+    setFormState((prev) => ({
+      ...prev,
+      [lang]: {
+        ...prev[lang],
+        content: value,
+      },
+    }))
+
+    if (lang === 'en') {
+      clearTimeout((window as unknown as { _aboutTranslateTimeout: NodeJS.Timeout })._aboutTranslateTimeout)
+      ;(window as unknown as { _aboutTranslateTimeout: NodeJS.Timeout })._aboutTranslateTimeout = setTimeout(async () => {
+        if (!value.trim()) return
+        const translated = await handleAutoTranslate(value)
+        setFormState((prev) => ({
+          ...prev,
+          es: {
+            ...prev.es,
+            content: translated,
+          },
+        }))
+      }, 500)
+    }
+  }
+
   const handleCroppedImage = async (croppedFile: File) => {
     setLoading(true)
     try {
@@ -59,7 +111,7 @@ export default function ManageAboutPage() {
       const formData = new FormData()
       formData.append('file', croppedFile)
 
-      const uploadRes = await fetch ('/api/admin/about/images', {
+      const uploadRes = await fetch('/api/admin/about/images', {
         method: 'POST',
         body: formData,
         headers: {
@@ -67,63 +119,59 @@ export default function ManageAboutPage() {
         },
       })
 
-      const { url } = await uploadRes.json()
-      const newImages = [...images, url]
-
-      setImages(newImages)
+      const { url }: { url: string } = await uploadRes.json()
+      setImages((prev) => [...prev, url])
       setActiveImage(url)
-  } catch (err) {
-    console.error(err)
-    alert('There was an error uploading the image.')
-  } finally {
-    setShowCropper(false)
-    setLoading(false)
+    } catch (err) {
+      console.error(err)
+      alert('There was an error uploading the image.')
+    } finally {
+      setShowCropper(false)
+      setLoading(false)
+    }
   }
-}
 
-const handleSave = async () => {
-  if (!formState.en.content.trim() || !formState.es.content.trim()) {
-    alert('Please fill out both English and Spanish content.')
-    return
-  }
-  
-  if (!activeImage) {
-    alert('Please upload and crop an image of the pitmaster.')
-    return
-  }
-  
-  setLoading(true)
-  
-  try {
-    const token = await getAdminToken()
+  const handleSave = async () => {
+    if (!formState.en.content.trim() || !formState.es.content.trim()) {
+      alert('Please fill out both English and Spanish content.')
+      return
+    }
 
-    const saveContent = async (locale: 'en' | 'es') =>
-      fetch('/api/admin/about/update', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          locale,
-          content: formState[locale].content,
-          activeImage
-        }),
-      })
-      
+    if (!activeImage) {
+      alert('Please upload and crop an image of the pitmaster.')
+      return
+    }
+
+    setLoading(true)
+
+    try {
+      const token = await getAdminToken()
+      const saveContent = async (locale: 'en' | 'es') =>
+        fetch('/api/admin/about/update', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            locale,
+            content: formState[locale].content,
+            activeImage,
+          }),
+        })
+
       await Promise.all([saveContent('en'), saveContent('es')])
       const res = await fetch(`/api/about?lang=${i18n.language}`, { cache: 'no-store' })
       const data = await res.json()
       setFormState({
-        en: { content: data?.en?.content || ''},
-        es: { content: data?.es?.content || ''},
+        en: { content: data?.en?.content || '' },
+        es: { content: data?.es?.content || '' },
       })
       setActiveImage(data?.activeImage || '')
       alert('Content saved!')
-
     } catch (err) {
       console.error(err)
-      alert('error saving content.')
+      alert('Error saving content.')
     } finally {
       setLoading(false)
     }
@@ -133,22 +181,22 @@ const handleSave = async () => {
     try {
       const token = await getAdminToken()
       setActiveImage(url)
-      await fetch ('/api/admin/about/images', {
+      await fetch('/api/admin/about/images', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ activeImage: url }),
-    })
-  } catch (err) {
-    console.error('Failed to set active image', err)
+      })
+    } catch (err) {
+      console.error('Failed to set active image', err)
+    }
   }
-}
 
   const handleDeleteImage = async (url: string) => {
     if (!confirm('Are you sure you want to delete this image?')) return
-    const token = await getAdminToken();
+    const token = await getAdminToken()
 
     await fetch('/api/admin/about/images', {
       method: 'DELETE',
@@ -157,8 +205,8 @@ const handleSave = async () => {
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ url }),
-    });
-    
+    })
+
     const updated = images.filter((img) => img !== url)
     setImages(updated)
 
@@ -180,16 +228,15 @@ const handleSave = async () => {
         ← Back to Admin Dashboard
       </button>
 
-      {/* Upload Image */}
       <section className="mb-10 bg-black p-6 rounded-lg border border-white/10">
         <h2 className="text-lg font-semibold mb-4">Pitmaster Image</h2>
 
         <label className="block mb-2 font-medium text-white/80">Upload Image</label>
         <input
-        type="file"
-        accept="image/*"
-        onChange={(e) => setFile(e.target.files?.[0] || null)}
-        className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-pink-500 file:text-black hover:file:bg-pink-600"
+          type="file"
+          accept="image/*"
+          onChange={(e) => setFile(e.target.files?.[0] || null)}
+          className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-pink-500 file:text-black hover:file:bg-pink-600"
         />
 
         {(preview || activeImage) && (
@@ -216,7 +263,9 @@ const handleSave = async () => {
                     alt="Pitmaster image"
                     width={100}
                     height={100}
-                    className={`rounded border ${url === activeImage ? 'border-pink-500' : 'border-white/20'}`}
+                    className={`rounded border ${
+                      url === activeImage ? 'border-pink-500' : 'border-white/20'
+                    }`}
                     onClick={() => handleSetActiveImage(url)}
                   />
                   <button
@@ -232,7 +281,6 @@ const handleSave = async () => {
         )}
       </section>
 
-      {/* English and Spanish Fields */}
       <section className="mb-8">
         {['en', 'es'].map((lang) => (
           <div key={lang} className="mb-6">
@@ -246,14 +294,7 @@ const handleSave = async () => {
               className="w-full p-3 bg-zinc-900 border border-white/20 rounded"
               rows={6}
               value={formState[lang as 'en' | 'es'].content}
-              onChange={(e) => setFormState((prev) => ({
-                ...prev,
-                [lang]: {
-                  ...prev[lang as 'en' | 'es'],
-                  content: e.target.value,
-                },
-              }))
-            }
+              onChange={(e) => handleContentChange(lang as 'en' | 'es', e.target.value)}
               placeholder={`Enter about content in ${lang === 'en' ? 'English' : 'Spanish'}...`}
             />
           </div>

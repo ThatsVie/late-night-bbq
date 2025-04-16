@@ -37,6 +37,51 @@ export default function ManageMerchPage() {
   const [editingId, setEditingId] = useState<string | null>(null)
   const [showCropModal, setShowCropModal] = useState(false)
 
+  const autoTranslate = async (text: string) => {
+    try {
+      const res = await fetch('/api/translate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, targetLang: 'es' }),
+      })
+      const data = await res.json()
+      return data.translatedText
+    } catch (err) {
+      console.error('Translation error:', err)
+      return ''
+    }
+  }
+
+  const handleMerchInputChange = async (
+    lang: 'en' | 'es',
+    field: 'title' | 'description',
+    value: string
+  ) => {
+    setFormState((prev) => ({
+      ...prev,
+      [lang]: {
+        ...prev[lang],
+        [field]: value,
+      },
+    }))
+
+    if (lang === 'en') {
+      const timeoutKey = `_merchTranslate_${field}` as keyof Window & string
+      clearTimeout((window as unknown as Record<string, ReturnType<typeof setTimeout>>)[timeoutKey])
+      ;(window as unknown as Record<string, ReturnType<typeof setTimeout>>)[timeoutKey] = setTimeout(async () => {
+        if (!value.trim()) return
+        const translated = await autoTranslate(value)
+        setFormState((prev) => ({
+          ...prev,
+          es: {
+            ...prev.es,
+            [field]: translated,
+          },
+        }))
+      }, 500)      
+    }
+  }
+
   useEffect(() => {
     const load = async () => {
       const res = await fetch('/api/merch')
@@ -278,13 +323,7 @@ export default function ManageMerchPage() {
               placeholder={`Title (${lang})`}
               value={formState[lang as 'en' | 'es'].title}
               onChange={(e) =>
-                setFormState((prev) => ({
-                  ...prev,
-                  [lang]: {
-                    ...prev[lang as 'en' | 'es'],
-                    title: e.target.value,
-                  },
-                }))
+                handleMerchInputChange(lang as 'en' | 'es', 'title', e.target.value)
               }
             />
             <textarea
@@ -294,13 +333,7 @@ export default function ManageMerchPage() {
               placeholder={`Description (${lang})`}
               value={formState[lang as 'en' | 'es'].description}
               onChange={(e) =>
-                setFormState((prev) => ({
-                  ...prev,
-                  [lang]: {
-                    ...prev[lang as 'en' | 'es'],
-                    description: e.target.value,
-                  },
-                }))
+                handleMerchInputChange(lang as 'en' | 'es', 'description', e.target.value)
               }
             />
           </div>
@@ -317,7 +350,7 @@ export default function ManageMerchPage() {
       <section>
         <h2 className="text-lg font-semibold mb-4">Current Merch Items</h2>
         <p className="text-white/60 text-sm mb-2">
-          Click and drag items to rearrange the order they&apos;ll appear on the merch page.
+          Click and drag items to rearrange the order they will appear on the merch page.
         </p>
         <DragDropContext onDragEnd={handleDragEnd}>
           <Droppable droppableId="merch-list">

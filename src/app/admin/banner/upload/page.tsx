@@ -1,4 +1,3 @@
-
 'use client'
 
 import { useState, useEffect } from 'react'
@@ -38,46 +37,44 @@ export default function UploadBannerPage() {
     return () => URL.revokeObjectURL(objectUrl)
   }, [croppedFile])
 
-  const handleChange = (lang: 'en' | 'es', key: string, value: string) => {
-    setFormData((prev) => {
-      const updated = {
-        ...prev,
-        [lang]: { ...prev[lang], [key]: value },
-      }
+  const autoTranslate = async (text: string) => {
+    try {
+      const res = await fetch('/api/translate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, targetLang: 'es' }),
+      })
+      const data = await res.json()
+      return data.translatedText || ''
+    } catch (err) {
+      console.error('Translation failed:', err)
+      return ''
+    }
+  }
 
-      // Only auto-translate when typing in English fields
-      if (lang === 'en') {
-        clearTimeout((window as any)._bannerTranslateTimeout)
-        ;(window as any)._bannerTranslateTimeout = setTimeout(async () => {
-          if (value.trim()) {
-            try {
-              const res = await fetch('/api/translate', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  text: value,
-                  targetLang: 'es',
-                }),
-              })
-              const data = await res.json()
-              if (data.translatedText) {
-                setFormData((prev) => ({
-                  ...prev,
-                  es: {
-                    ...prev.es,
-                    [key]: data.translatedText,
-                  },
-                }))
-              }
-            } catch (err) {
-              console.error('Translation failed:', err)
-            }
-          }
-        }, 500)
-      }
+  const handleChange = (lang: 'en' | 'es', key: 'title' | 'subtitle' | 'altText', value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      [lang]: {
+        ...prev[lang],
+        [key]: value,
+      },
+    }))
 
-      return updated
-    })
+    if (lang === 'en') {
+      const timeoutKey = `_bannerTranslate_${key}`
+      clearTimeout((window as unknown as { [key: string]: NodeJS.Timeout })[timeoutKey])
+      ;(window as unknown as { [key: string]: NodeJS.Timeout })[timeoutKey] = setTimeout(async () => {
+        const translated = await autoTranslate(value)
+        setFormData((prev) => ({
+          ...prev,
+          es: {
+            ...prev.es,
+            [key]: translated,
+          },
+        }))
+      }, 500)
+    }
   }
 
   const handleFileChange = (incomingFile: File | null) => {

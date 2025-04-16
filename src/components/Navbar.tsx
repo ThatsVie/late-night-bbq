@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
 import { Menu, X } from 'lucide-react'
 import { usePathname } from 'next/navigation'
+import { logFirebaseEvent } from '@/utils/logEvent'
 
 export default function Navbar({ handleRouteChange }: { handleRouteChange: (url: string) => void }) {
   const { i18n, t } = useTranslation()
@@ -47,22 +48,58 @@ export default function Navbar({ handleRouteChange }: { handleRouteChange: (url:
 
         {/* Desktop nav */}
         <nav className="hidden md:flex gap-6 items-center text-sm sm:text-base" aria-label="Main navigation">
-          <Link href="/" onClick={(e) => { e.preventDefault(); handleRouteChange('/') }} className={`hover:text-[#E66590] ${pathname === '/' ? 'text-[#E66590]' : ''}`}>
+          <Link
+            href="/"
+            onClick={(e) => {
+              e.preventDefault();
+              logFirebaseEvent('navbar_click', { label: 'home', path: '/' })
+              handleRouteChange('/') }}
+              className={`hover:text-[#E66590] ${pathname === '/' ? 'text-[#E66590]' : ''}`}>
             {t('nav.home')}
           </Link>
-          <Link href="/about" onClick={(e) => { e.preventDefault(); handleRouteChange('/about') }} className={`hover:text-[#E66590] ${pathname === '/about' ? 'text-[#E66590]' : ''}`}>
+          <Link
+            href="/about"
+            onClick={(e) => {
+              e.preventDefault();
+              logFirebaseEvent('navbar_click', { label: 'about', path: '/about' })
+              handleRouteChange('/about') }}
+              className={`hover:text-[#E66590] ${pathname === '/about' ? 'text-[#E66590]' : ''}`}>
             {t('nav.about')}
           </Link>
-          <Link href="/menu" onClick={(e) => { e.preventDefault(); handleRouteChange('/menu') }} className={`hover:text-[#E66590] ${pathname === '/menu' ? 'text-[#E66590]' : ''}`}>
+          <Link
+            href="/menu"
+            onClick={(e) => {
+              e.preventDefault();
+              logFirebaseEvent('navbar_click', { label: 'menu', path: '/menu' })
+              handleRouteChange('/menu') }}
+              className={`hover:text-[#E66590] ${pathname === '/menu' ? 'text-[#E66590]' : ''}`}>
             {t('nav.store')}
           </Link>
-          <Link href="/merch" onClick={(e) => { e.preventDefault(); handleRouteChange('/merch') }} className={`hover:text-[#E66590] ${pathname === '/merch' ? 'text-[#E66590]' : ''}`}>
+          <Link
+            href="/merch"
+            onClick={(e) => {
+              e.preventDefault();
+              logFirebaseEvent('navbar_click', { label: 'merch', path: '/merch' })
+              handleRouteChange('/merch') }}
+              className={`hover:text-[#E66590] ${pathname === '/merch' ? 'text-[#E66590]' : ''}`}>
             {t('nav.merch')}
           </Link>
-          <Link href="/testimonials" onClick={(e) => { e.preventDefault(); handleRouteChange('/testimonials') }} className={`hover:text-[#E66590] ${pathname === '/testimonials' ? 'text-[#E66590]' : ''}`}>
+          <Link
+            href="/testimonials"
+            onClick={(e) => {
+              e.preventDefault();
+              logFirebaseEvent('navbar_click', { label: 'testimonials', path: '/testimonials' })
+              handleRouteChange('/testimonials') }}
+              className={`hover:text-[#E66590] ${pathname === '/testimonials' ? 'text-[#E66590]' : ''}`}>
             {t('nav.testimonials')}
           </Link>
-          <Link href="/contact" onClick={(e) => { e.preventDefault(); handleRouteChange('/contact') }} className={`hover:text-[#E66590] ${pathname === '/contact' ? 'text-[#E66590]' : ''}`}>
+          <Link
+            href="/contact"
+            onClick={(e) => {
+              e.preventDefault();
+              logFirebaseEvent('navbar_click', { label: 'contact', path: '/contact' })
+              handleRouteChange('/contact') }}
+              className={`hover:text-[#E66590] ${pathname === '/contact' ? 'text-[#E66590]' : ''}`}>
             {t('nav.contact')}
           </Link>
           <button

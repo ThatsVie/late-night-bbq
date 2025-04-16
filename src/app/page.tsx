@@ -6,6 +6,7 @@ import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import Image from 'next/image'
 import FacebookEmbed from '@/components/FacebookEmbed'
+import { logFirebaseEvent } from '@/utils/logEvent'
 
 function AnimatedSection({ id, children }: { id: string; children: React.ReactNode }) {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 })
@@ -39,20 +40,7 @@ export default function Home() {
 
   useEffect(() => {
     setMounted(true)
-
-    async function initAnalytics() {
-      if (typeof window !== 'undefined') {
-        const { getAnalytics, isSupported, logEvent } = await import ('firebase/analytics')
-        const { app } = await import('@/firebase/config')
-
-        if (await isSupported()) {
-          const analytics = getAnalytics(app)
-          logEvent(analytics, 'page_view')
-        }
-      }
-    }
-
-    initAnalytics()
+    logFirebaseEvent('page_view', { page: 'home' })
 
     async function fetchBanner() {
       try {

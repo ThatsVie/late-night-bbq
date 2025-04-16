@@ -1,5 +1,6 @@
 'use client'
 
+import { auth } from '@/firebase/config'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
@@ -8,14 +9,8 @@ import { getAuth } from 'firebase/auth'
 interface Banner {
   id: string
   imageUrl: string
-  en: {
-    subtitle: string
-    altText: string
-  }
-  es: {
-    subtitle: string
-    altText: string
-  }
+  en: { subtitle: string; altText: string }
+  es: { subtitle: string; altText: string }
   shape: 'square' | 'rect'
   isStorageBased: boolean
   editing?: boolean
@@ -33,51 +28,24 @@ export default function EditBannerPage() {
 
   useEffect(() => {
     if (!mounted) return
-
     const fetchData = async () => {
-      try {
-        const user = getAuth().currentUser
-        const token = user ? await user.getIdToken() : null
+      const user = auth.currentUser
+      const token = user ? await user.getIdToken() : null
 
-        const [bannersRes, activeRes] = await Promise.all([
-          fetch('/api/admin/banner/all', {
-            headers: token ? { Authorization: `Bearer ${token}` } : {},
-          }),
-          fetch('/api/banner/active'),
-        ])
+      const [bannersRes, activeRes] = await Promise.all([
+        fetch('/api/admin/banner/all', {
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
+        }),
+        fetch('/api/banner/active'),
+      ])
 
-        const bannersData = await bannersRes.json()
-        const activeData = await activeRes.json()
-
-        console.log('Raw banners response:', bannersData)
-
-        if (Array.isArray(bannersData)) {
-          setBanners(bannersData)
-        } else {
-          console.error('Invalid banners format', bannersData)
-          setBanners([])
-        }
-
-        setActiveBanner(activeData?.id || '')
-      } catch (err) {
-        console.error('Failed to fetch banners:', err)
-        setBanners([])
-      }
+      const bannersData = await bannersRes.json()
+      const activeData = await activeRes.json()
+      setBanners(Array.isArray(bannersData) ? bannersData : [])
+      setActiveBanner(activeData?.id || '')
     }
-
     fetchData()
   }, [mounted])
-
-  useEffect(() => {
-    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      if (!activeBanner) {
-        e.preventDefault()
-        e.returnValue = 'You must select an active banner before leaving.'
-      }
-    }
-    window.addEventListener('beforeunload', handleBeforeUnload)
-    return () => window.removeEventListener('beforeunload', handleBeforeUnload)
-  }, [activeBanner])
 
   const getToken = async () => {
     const user = getAuth().currentUser
@@ -85,40 +53,41 @@ export default function EditBannerPage() {
     return user.getIdToken()
   }
 
-  const handleBannerChange = async (newBanner: string) => {
-    const token = await getToken()
-    await fetch('/api/admin/banner/active', {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ id: newBanner }),
-    })
-    setActiveBanner(newBanner)
-  }
-
-  const handleDeleteBanner = async (bannerId: string) => {
-    if (bannerId === activeBanner) {
-      alert('You cannot delete the currently active banner. Please set another banner as active first.')
-      return
+  const autoTranslate = async (text: string) => {
+    try {
+      const res = await fetch('/api/translate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, targetLang: 'es' }),
+      })
+      const data = await res.json()
+      return data.translatedText || ''
+    } catch (err) {
+      console.error('Translation failed:', err)
+      return ''
     }
-
-    const confirmed = window.confirm(`Delete banner "${bannerId}"? This cannot be undone.`)
-    if (!confirmed) return
-
-    const token = await getToken()
-    await fetch(`/api/admin/banner/${bannerId}`, {
-      method: 'DELETE',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    setBanners((prev) => prev.filter((b) => b.id !== bannerId))
   }
 
-  const handleEditToggle = (id: string) => {
-    setBanners((prev) => prev.map((b) => (b.id === id ? { ...b, editing: !b.editing } : b)))
+  const handleLiveInputChange = async (
+    id: string,
+    field: 'subtitle' | 'altText',
+    value: string
+  ) => {
+    setBanners((prev) =>
+      prev.map((b) =>
+        b.id === id ? { ...b, en: { ...b.en, [field]: value } } : b
+      )
+    )
+
+    clearTimeout((window as any)[`_bannerTranslate_${field}`])
+    ;(window as any)[`_bannerTranslate_${field}`] = setTimeout(async () => {
+      const translated = await autoTranslate(value)
+      setBanners((prev) =>
+        prev.map((b) =>
+          b.id === id ? { ...b, es: { ...b.es, [field]: translated } } : b
+        )
+      )
+    }, 400)
   }
 
   const handleUpdateBanner = async (
@@ -145,6 +114,7 @@ export default function EditBannerPage() {
         es: { subtitle: esSubtitle, altText: esAltText },
       }),
     })
+
     setBanners((prev) =>
       prev.map((b) =>
         b.id === id
@@ -159,7 +129,30 @@ export default function EditBannerPage() {
     )
   }
 
-  if (!mounted) return null
+  const handleEditToggle = (id: string) =>
+    setBanners((prev) => prev.map((b) => (b.id === id ? { ...b, editing: !b.editing } : b)))
+
+  const handleBannerChange = async (newBanner: string) => {
+    const token = await getToken()
+    await fetch('/api/admin/banner/active', {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ id: newBanner }),
+    })
+    setActiveBanner(newBanner)
+  }
+  
+  const handleDeleteBanner = async (id: string) => {
+    const token = await getToken()
+    await fetch(`/api/admin/banner/${id}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    setBanners((prev) => prev.filter((b) => b.id !== id))
+  }
 
   return (
     <main className="p-6 text-white bg-zinc-950 min-h-screen">
@@ -169,9 +162,9 @@ export default function EditBannerPage() {
       >
         + Upload New Banner
       </button>
-
+  
       <h1 className="text-2xl font-bold text-pink-500 mb-6">Select Active Homepage Banner</h1>
-
+  
       <button
         onClick={() => {
           if (!activeBanner) {
@@ -189,7 +182,7 @@ export default function EditBannerPage() {
       >
         ← Back to Admin Dashboard
       </button>
-
+  
       {banners.length === 0 ? (
         <p className="text-white/60 italic">No banners found.</p>
       ) : (
@@ -213,61 +206,24 @@ export default function EditBannerPage() {
                     <p className="font-bold text-white text-sm mb-1">
                       ID: <span className="text-pink-400">{banner.id}</span>
                     </p>
-
-                    {!banner.editing ? (
+  
+                    {banner.editing ? (
                       <>
-                        <p className="text-white/70 text-sm">
-                          <strong>EN Subtitle:</strong> {banner.en.subtitle}
-                        </p>
-                        <p className="text-white/70 text-sm mb-2">
-                          <strong>EN Alt Text:</strong> {banner.en.altText}
-                        </p>
-                        <p className="text-white/70 text-sm">
-                          <strong>ES Subtitle:</strong> {banner.es.subtitle}
-                        </p>
-                        <p className="text-white/70 text-sm mb-2">
-                          <strong>ES Alt Text:</strong> {banner.es.altText}
-                        </p>
-                      </>
-                    ) : (
-                      <>
-                        <label className="text-sm font-medium text-white/70 mb-1 block">
-                          EN Subtitle
-                        </label>
+                        <label className="text-sm font-medium text-white/70 mb-1 block">EN Subtitle</label>
                         <input
                           className="w-full p-2 mb-4 bg-zinc-900 border border-white/20 rounded"
                           value={banner.en.subtitle}
-                          onChange={(e) =>
-                            setBanners((prev) =>
-                              prev.map((b) =>
-                                b.id === banner.id
-                                  ? { ...b, en: { ...b.en, subtitle: e.target.value } }
-                                  : b
-                              )
-                            )
-                          }
+                          onChange={(e) => handleLiveInputChange(banner.id, 'subtitle', e.target.value)}
                         />
-
-                        <label className="text-sm font-medium text-white/70 mb-1 block">
-                          EN Alt Text
-                        </label>
+  
+                        <label className="text-sm font-medium text-white/70 mb-1 block">EN Alt Text</label>
                         <input
                           className="w-full p-2 mb-4 bg-zinc-900 border border-white/20 rounded"
                           value={banner.en.altText}
-                          onChange={(e) =>
-                            setBanners((prev) =>
-                              prev.map((b) =>
-                                b.id === banner.id
-                                  ? { ...b, en: { ...b.en, altText: e.target.value } }
-                                  : b
-                              )
-                            )
-                          }
+                          onChange={(e) => handleLiveInputChange(banner.id, 'altText', e.target.value)}
                         />
-
-                        <label className="text-sm font-medium text-white/70 mb-1 block">
-                          ES Subtitle
-                        </label>
+  
+                        <label className="text-sm font-medium text-white/70 mb-1 block">ES Subtitle</label>
                         <input
                           className="w-full p-2 mb-4 bg-zinc-900 border border-white/20 rounded"
                           value={banner.es.subtitle}
@@ -281,10 +237,8 @@ export default function EditBannerPage() {
                             )
                           }
                         />
-
-                        <label className="text-sm font-medium text-white/70 mb-1 block">
-                          ES Alt Text
-                        </label>
+  
+                        <label className="text-sm font-medium text-white/70 mb-1 block">ES Alt Text</label>
                         <input
                           className="w-full p-2 mb-4 bg-zinc-900 border border-white/20 rounded"
                           value={banner.es.altText}
@@ -298,7 +252,7 @@ export default function EditBannerPage() {
                             )
                           }
                         />
-
+  
                         <button
                           onClick={() =>
                             handleUpdateBanner(
@@ -314,17 +268,24 @@ export default function EditBannerPage() {
                           Save Changes
                         </button>
                       </>
+                    ) : (
+                      <>
+                        <p className="text-white/70 text-sm"><strong>EN Subtitle:</strong> {banner.en.subtitle}</p>
+                        <p className="text-white/70 text-sm mb-2"><strong>EN Alt Text:</strong> {banner.en.altText}</p>
+                        <p className="text-white/70 text-sm"><strong>ES Subtitle:</strong> {banner.es.subtitle}</p>
+                        <p className="text-white/70 text-sm mb-2"><strong>ES Alt Text:</strong> {banner.es.altText}</p>
+                      </>
                     )}
                   </div>
                 </div>
-
+  
                 <div className="flex flex-col sm:flex-row gap-2 mt-4 sm:mt-0">
                   <button
                     onClick={() => handleBannerChange(banner.id)}
                     className={`px-4 py-2 rounded font-bold ${
                       activeBanner === banner.id
                         ? 'bg-pink-500 text-black'
-                        : 'bg-white/10 hover:bg-white/20'
+                        : 'bg-white/10 hover:bg-white/20 text-white'
                     }`}
                   >
                     {activeBanner === banner.id ? 'Active' : 'Set Active'}

@@ -42,6 +42,14 @@
       "phone": "Number",
       "details": "How can we help?"
     },
+    "alerts": {
+      "missingFields": "Please complete the following fields: {{fields}}",
+      "invalidEmail": "Please enter a valid email address.",
+      "invalidPhone": "Please enter a valid phone number (e.g., 123-456-7890).",
+      "success": "Message sent successfully!",
+      "failed": "Failed to send message, please double check information and resubmit",
+      "unexpected": "An unexpected error occured."
+    },
     "placeholders": {
       "details": "e.g. Date, location, number of guests, and any special requests"
     },

@@ -42,6 +42,15 @@
       "phone": "Número de Teléfono",
       "details": "¿Cómo podemos ayudarle?"
     },
+    
+    "alerts": {
+      "missingFields": "Por favor complete lo siguiente: {{fields}}",
+      "invalidEmail": "Proporcione una dirección de correo electrónico válida.",
+      "invalidPhone": "Por favor proporcione un número de teléfono válido (e.g., 123-456-7890).",
+      "success": "Tu mensaje fue enviado exitosamente",
+      "failed": "No se pudo enviar su mensaje. Verifique su información y vuelva a enviarlo.",
+      "unexpected": "Ocurrió un error inesperado."
+    },
     "placeholders": {
       "details": "Ej. Fecha, lugar, cantidad de personas, y cualquier solicitud especial"
     },

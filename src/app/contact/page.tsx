@@ -42,7 +42,11 @@ export default function ContactPage() {
 
     if (incompleteFields.length > 0) {
       setAlert({
-        message:`Please complete the following fields: ${incompleteFields.join(', ')}`,
+        message: t('contact.alerts.missingFields', {
+          fields: incompleteFields
+            .map((field) => t(`contact.fields.${field}`))
+            .join(', ')
+        }),
         type: 'warning',
       })
       setLoading(false);
@@ -53,7 +57,7 @@ export default function ContactPage() {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailRegex?.test(formData.email)) {
       setAlert({
-        message: 'Please enter a valid email address',
+        message: t('contact.alerts.invalidEmail'),
         type: 'warning',
       })
       setLoading(false)
@@ -64,7 +68,7 @@ export default function ContactPage() {
     const phoneRegex = /^\d{3}-\d{3}-\d{4}$/;
     if (!phoneRegex.test(formData.phone)) {
       setAlert({
-        message: 'Please enter a valid phone number (e.g., 123-456-7890).',
+        message: t('contact.alerts.invalidPhone'),
         type: 'warning',
       })
       setLoading(false)
@@ -82,18 +86,18 @@ export default function ContactPage() {
 
       if (response.ok) {
         setAlert({
-          message: 'Message sent successfully!',
+          message: t('contact.alerts.success'),
           type: 'success',
         })
       } else {
         setAlert({
-          message: 'Failed to send message, please double check information and resubmit',
+          message: t('contact.alerts.failed'),
           type: 'error',
         })
       }
     } catch {
       setAlert({
-        message:'an unexpected error occured',
+        message: t('contact.alerts.unexpected'),
         type: 'error',
     })
   }

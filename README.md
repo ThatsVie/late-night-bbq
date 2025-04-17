@@ -5,6 +5,7 @@
 ![download](https://github.com/user-attachments/assets/28ff98f5-86c8-49cb-9712-ebbc05e11616)
 
 
+
 **Late Night BBQ** is a modern, bilingual content-managed website and admin dashboard built for a beloved BBQ catering business in Houston, Texas. Our mission was to honor their story while giving them full ownership over their digital presence.
 
 </div>
@@ -42,6 +43,10 @@ Mobile responsive and fully bilingual (EN/ES)
 - **Contact Us Page** – Order request form powered by [Resend](https://resend.com/) for email delivery
 
 > All dynamic content is editable through the admin dashboard and supports both English and Spanish versions.
+![espanolcontact](https://github.com/user-attachments/assets/645e3ac1-59fb-4062-8cca-e03964844922)
+![espanolcontact2](https://github.com/user-attachments/assets/d022e271-1bb9-4924-b8ee-88bb7af1f5be)
+
+
 
 ---
 
@@ -55,6 +60,15 @@ Accessible only to the business owners via secure login with Firebase Auth.
 -  **Testimonials** – Curate community testimonials and highlight feedback
 
 > Admins use a simple, intuitive interface powered by drag-and-drop, modals, and secure API routes backed by Firebase.
+![adminmenu](https://github.com/user-attachments/assets/0645aeeb-41dc-432f-b455-07dbefe211f5)
+![adminmenu2](https://github.com/user-attachments/assets/69c053d0-c670-4c77-b696-9ec233046a3a)
+![adminmenu3](https://github.com/user-attachments/assets/c3888385-8780-435b-b044-5a1671c4654a)
+
+
+
+
+
+
 
 ---
 

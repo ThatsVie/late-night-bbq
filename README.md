@@ -43,9 +43,10 @@ Mobile responsive and fully bilingual (EN/ES)
 - **Contact Us Page** – Order request form powered by [Resend](https://resend.com/) for email delivery
 
 > All dynamic content is editable through the admin dashboard and supports both English and Spanish versions.
-![espanolcontact](https://github.com/user-attachments/assets/645e3ac1-59fb-4062-8cca-e03964844922)
-![espanolcontact2](https://github.com/user-attachments/assets/d022e271-1bb9-4924-b8ee-88bb7af1f5be)
 
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/393b3006-f4bf-44e1-99c9-c9317a99ecf7" alt="Contact form in Spanish" width="70%">
+</p>
 
 
 ---
@@ -60,10 +61,11 @@ Accessible only to the business owners via secure login with Firebase Auth.
 -  **Testimonials** – Curate community testimonials and highlight feedback
 
 > Admins use a simple, intuitive interface powered by drag-and-drop, modals, and secure API routes backed by Firebase.
-![adminmenu](https://github.com/user-attachments/assets/0645aeeb-41dc-432f-b455-07dbefe211f5)
-![adminmenu2](https://github.com/user-attachments/assets/69c053d0-c670-4c77-b696-9ec233046a3a)
-![adminmenu3](https://github.com/user-attachments/assets/c3888385-8780-435b-b044-5a1671c4654a)
 
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/10b9dc8c-d7ea-4464-97ce-05c9aedfd8a6" alt="Admin dashboard menu page" width="70%">
+  <br><em>Admin dashboard: Menu management page with upload, reorder, and edit options</em>
+</p>
 
 
 
@@ -111,8 +113,8 @@ Admin logs in → Navigates dashboard → Edits banners, menu, merch, about sect
 ### 💖 Made with love by:
 
 - **[Vie P.](https://whatdoyouknowaboutlove.com/viep/)** —  Lead Full Stack Engineer & Bilingual UX Contributor  
-- **[Courtney G.](https://github.com/grahacr)** — Full Stack Engineer & Visual Interaction Developer  
-- **[Starlee J.](https://github.com/starles-barkley)** — Project Manager & Quality Assurance
+- **[Courtney G.](https://github.com/grahacr)** — Full Stack Engineer
+- **[Starlee J.](https://github.com/starles-barkley)** — Project Manager
 
 
 
